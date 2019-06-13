@@ -1,0 +1,37 @@
+.ticket-item {
+    list-style: none;
+    display: flex;
+    margin: 20px 320px 0 320px;
+    border-bottom: 1px solid #ccc;
+}
+
+.ticket-item .ticket-img {
+	margin-left: 80px;
+    height: 159px;
+    width: 110px;
+}
+
+.ticket-info {
+    flex: 1;
+    padding: 20px;
+    margin-left: 80px;
+}
+
+.ticket-info > div {
+    margin: 5px 0;
+}
+
+.ticket-info .primary-text {
+    font-size: 20px;
+}
+
+.refund {
+	float: right;
+}
+
+.sign {
+	display: flex;
+	font-size: 25px;
+	justify-content: center;
+	align-items: center;
+}
