@@ -20,15 +20,18 @@ public class RefundServiceImpl implements RefundService {
     private RefundMapper refundMapper;
     @Override
     public ResponseVO addRefundStrategy(RefundForm refundForm) {
-        List<RefundStrategy> refundStrategies = new RefundStrategy().convert2List(refundForm);
-        refundMapper.insertRefundStrategy(refundStrategies);
-        return ResponseVO.buildSuccess();
+        try{
+            List<RefundStrategy> refundStrategies = convert2List(refundForm);
+            refundMapper.insertRefundStrategy(refundStrategies);
+            return ResponseVO.buildSuccess();
+        }catch (NullPointerException e){
+            return ResponseVO.buildFailure("新建退票策略有误");
+        }
     }
 
     @Override
     public ResponseVO getAllRefundStrategy() {
         try{
-
             List<RefundStrategy> refundStrategyList = refundMapper.selectAllRefundStrategy();
             List<RefundForm> refundFormList = refundPOList2refundVOList(refundStrategyList);
             return ResponseVO.buildSuccess(refundFormList);
@@ -40,15 +43,38 @@ public class RefundServiceImpl implements RefundService {
 
     @Override
     public ResponseVO deleteRefundStrategyByName(String name) {
-        return ResponseVO.buildSuccess(refundMapper.deleteRefundStrategyByName(name));
+        try{
+            return ResponseVO.buildSuccess(refundMapper.deleteRefundStrategyByName(name));
+        }catch(Exception e){
+            return ResponseVO.buildFailure("删除退票策略失败");
+        }
     }
 
+
+    @Override
+    public ResponseVO updateRefundStrategy(RefundForm refundForm) {
+        try{
+            refundMapper.deleteRefundStrategyByName(refundForm.getName());
+            refundMapper.insertRefundStrategy(convert2List(refundForm));
+            return ResponseVO.buildSuccess();
+        }catch (Exception e){
+            return ResponseVO.buildFailure("更新退票策略失败");
+        }
+    }
+
+    /**
+     * 将数据库传上来的POList转为给页面层的VOList
+     * @param refundStrategyList
+     * @return
+     */
     private List<RefundForm> refundPOList2refundVOList(List<RefundStrategy> refundStrategyList){
-        System.out.println(refundStrategyList);
+        //列表声明
         List<RefundForm> resultList = new ArrayList<RefundForm>();
         List<String> startTimeList = new ArrayList<String>();
         List<String> endTimeList = new ArrayList<String>();
         List<Double> penaltyList = new ArrayList<Double>();
+
+        //添加策略
         for(int i=0;i<refundStrategyList.size()-1;i++){
             RefundStrategy r1 = refundStrategyList.get(i);
             RefundStrategy r2 = refundStrategyList.get(i+1);
@@ -90,5 +116,25 @@ public class RefundServiceImpl implements RefundService {
         resultList.add(refundForm);
 
         return resultList;
+    }
+
+    /**
+     * 将页面层的单个VO转化为给数据库的POList
+     * @param refundForm
+     * @return
+     */
+    private List<RefundStrategy> convert2List(RefundForm refundForm){
+        List<RefundStrategy> refundStrategies = new ArrayList<RefundStrategy>();
+        int len = refundForm.getStartTime().size();
+        String name = refundForm.getName();
+        String falseTime = refundForm.getFalseTime();
+        int isVip = refundForm.getIsVip();
+        for (int i=0;i<len;i++){
+            String startTime = refundForm.getStartTime().get(i);
+            String endTime = refundForm.getEndTime().get(i);
+            double penalty = refundForm.getPenalty().get(i);
+            refundStrategies.add(new RefundStrategy(name,isVip,falseTime,startTime,endTime,penalty));
+        }
+        return refundStrategies;
     }
 }
