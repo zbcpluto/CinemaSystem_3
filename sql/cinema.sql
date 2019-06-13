@@ -325,6 +325,7 @@ DROP TABLE IF EXISTS `vip_card`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `vip_card` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `vip_service_id` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
   `balance` float DEFAULT NULL,
   `join_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
