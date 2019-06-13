@@ -63,4 +63,12 @@ public class HallServiceImpl implements HallService, HallServiceForBl {
             return ResponseVO.buildFailure("失败");
         }
     }
+
+    @Override
+    public ResponseVO updateHall(HallVO hallVO) {
+        try{
+            hallMapper
+            return ResponseVO.buildSuccess();
+        }
+    }
 }
