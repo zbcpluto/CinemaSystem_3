@@ -75,7 +75,7 @@ public class HallServiceImpl implements HallService, HallServiceForBl {
             hallMapper.updateHall(hall);
             return ResponseVO.buildSuccess();
         }catch(Exception e){
-            return ResponseVO.buildFailure();
+            return ResponseVO.buildFailure("error");
         }
     }
 }
