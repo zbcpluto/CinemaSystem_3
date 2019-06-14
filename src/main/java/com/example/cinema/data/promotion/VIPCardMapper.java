@@ -25,9 +25,8 @@ public interface VIPCardMapper {
 
 	List<VIPInfo> selectVIPInfo();
 
-	void insertOneVIPInfo(VIPInfoForm vipInfoForm); 
+	void insertOneVIPInfo(VIPInfoForm vipInfoForm);
 
-
-
+	void updateOneVIPInfo(VIPInfoForm vipInfoForm); 
 
 }

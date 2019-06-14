@@ -6,6 +6,7 @@ package com.example.cinema.vo;
  * Created by liying on 2019/4/15.
  */
 public class VIPInfoForm {
+	private int id;
 	
 	private String name;
 
@@ -15,7 +16,14 @@ public class VIPInfoForm {
     
     private int discount_res;
     
+    public int getId() {
+		return id;
+	}
 
+	public void setId(int id) {
+		this.id = id;
+	}
+    
 	public String getName() {
 		return name;
 	}
@@ -47,5 +55,5 @@ public class VIPInfoForm {
 	public void setDiscount_res(int discount_res) {
 		this.discount_res = discount_res;
 	}
-    
+
 }

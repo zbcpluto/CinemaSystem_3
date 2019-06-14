@@ -3,6 +3,7 @@ package com.example.cinema.po;
 import com.example.cinema.vo.VIPInfoVO;
 
 public class VIPInfo {
+	private int id;
 	
 	private String name;
 
@@ -14,12 +15,21 @@ public class VIPInfo {
     
     public VIPInfoVO getVO() {
     	VIPInfoVO vip = new VIPInfoVO();
+    	vip.setId(id);
     	vip.setName(name);
     	vip.setPrice(price);
     	vip.setDiscount_req(discount_req);
     	vip.setDiscount_res(discount_res);
     	return vip;
     }
+    
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	public String getName() {
 		return name;

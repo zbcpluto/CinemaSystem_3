@@ -3,7 +3,7 @@
 <mapper namespace="com.example.cinema.data.promotion.VIPCardMapper">
     <insert id="insertOneCard" parameterType="com.example.cinema.po.VIPCard"
             useGeneratedKeys="true" keyProperty="id">
-        insert into vip_card(user_id,balance)
+        insert into vip_card(user_id, balance)
         values(#{userId}, #{balance})
     </insert>
 
@@ -24,6 +24,12 @@
         insert into vip_service(name, price, discount_req, discount_res)
         values(#{name}, #{price}, #{discount_req}, #{discount_res})
     </insert>
+    
+    <update id="updateOneVIPInfo" parameterType="com.example.cinema.vo.VIPInfoForm">
+    	update vip_service set name = #{name}, price = #{price}, 
+    	discount_req = #{discount_req}, discount_res = #{discount_res}
+        where id = #{id}
+    </update>
 
     <resultMap id="VIPCard" type="com.example.cinema.po.VIPCard">
         <result column="join_time" property="joinDate"></result>

@@ -40,5 +40,9 @@ public class VIPCardController {
         return vipService.publishVipcard(vipInfoForm);
     }
 
-
+    @PostMapping("/update")
+    public ResponseVO updateVipcard(@RequestBody VIPInfoForm vipInfoForm){
+        return vipService.updateVipcard(vipInfoForm);
+    }
+    
 }
