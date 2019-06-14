@@ -132,4 +132,27 @@ $(document).ready(function() {
         });
         $('#selected-movies').append(moviesDomStr);
     }
+
+    var selectedUserNames = new Set();
+    // 实现筛选金额的点击确认按钮
+    $('#give-coupon-filter-money').click(function(){
+        var list=[];
+        //list = getRequest()
+        var selectDomStr = "";
+        list.forEach(function(user){
+
+            selectDomStr+="<option value="+"\""+user.username+"\">"+user.username+"</option>";
+        });
+        $('#filter-user').append(selectDomStr);
+    });
+
+    //渲染选择的赠送优惠券的用户
+    function renderSelectedUsers() {
+        $('#selected-users').empty();
+        var usersDomStr = "";
+        selectedUserNames.forEach(function (userName) {
+            usersDomStr += "<span class='label label-primary'>"+userName+"</span>";
+        });
+        $('#selected-movies').append(usersDomStr);
+    }
 });
