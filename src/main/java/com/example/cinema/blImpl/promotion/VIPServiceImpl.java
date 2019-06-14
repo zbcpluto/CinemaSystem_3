@@ -21,10 +21,11 @@ public class VIPServiceImpl implements VIPService, VIPServiceForBl {
     VIPCardMapper vipCardMapper;
 
     @Override
-    public ResponseVO addVIPCard(int userId) {
+    public ResponseVO addVIPCard(int userId, int vipServiceId) {
         VIPCard vipCard = new VIPCard();
         vipCard.setUserId(userId);
         vipCard.setBalance(0);
+        vipCard.setVipServiceId(vipServiceId);
         try {
             int id = vipCardMapper.insertOneCard(vipCard);
             return ResponseVO.buildSuccess(vipCardMapper.selectCardById(id));
