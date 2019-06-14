@@ -18,14 +18,11 @@ public class HallController {
     @Autowired
     private HallService hallService;
 
-    @RequestMapping(value = "/hall/all", method = RequestMethod.GET)
+    @RequestMapping(value = "hall/all", method = RequestMethod.GET)
     public ResponseVO searchAllHall(){
         return hallService.searchAllHall();
     }
 
-    @RequestMapping(value = "/hall/add", method = RequestMethod.POST)
+    @RequestMapping(value = "hall/add", method = RequestMethod.POST)
     public ResponseVO addHall(@RequestBody HallVO hallinfo){return hallService.addHall(hallinfo);}
-
-    @RequestMapping(value = "/hall/update", method = RequestMethod.POST)
-    public ResponseVO updateHall(@RequestBody HallVO hallVO){return hallService.updateHall(hallVO);}
 }

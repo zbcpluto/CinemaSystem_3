@@ -5,6 +5,7 @@ import com.example.cinema.vo.VIPCardForm;
 import com.example.cinema.vo.VIPInfoForm;
 import com.example.cinema.vo.ResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.endpoint.annotation.FilteredEndpoint;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -38,6 +39,11 @@ public class VIPCardController {
     @PostMapping("/publish")
     public ResponseVO publishVipcard(@RequestBody VIPInfoForm vipInfoForm){
         return vipService.publishVipcard(vipInfoForm);
+    }
+
+    @GetMapping("{userId}/get")
+    public ResponseVO getChargeHistory(@PathVariable int userId){
+        return vipService.getChargeHistory(userId);
     }
 
 

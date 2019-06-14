@@ -2,6 +2,7 @@ package com.example.cinema.blImpl.promotion;
 
 import com.example.cinema.bl.promotion.VIPService;
 import com.example.cinema.data.promotion.VIPCardMapper;
+import com.example.cinema.po.VIPCharge;
 import com.example.cinema.vo.VIPCardForm;
 import com.example.cinema.vo.VIPInfoForm;
 import com.example.cinema.po.VIPCard;
@@ -10,6 +11,8 @@ import com.example.cinema.vo.ResponseVO;
 import com.example.cinema.vo.VIPInfoVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.sql.Timestamp;
 
 
 /**
@@ -62,10 +65,19 @@ public class VIPServiceImpl implements VIPService, VIPServiceForBl {
         if (vipCard == null) {
             return ResponseVO.buildFailure("会员卡不存在");
         }
-        double balance = vipCard.calculate(vipCardForm.getAmount());
-        vipCard.setBalance(vipCard.getBalance() + balance);
+
+        Timestamp chargeTime=new Timestamp(System.currentTimeMillis());
+        double chargeAmount= vipCardForm.getAmount();
+        double calculatedAmount = vipCard.calculate(vipCardForm.getAmount());
+        int vipServiceId=vipCard.getVipSerivceId();
+        int userId=vipCard.getUserId();
+        int id=vipCard.getId();
+        VIPCharge vipCharge=new VIPCharge(userId,id,vipServiceId,chargeAmount,calculatedAmount,chargeTime);
+
+        vipCard.setBalance(vipCard.getBalance() + calculatedAmount);
         try {
             vipCardMapper.updateCardBalance(vipCardForm.getVipId(), vipCard.getBalance());
+            vipCardMapper.insertVIPCharge(vipCharge);
             return ResponseVO.buildSuccess(vipCard);
         } catch (Exception e) {
             e.printStackTrace();
@@ -108,4 +120,14 @@ public class VIPServiceImpl implements VIPService, VIPServiceForBl {
             return ResponseVO.buildFailure("失败");
         }
 	}
+
+	@Override
+    public ResponseVO getChargeHistory(int userId){
+        try{
+            return ResponseVO.buildSuccess(vipCardMapper.getChargeHistory(userId));
+        }catch(Exception e){
+            e.printStackTrace();
+            return ResponseVO.buildFailure("查看充值记录失败");
+        }
+    }
 }

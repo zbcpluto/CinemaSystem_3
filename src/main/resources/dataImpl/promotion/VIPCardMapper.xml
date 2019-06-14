@@ -18,11 +18,21 @@
     <select id="selectVIPInfo" resultMap="VIPInfo">
     	select * from vip_service
     </select>
+
+    <select id="getChargeHistory" resultMap="VIPCharge">
+        select * from vip_charge where user_id=#{userId}
+    </select>
     
     <insert id="insertOneVIPInfo" parameterType="com.example.cinema.vo.VIPInfoForm"
             useGeneratedKeys="true" keyProperty="id">
         insert into vip_service(name, price, discount_req, discount_res)
         values(#{name}, #{price}, #{discount_req}, #{discount_res})
+    </insert>
+
+    <insert id="insertVIPCharge" parameterType="com.example.cinema.po"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into vip_charge(user_id,id,vip_service_id,charge_amount,calculated_amonut,charge_time)
+        values (#{userId},#{id},#{vipServiceId},#{chargeAmount},#{calculatedAmount},#{chargeTime})
     </insert>
 
     <resultMap id="VIPCard" type="com.example.cinema.po.VIPCard">
@@ -37,6 +47,15 @@
     	<result column="price" property="price"></result>
     	<result column="discount_req" property="discount_req"></result>
     	<result column="discount_res" property="discount_res"></result>
+    </resultMap>
+
+    <resultMap id="VIPCharge" type="com.example.cinema.po.VIPCharge">
+        <result column="user_id" property="userId"></result>
+        <result column="id" property="id"></result>
+        <result column="vip_service_id" property="vipServiceId"></result>
+        <result column="charge_amount" property="chargeAmount"></result>
+        <result column="calculated_amount" property="calculatedAmount"></result>
+        <result column="charge_time" property="chargeTime"></result>
     </resultMap>
 
     <update id="updateCardBalance" >

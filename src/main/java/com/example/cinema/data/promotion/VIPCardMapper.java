@@ -1,6 +1,7 @@
 package com.example.cinema.data.promotion;
 
 import com.example.cinema.po.VIPCard;
+import com.example.cinema.po.VIPCharge;
 import com.example.cinema.po.VIPInfo;
 import com.example.cinema.vo.VIPInfoForm;
 
@@ -25,9 +26,9 @@ public interface VIPCardMapper {
 
 	List<VIPInfo> selectVIPInfo();
 
-	void insertOneVIPInfo(VIPInfoForm vipInfoForm); 
+	void insertOneVIPInfo(VIPInfoForm vipInfoForm);
 
+	void insertVIPCharge(VIPCharge vipCharge);
 
-
-
+	List<VIPCharge> getChargeHistory(int userId);
 }

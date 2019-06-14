@@ -51,7 +51,20 @@ public class RefundStrategy {
         this.penalty = penalty;
     }
 
-
+    public List<RefundStrategy> convert2List(RefundForm refundForm){
+        List<RefundStrategy> refundStrategies = new ArrayList<RefundStrategy>();
+        int len = refundForm.getStartTime().size();
+        String name = refundForm.getName();
+        String falseTime = refundForm.getFalseTime();
+        int isVip = refundForm.getIsVip();
+        for (int i=0;i<len;i++){
+            String startTime = refundForm.getStartTime().get(i);
+            String endTime = refundForm.getEndTime().get(i);
+            double penalty = refundForm.getPenalty().get(i);
+            refundStrategies.add(new RefundStrategy(name,isVip,falseTime,startTime,endTime,penalty));
+        }
+        return refundStrategies;
+    }
     public Integer getId() {
         return id;
     }
