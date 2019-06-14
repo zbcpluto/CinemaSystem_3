@@ -16,4 +16,6 @@ logs
 /log
 /tmp
 hotspot.log
-*.yml
+src/main/resources/application.yml
+pom.xml
+
