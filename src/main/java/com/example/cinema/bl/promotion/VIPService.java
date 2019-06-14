@@ -26,4 +26,6 @@ public interface VIPService {
 
     ResponseVO getChargeHistory(int userId);
     
+	ResponseVO updateVipcard(VIPInfoForm vipInfoForm);
+    
 }

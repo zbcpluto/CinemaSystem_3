@@ -26,4 +26,11 @@ public interface RefundService {
      * @return
      */
     ResponseVO deleteRefundStrategyByName(String name);
+    
+    /**
+     * 更新一个退票策略
+     * @param refundForm
+     * @return
+     */
+    ResponseVO updateRefundStrategy(RefundForm refundForm);
 }

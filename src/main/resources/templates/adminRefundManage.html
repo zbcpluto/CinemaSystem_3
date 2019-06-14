@@ -181,6 +181,76 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="activityModal2" tabindex="-1" role="dialog" aria-labelledby="movieModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="refundModalLabel2">修改退票策略</h4>
+        </div>
+
+        <div class="modal-body">
+            <form class="form-horizontal" role="form">
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="refund-name-input" id="refundname"><span class="error-text">*</span>策略名称</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="refund-name-input2" disabled="disabled" placeholder="请输入退票策略名称">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="is-vip2" ><span class="error-text">*</span>用户类型</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" id="is-vip2">
+                            <option value="1">会员</option>
+                            <option value="0">非会员</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="false-time2">不可退票时间</label>
+                    <div class="col-sm-10">
+                        <input  class="form-control" type="time" id="false-time2" step="300">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="refund-time-start2-1"><span class="error-text">*</span>电影开场</label>
+                    <div class="col-sm-4">
+                        <input class="form-control" type="time" id="refund-time-start2-1" step="300">
+                    </div>
+                    <label class="col-sm-1 control-label" for="refund-time-end2-1">至</label>
+                    <div class="col-sm-5">
+                        <input class="form-control" type="time" id="refund-time-end2-1" step="300">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label  class="col-sm-2 control-label" for="refund-penalty2-1"><span class="error-text">*</span>折算系数</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="refund-penalty2-1" placeholder="请输入退票手续费的折算系数">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div  class="col-sm-1">
+                        <button type="button" class="btn btn-primary" id="input-plus2"><i class="icon-plus-sign"></i></button>
+                    </div>
+                    <div  class="col-sm-1">
+                        <button type="button" class="btn btn-danger" id="input-minus2"><i class="icon-minus-sign"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-primary" id="refund-form-btn2">确认</button>
+        </div>
+
+    </div>
+</div>
+</div>
 </body>
 <script>
 

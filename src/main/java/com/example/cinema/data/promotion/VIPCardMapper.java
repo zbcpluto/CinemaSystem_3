@@ -29,6 +29,7 @@ public interface VIPCardMapper {
 	void insertOneVIPInfo(VIPInfoForm vipInfoForm);
 
 	void insertVIPCharge(VIPCharge vipCharge);
+	void updateOneVIPInfo(VIPInfoForm vipInfoForm); 
 
 	List<VIPCharge> getChargeHistory(int userId);
 }

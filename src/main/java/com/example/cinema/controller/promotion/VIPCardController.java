@@ -1,4 +1,4 @@
-package com.example.cinema.controller.promotion;
+spackage com.example.cinema.controller.promotion;
 
 import com.example.cinema.bl.promotion.VIPService;
 import com.example.cinema.vo.VIPCardForm;
@@ -47,4 +47,9 @@ public class VIPCardController {
     }
 
 
+    @PostMapping("/update")
+    public ResponseVO updateVipcard(@RequestBody VIPInfoForm vipInfoForm){
+        return vipService.updateVipcard(vipInfoForm);
+    }
+    
 }

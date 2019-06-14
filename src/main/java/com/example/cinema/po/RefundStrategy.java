@@ -1,10 +1,5 @@
 package com.example.cinema.po;
 
-import com.example.cinema.vo.RefundForm;
-
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by AzureXH on 2019/6/3
  */

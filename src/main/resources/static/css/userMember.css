@@ -34,50 +34,29 @@
 }
 
 /* info为vip信息样式 */
-.card .info {
+.vipInfo-container {
+    display: flex;
+    width: 100%;
+    min-height: 160px;
+    margin: 20px 0;
+}
+
+.vipInfo-card {
+    padding: 40px 20px 10px 40px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    padding-top: 20px;
-    border: 1px solid #1caf9a;
+    flex-basis: 100%;
+    justify-content: space-around;
 }
 
-.card .info .price {
-    font-size: 24px;
-}
-
-.card .info .price b {
-    color: #1caf9a;
-    font-size: 32px;
-}
-
-.card .info .description {
-    color: #adadad;
-}
-
-.card .info .content {
-    font-size: 15px;
-    width: 30%;
-}
-
-.card .info .content .line {
+.vipInfo-line {
     display: flex;
-    flex-direction: row;
+    align-items: baseline;
     justify-content: space-between;
-    margin: 3px 0;
 }
 
-.card .info button {
-    margin-top: 20px;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    padding: 10px 0;
-    background: #1caf9a;
-    font-size: 16px;
-    color: #fff;
-    line-height: 26px;
-    text-align: center
+.vipInfo-line .primary-text {
+	font-size: 18px;
 }
 
 /* coupon为优惠券样式 */

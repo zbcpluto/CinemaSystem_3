@@ -5,6 +5,7 @@ $(document).ready(function () {
 
 var isBuyState = true;
 var vipCardId;
+var vipInfoList;
 
 function getVIP() {
     getRequest(
@@ -24,6 +25,7 @@ function getVIP() {
                 // 非会员
                 $("#member-card").css("display", "none");
                 $("#nonmember-card").css("display", "");
+                getVipInfo();
             }
         },
         function (error) {
@@ -47,7 +49,54 @@ function getVIP() {
         });
 }
 
-function buyClick() {
+function getVipInfo() {
+    getRequest(
+        '/vip/getVIPInfo',
+        function (res) {
+            vipInfoList = res.content;
+            renderVipInfo(vipInfoList);
+        },
+        function (error) {
+            alert(JSON.stringify(error));
+        }
+    );
+}
+
+function renderVipInfo(vipInfoList) {
+    $("#vipInfo-list").empty();
+    var vipInfoDomStr = "";
+
+    var idx = 0;
+    vipInfoList.forEach(function (vipInfo) {
+    	vipInfoDomStr +=
+            "<li class='vipInfo-container'>" +
+            "    <div class='vipInfo-card card'>" +
+            "       <div class='vipInfo-line'>" +
+            "           <span class='title'>" + vipInfo.name + "</span>" +
+            "       </div>" +
+            "       <div class='vipInfo-line'>" +
+            "           <span>价格：" + 
+            "           <span class='primary-text'>" + vipInfo.price + "</span>" +
+            "       </div>" +
+            "       <div class='vipInfo-line'>" +
+            "           <span>优惠：满  " +
+            "           <span class='primary-text'>" + vipInfo.discount_req + "</span>" +
+            "           <span> 减  </span>" +
+            "           <span class='primary-text'>" + vipInfo.discount_res + "</span>" +
+            "           </span>" +
+            "           <span class='change-btn'>" +
+			"				<button type='button' class='btn btn-primary' onclick='buyClick(" + idx + ")' '> 购买 </button>" +
+			"			</span>" +
+            "       </div>" +
+            "    </div>" +
+            "</li>";
+    	
+    	idx++;
+    });
+    $("#vipInfo-list").append(vipInfoDomStr);
+}
+
+function buyClick(idx) {
     clearForm();
     $('#buyModal').modal('show')
     $("#userMember-amount-group").css("display", "none");

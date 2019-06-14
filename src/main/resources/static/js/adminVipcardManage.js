@@ -1,3 +1,7 @@
+var isChanging = false;
+var vipInfoList;
+var vipID;
+
 $(document).ready(function() {
 
     getVipInfo();
@@ -6,7 +10,7 @@ $(document).ready(function() {
         getRequest(
             '/vip/getVIPInfo',
             function (res) {
-                var vipInfoList = res.content;
+                vipInfoList = res.content;
                 renderVipInfo(vipInfoList);
             },
             function (error) {
@@ -38,7 +42,7 @@ $(document).ready(function() {
                 "           <span class='primary-text'>" + vipInfo.discount_res + "</span>" +
                 "           </span>" +
                 "           <span class='change-btn'>" +
-    			"				<button type='button' id='btn" + idx + "' class='btn btn-primary' data-backdrop='static' data-toggle='modal' data-target='#vipInfoModal'> 修改 </button>" +
+    			"				<button type='button' class='btn btn-primary' onclick='changeVipInfo(" + idx + ")' data-backdrop='static' data-toggle='modal' data-target='#vipInfoModal'> 修改 </button>" +
     			"			</span>" +
                 "       </div>" +
                 "    </div>" +
@@ -50,28 +54,63 @@ $(document).ready(function() {
     }
 
     $("#vipInfo-form-btn").click(function () {
-        var form = {
-            name: $("#vipInfo-name-input").val(),
-            price: $("#vipInfo-price-input").val(),
-            discount_req: $("#vipInfo-discount_req-input").val(),
-            discount_res: $("#vipInfo-discount_res-input").val(),
-        };
-
-         postRequest(
-             '/vip/publish',
-             form,
-             function (res) {
-                 if(res.success){
-                     getVipInfo();
-                     $("#vipInfoModal").modal('hide');
-                 } else {
-                     alert(res.message);
-                 }
-             },
-             function (error) {
-                 alert(JSON.stringify(error));
-             }
-         );
+		if(!isChanging) {
+			postRequest(
+					'/vip/publish',
+					getForm(),
+					function (res) {
+						if(res.success) {
+							getVipInfo();
+							$("#vipInfoModal").modal('hide');
+						} else {
+							alert(res.message);
+						}
+					 },
+					 function (error) {
+					     alert(JSON.stringify(error));
+					 }
+		        );
+		}
+		else {
+			postRequest(
+					'/vip/update',
+					getForm(),
+					function (res) {
+						if(res.success) {
+							getVipInfo();
+							$("#vipInfoModal").modal('hide');
+						} else {
+							alert(res.message);
+						}
+					 },
+					 function (error) {
+					     alert(JSON.stringify(error));
+					 }
+		        );
+		}
+        
+		isChanging = false;
      });
+    
+    function getForm() {
+    	var form = {
+    			id: vipID,
+    		    name: $("#vipInfo-name-input").val(),
+    		    price: $("#vipInfo-price-input").val(),
+    		    discount_req: $("#vipInfo-discount_req-input").val(),
+    		    discount_res: $("#vipInfo-discount_res-input").val(),
+    		};
+    	return form;
+    }
     	
 });
+
+function changeVipInfo(idx) {
+	isChanging = true;
+	var vipInfo = vipInfoList[idx];
+	vipID = vipInfo.id;
+	$('#vipInfo-name-input').attr('value', vipInfo.name);
+    $('#vipInfo-price-input').attr('value', vipInfo.price);
+    $('#vipInfo-discount_req-input').attr('value', vipInfo.discount_req);
+    $('#vipInfo-discount_res-input').attr('value', vipInfo.discount_res);
+}

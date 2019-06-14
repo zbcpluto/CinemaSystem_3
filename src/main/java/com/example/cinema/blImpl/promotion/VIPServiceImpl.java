@@ -8,7 +8,6 @@ import com.example.cinema.vo.VIPInfoForm;
 import com.example.cinema.po.VIPCard;
 import com.example.cinema.po.VIPInfo;
 import com.example.cinema.vo.ResponseVO;
-import com.example.cinema.vo.VIPInfoVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -130,4 +129,13 @@ public class VIPServiceImpl implements VIPService, VIPServiceForBl {
             return ResponseVO.buildFailure("查看充值记录失败");
         }
     }
+	public ResponseVO updateVipcard(VIPInfoForm vipInfoForm) {
+		try {
+			vipCardMapper.updateOneVIPInfo(vipInfoForm);
+            return ResponseVO.buildSuccess();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseVO.buildFailure("失败");
+        }
+	}
 }
