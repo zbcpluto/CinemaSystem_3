@@ -1,4 +1,4 @@
-spackage com.example.cinema.controller.promotion;
+package com.example.cinema.controller.promotion;
 
 import com.example.cinema.bl.promotion.VIPService;
 import com.example.cinema.vo.VIPCardForm;
@@ -41,7 +41,7 @@ public class VIPCardController {
         return vipService.publishVipcard(vipInfoForm);
     }
 
-    @GetMapping("{userId}/get")
+    @GetMapping("{userId}/getHistory")
     public ResponseVO getChargeHistory(@PathVariable int userId){
         return vipService.getChargeHistory(userId);
     }

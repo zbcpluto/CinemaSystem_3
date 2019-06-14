@@ -35,10 +35,10 @@
         where id = #{id}
     </update>
 
-    <insert id="insertVIPCharge" parameterType="com.example.cinema.po"
+    <insert id="insertVIPCharge" parameterType="com.example.cinema.po.VIPCharge"
             useGeneratedKeys="true" keyProperty="id">
-        insert into vip_charge(user_id,vip_service_id,charge_amount,calculated_amonut,charge_time)
-        values (#{userId},#{vipServiceId},#{chargeAmount},#{calculatedAmount},#{chargeTime})
+        insert into vip_charge(user_id,id,vip_service_id,charge_amount,calculated_amonut,charge_time)
+        values (#{userId},#{id},#{vipServiceId},#{chargeAmount},#{calculatedAmount},#{chargeTime})
     </insert>
 
     <resultMap id="VIPCard" type="com.example.cinema.po.VIPCard">
