@@ -39,74 +39,74 @@
                 <i class="icon-plus-sign"></i> 发布退票策略 </button>
         </div>
         <div class="refunds-box" >
-            <div class="refund-container card" >
-                <div class="refund-string" >
-                    <span class="refund-name" >退票策略名称</span>
-                    <span class="refund-user-type">用户类型：
-                        <span class="refund-red-text">会员</span></span>
-                    <div class="refund-prohibit-time">
-                        距离电影开场前
-                        <span class="refund-red-text">15分钟内</span>
-                        不可退票
-                    </div>
-                </div>
-                <div class="refund-permit">
-                    <table class="table table-striped" style="text-align: center">
-                        <thead>
-                            <tr>
-                                <th style="text-align: center">距离电影开场前（小时）</th>
-                                <th style="text-align: center">退票折算系数</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>
-                                    6:00
-                                <span>至</span>
-                                    5:30
-                            </td>
-                            <td>90%</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                    5:30
-                                <span>至</span>
-                                    3:00
-                            </td>
-                            <td>70%</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                    3:00
-                                <span>至</span>
-                                    1:00
-                            </td>
-                            <td>40%</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                    1:00
-                                <span>至</span>
-                                    0:15
-                            </td>
-                            <td>10%</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                    0:15
-                                <span>至</span>
-                                    0:00
-                            </td>
-                            <td>0</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="button-container">
-                    <button type="button" class="btn btn-primary refund-btn-update">修改</button>
-                    <button type="button" class="btn btn-danger refund-btn-delete">删除</button>
-                </div>
-            </div>
+<!--            <div class="refund-container card" >-->
+<!--                <div class="refund-string" >-->
+<!--                    <span class="refund-name" >退票策略名称</span>-->
+<!--                    <span class="refund-user-type">用户类型：-->
+<!--                        <span class="refund-red-text">会员</span></span>-->
+<!--                    <div class="refund-prohibit-time">-->
+<!--                        距离电影开场前-->
+<!--                        <span class="refund-red-text">15分钟内</span>-->
+<!--                        不可退票-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="refund-permit">-->
+<!--                    <table class="table table-striped" style="text-align: center">-->
+<!--                        <thead>-->
+<!--                            <tr>-->
+<!--                                <th style="text-align: center">距离电影开场前（小时）</th>-->
+<!--                                <th style="text-align: center">退票折算系数</th>-->
+<!--                            </tr>-->
+<!--                        </thead>-->
+<!--                        <tbody>-->
+<!--                        <tr>-->
+<!--                            <td>-->
+<!--                                    6:00-->
+<!--                                <span>至</span>-->
+<!--                                    5:30-->
+<!--                            </td>-->
+<!--                            <td>90%</td>-->
+<!--                        </tr>-->
+<!--                        <tr>-->
+<!--                            <td>-->
+<!--                                    5:30-->
+<!--                                <span>至</span>-->
+<!--                                    3:00-->
+<!--                            </td>-->
+<!--                            <td>70%</td>-->
+<!--                        </tr>-->
+<!--                        <tr>-->
+<!--                            <td>-->
+<!--                                    3:00-->
+<!--                                <span>至</span>-->
+<!--                                    1:00-->
+<!--                            </td>-->
+<!--                            <td>40%</td>-->
+<!--                        </tr>-->
+<!--                        <tr>-->
+<!--                            <td>-->
+<!--                                    1:00-->
+<!--                                <span>至</span>-->
+<!--                                    0:15-->
+<!--                            </td>-->
+<!--                            <td>10%</td>-->
+<!--                        </tr>-->
+<!--                        <tr>-->
+<!--                            <td>-->
+<!--                                    0:15-->
+<!--                                <span>至</span>-->
+<!--                                    0:00-->
+<!--                            </td>-->
+<!--                            <td>0</td>-->
+<!--                        </tr>-->
+<!--                        </tbody>-->
+<!--                    </table>-->
+<!--                </div>-->
+<!--                <div class="button-container">-->
+<!--                    <button type="button" class="btn btn-primary refund-btn-update">修改</button>-->
+<!--                    <button type="button" class="btn btn-danger refund-btn-delete">删除</button>-->
+<!--                </div>-->
+<!--            </div>-->
 
         </div>
     </div>
@@ -116,7 +116,7 @@
         <div class="modal-content">
 
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" id="mmm" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" >&times;</span></button>
                 <h4 class="modal-title" id="refundModalLabel">发布退票策略</h4>
             </div>
 
