@@ -391,13 +391,41 @@ CREATE TABLE `vip_service` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `refund`
+-- Dumping data for table `vip_service`
 --
 
 LOCK TABLES `vip_service` WRITE;
 /*!40000 ALTER TABLE `vip_service` DISABLE KEYS */;
 INSERT INTO `vip_service` VALUES (1,'普通会员卡',25,200,30),(2,'贵宾会员卡',70,300,50),(3,'至尊会员卡',100,450,80);
 /*!40000 ALTER TABLE `vip_service` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `vip_charge`
+--
+
+
+DROP TABLE IF EXISTS `vip_charge`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `vip_charge` (
+  `user_id` INT(11) NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `vip_service_id` INT(11) NULL,
+  `charge_amount` double DEFAULT NULL,
+  `charge_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+  )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `vip_service`
+--
+
+LOCK TABLES `vip_charge` WRITE;
+/*!40000 ALTER TABLE `vip_charge` DISABLE KEYS */;
+INSERT INTO `vip_charge` VALUES (1,1,1,1000.0,'2019-04-21 13:54:38');
+/*!40000 ALTER TABLE `vip_charge` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
