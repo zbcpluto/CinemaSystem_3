@@ -346,7 +346,7 @@ INSERT INTO `vip_card` VALUES (1,15,1,200,'2019-04-21 13:54:38'),(2,12,2,660,'20
 UNLOCK TABLES;
 
 --
--- Table structure for table `ticket`
+-- Table structure for table `refund`
 --
 
 DROP TABLE IF EXISTS `refund`;
@@ -392,7 +392,7 @@ CREATE TABLE `vip_service` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `refund`
+-- Dumping data for table `vip_service`
 --
 
 LOCK TABLES `vip_service` WRITE;
@@ -400,6 +400,10 @@ LOCK TABLES `vip_service` WRITE;
 INSERT INTO `vip_service` VALUES (1,'普通会员卡',25,200,30),(2,'贵宾会员卡',70,300,50),(3,'至尊会员卡',100,450,80);
 /*!40000 ALTER TABLE `vip_service` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `vip_charge`
+--
 
 DROP TABLE IF EXISTS `vip_charge`;
 CREATE TABLE `vip_charge` (
