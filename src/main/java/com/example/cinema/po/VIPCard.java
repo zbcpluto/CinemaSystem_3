@@ -33,6 +33,11 @@ public class VIPCard {
      */
     private Timestamp joinDate;
 
+    /**
+     * 会员卡种类ID
+     */
+    private int vipSerivceId;
+
 
     public VIPCard() {
 
@@ -74,5 +79,13 @@ public class VIPCard {
     public double calculate(double amount) {
         return (int)(amount/200)*30+amount;
 
+    }
+
+    public int getVipSerivceId(){
+        return this.vipSerivceId;
+    }
+
+    public void setVipServiceId(int vipSerivceId){
+        this.vipSerivceId=vipSerivceId;
     }
 }

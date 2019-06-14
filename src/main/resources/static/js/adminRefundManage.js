@@ -53,7 +53,7 @@ $(document).ready(function () {
             "                    </table>\n" +
             "                </div>\n" +
             "                <div class=\"button-container\">\n" +
-            "                    <button type=\"button\" class=\"btn btn-primary refund-btn-update\">修改</button>\n" +
+            "                    <button type=\"button\" class=\"btn btn-primary refund-btn-update\" data-target=\"#activityModal2\">修改</button>\n" +
             "                    <button type=\"button\" class=\"btn btn-danger refund-btn-delete\">删除</button>\n" +
             "                </div>\n" +
             "            </div>"
@@ -81,19 +81,19 @@ $(document).ready(function () {
     /**
      * 实现修改按钮
      */
-//    $('.refunds-box').on('click','.refund-btn-update',function(){
-//        var btn = $(this);
-//        var name = btn.parent().parent().first().find('.refund-name').text();
-//        getRequest(
-//            '/refund/delete/'+name,
-//            function(res){
-//                btn.parent().parent().remove();
-//            },
-//            function(error){
-//                alert(error)
-//            }
-//        );
-//    });
+   $('.refunds-box').on('click','.refund-btn-update',function(){
+       $('#activityModal2').modal('show');
+       var btn = $(this);
+       var name = btn.parent().parent().first().find('.refund-name').text();
+       $("#refund-name-input2").attr("placeholder",name);
+       var formdata =
+           {name:name,
+           isVip:$('#is-vip2').val(),
+           falseTime:$('#false-time2').val(),
+           startTime:getRefundStart2(),
+           endTime:getRefundEnd2(),
+           penalty:getRefundPenalty2()};
+   });
     /**
      * 退票策略中的表格展示
      * @param startTime
@@ -110,7 +110,7 @@ $(document).ready(function () {
                 startTime[i]+
                 "                                <span>至</span>\n" +
                 endTime[i]+
-                "                            </td>\n" +
+                "                            </tDomStr(startd>\n" +
                 "                            <td>\n"+
                 penalty[i] +
                 "                            </td>\n" +
@@ -157,6 +157,28 @@ $(document).ready(function () {
         return penaltyList;
     }
 
+    function getRefundStart2(){
+        var startTimeList=[];
+        for(let i=1; i<=inputRow;i++){
+            startTimeList.push($('#refund-time-start-'+i).val());
+        }
+        return startTimeList;
+    }
+    function getRefundEnd2(){
+        var endTimeList=[];
+        for(let i=1; i<=inputRow;i++){
+            endTimeList.push($('#refund-time-end-'+i).val());
+        }
+        return endTimeList;
+    }
+    function getRefundPenalty2(){
+        var penaltyList=[];
+        for(let i=1; i<=inputRow;i++){
+            penaltyList.push($('#refund-penalty-'+i).val());
+        }
+        return penaltyList;
+    }
+
     /**
      * 触发新增退票策略的确定按钮
      */
@@ -175,6 +197,7 @@ $(document).ready(function () {
                     $('#refund-time-end-'+i).val("");
                     $('#refund-penalty-'+i).val("");
                 }
+                inputRow=1;
             },
             function (error) {
                 alert('error');
@@ -184,8 +207,9 @@ $(document).ready(function () {
      * 当前表单
      * @type {number}
      */
-    var inputRow=1;
+    var inputRow;
     $('#input-plus').click(function(){
+        inputRow = 1;
         if(inputRow<5){
             inputRow++;
             html =
@@ -209,12 +233,48 @@ $(document).ready(function () {
         }else{
             alert('不可增加，时间区间划分过多！');
         }
-    })
+    });
     $('#input-minus').click(function(){
         if(inputRow>1){
             $('#input-minus').parent().parent().prev().remove();
             $('#input-minus').parent().parent().prev().remove();
             inputRow--;
+        }else{
+            alert('不可删减，时间区间划分过少！');
+        }
+    });
+    var inputRow2;
+    $('#input-plus2').click(function(){
+        inputRow2 = 1;
+        if(inputRow2<5){
+            inputRow2++;
+            html =
+                '<div class="form-group">\n' +
+                '<label class="col-sm-2 control-label" for="refund-time-start2-' +inputRow2+  '"><span class="error-text">*</span>电影开场</label>\n' +
+                '<div class="col-sm-4">\n' +
+                '<input class="form-control" type="time" id="refund-time-start2-' +inputRow2+  '" step="300">\n' +
+                '</div>\n' +
+                '<label class="col-sm-1 control-label" for="refund-time-end2-' +inputRow2+  '">至</label>\n' +
+                '<div class="col-sm-5">\n' +
+                '<input class="form-control" type="time" id="refund-time-end2-' +inputRow2+  '" step="300">\n' +
+                '</div>\n' +
+                '</div>\n' +
+                '<div class="form-group">\n' +
+                '<label  class="col-sm-2 control-label" for="refund-penalty2-' +inputRow2+  '"><span class="error-text">*</span>折算系数</label>\n' +
+                '<div class="col-sm-10">\n' +
+                '<input type="text" class="form-control" id="refund-penalty2-' +inputRow2+  '" placeholder="请输入退票手续费的折算系数">\n' +
+                '</div>\n' +
+                '</div>\n';
+            $('#input-plus2').parent().parent().before(html);
+        }else{
+            alert('不可增加，时间区间划分过多！');
+        }
+    });
+    $('#input-minus2').click(function(){
+        if(inputRow2>1){
+            $('#input-minus2').parent().parent().prev().remove();
+            $('#input-minus2').parent().parent().prev().remove();
+            inputRow2--;
         }else{
             alert('不可删减，时间区间划分过少！');
         }
