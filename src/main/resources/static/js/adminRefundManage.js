@@ -5,6 +5,7 @@ $(document).ready(function () {
     var strategyNum = 0;
 
     function getRefundStrategy(){
+        $('.refunds-box').empty();
         getRequest(
             '/refund/manage',
             function (res) {
@@ -56,7 +57,7 @@ $(document).ready(function () {
             "                    <button type=\"button\" class=\"btn btn-primary refund-btn-update\" data-target=\"#activityModal2\">修改</button>\n" +
             "                    <button type=\"button\" class=\"btn btn-danger refund-btn-delete\">删除</button>\n" +
             "                </div>\n" +
-            "            </div>"
+            "            </div>";
         });
         $('.refunds-box').append(refundDomStr);
     }
@@ -86,14 +87,35 @@ $(document).ready(function () {
        var btn = $(this);
        var name = btn.parent().parent().first().find('.refund-name').text();
        $("#refund-name-input2").attr("placeholder",name);
-       var formdata =
-           {name:name,
-           isVip:$('#is-vip2').val(),
-           falseTime:$('#false-time2').val(),
-           startTime:getRefundStart2(),
-           endTime:getRefundEnd2(),
-           penalty:getRefundPenalty2()};
+       var formdata = getformdata(name);
+           $('#refund-form-btn2').click(function (){
+               postRequest(
+                   '/refund/update',
+                   formdata,
+                   function () {
+                       getRefundStrategy();
+                       console.log(formdata);
+                       for (let i=1;i<inputRow2;i++){
+                           $('#refund-time-start2-'+i).val("");
+                           $('#refund-time-end2-'+i).val("");
+                           $('#refund-penalty2-'+i).val("");
+                       }
+                       inputRow2 = 1;
+                       $('#activityModal2').modal('hide');
+                   },
+                   function (error) {
+                     alert("error");
+                   }
+               )})
    });
+   function getformdata(name){
+       return{name:name,
+            isVip:$('#is-vip2').val(),
+            falseTime:$('#false-time2').val(),
+            startTime:getRefundStart2(),
+            endTime:getRefundEnd2(),
+            penalty:getRefundPenalty2()};
+    }
     /**
      * 退票策略中的表格展示
      * @param startTime
@@ -159,22 +181,22 @@ $(document).ready(function () {
 
     function getRefundStart2(){
         var startTimeList=[];
-        for(let i=1; i<=inputRow;i++){
-            startTimeList.push($('#refund-time-start-'+i).val());
+        for(let i=1; i<=inputRow2;i++){
+            startTimeList.push($('#refund-time-start2-'+i).val());
         }
         return startTimeList;
     }
     function getRefundEnd2(){
         var endTimeList=[];
-        for(let i=1; i<=inputRow;i++){
-            endTimeList.push($('#refund-time-end-'+i).val());
+        for(let i=1; i<=inputRow2;i++){
+            endTimeList.push($('#refund-time-end2-'+i).val());
         }
         return endTimeList;
     }
     function getRefundPenalty2(){
         var penaltyList=[];
-        for(let i=1; i<=inputRow;i++){
-            penaltyList.push($('#refund-penalty-'+i).val());
+        for(let i=1; i<=inputRow2;i++){
+            penaltyList.push($('#refund-penalty2-'+i).val());
         }
         return penaltyList;
     }
@@ -187,6 +209,7 @@ $(document).ready(function () {
         postRequest(
             '/refund/add',
             formData,
+            // console.log(formData),
             function(res){
                 getRefundStrategy();
                 $('#activityModal').modal('hide');
@@ -207,7 +230,7 @@ $(document).ready(function () {
      * 当前表单
      * @type {number}
      */
-    var inputRow;
+    var inputRow=1;
     $('#input-plus').click(function(){
         inputRow = 1;
         if(inputRow<5){
@@ -243,7 +266,7 @@ $(document).ready(function () {
             alert('不可删减，时间区间划分过少！');
         }
     });
-    var inputRow2;
+    var inputRow2=1;
     $('#input-plus2').click(function(){
         inputRow2 = 1;
         if(inputRow2<5){
