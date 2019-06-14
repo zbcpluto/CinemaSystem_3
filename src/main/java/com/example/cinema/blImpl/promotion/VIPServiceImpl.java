@@ -71,7 +71,7 @@ public class VIPServiceImpl implements VIPService, VIPServiceForBl {
         int vipServiceId=vipCard.getVipSerivceId();
         int userId=vipCard.getUserId();
         int id=vipCard.getId();
-        VIPCharge vipCharge=new VIPCharge(userId,id,vipServiceId,chargeAmount,calculatedAmount,chargeTime);
+        VIPCharge vipCharge=new VIPCharge(userId,vipServiceId,chargeAmount,calculatedAmount,chargeTime);
 
         vipCard.setBalance(vipCard.getBalance() + calculatedAmount);
         try {
