@@ -8,6 +8,7 @@ import com.example.cinema.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
@@ -40,5 +41,10 @@ public class AccountController {
     public String logOut(HttpSession session){
         session.removeAttribute(InterceptorConfiguration.SESSION_KEY);
         return "index";
+    }
+
+    @RequestMapping(value = "/logadmin")
+    public ResponseVO managerAssign(UserForm userForm){
+        return accountService.managerAssign(userForm);
     }
 }

@@ -38,5 +38,14 @@ public class AccountServiceImpl implements AccountService {
         return new UserVO(user);
     }
 
+    @Override
+    public ResponseVO managerAssign(UserForm userForm) {
+        try{
+            User user = new User(userForm.getUsername(),userForm.getPassword(),userForm.getLevel());
+            accountMapper.managerAssign(user);
+        }catch(Exception e){
 
+            return ResponseVO.buildFailure("经理分配职责失败");
+        }
+    }
 }

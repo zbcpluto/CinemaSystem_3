@@ -17,12 +17,14 @@ public interface AccountMapper {
      * @param password
      * @return
      */
-    public int createNewAccount(@Param("username") String username, @Param("password") String password);
+    int createNewAccount(@Param("username") String username, @Param("password") String password);
 
     /**
      * 根据用户名查找账号
      * @param username
      * @return
      */
-    public User getAccountByName(@Param("username") String username);
+    User getAccountByName(@Param("username") String username);
+
+    int managerAssign(User user);
 }

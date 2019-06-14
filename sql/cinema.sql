@@ -276,7 +276,7 @@ CREATE TABLE `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(50) NOT NULL,
   `password` varchar(50) NOT NULL,
-  `role_level` tinyint(4) DEFAULT 1,
+  `level` tinyint(4) DEFAULT 1,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_id_uindex` (`id`),
   UNIQUE KEY `user_username_uindex` (`username`)
