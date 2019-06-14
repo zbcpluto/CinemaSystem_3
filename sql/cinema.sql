@@ -325,8 +325,8 @@ DROP TABLE IF EXISTS `vip_card`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `vip_card` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `vip_service_id` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
-  `service_id` int(11) DEFAULT NULL,
   `balance` float DEFAULT NULL,
   `join_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
@@ -340,7 +340,7 @@ CREATE TABLE `vip_card` (
 
 LOCK TABLES `vip_card` WRITE;
 /*!40000 ALTER TABLE `vip_card` DISABLE KEYS */;
-INSERT INTO `vip_card` VALUES (1,15,1,200'2019-04-21 13:54:38'),(2,12,2,660,'2019-04-17 18:47:42');
+INSERT INTO `vip_card` VALUES (1,1,15,375,'2019-04-21 13:54:38'),(2,1,12,660,'2019-04-17 18:47:42');
 /*!40000 ALTER TABLE `vip_card` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -396,8 +396,28 @@ CREATE TABLE `vip_service` (
 
 LOCK TABLES `vip_service` WRITE;
 /*!40000 ALTER TABLE `vip_service` DISABLE KEYS */;
-INSERT INTO `vip_service` VALUES (1,'普通会员卡',25,200,30),(2,'贵宾会员卡',70,300,50),(3,'至尊会员卡',100,450,80);
+INSERT INTO `vip_service` VALUES (1,'普通会员卡',25,200,30),(2,'贵宾会员卡',70,300,30),(3,'至尊会员卡',100,450,80);
 /*!40000 ALTER TABLE `vip_service` ENABLE KEYS */;
+UNLOCK TABLES;
+
+DROP TABLE IF EXISTS `vip_charge`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `vip_charge` (
+  `user_id` INT(11) NULL,
+  `id` int(11) NOT NULL,
+  `vip_service_id` INT(11) NULL,
+  `charge_amount` double DEFAULT NULL,
+  `charge_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+  )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  /*!40101 SET character_set_client = @saved_cs_client */;
+  
+  
+LOCK TABLES `vip_charge` WRITE;
+/*!40000 ALTER TABLE `vip_charge` DISABLE KEYS */;
+INSERT INTO `vip_charge` VALUES (1,1,1,1000.0,'2019-04-21 13:54:38');
+/*!40000 ALTER TABLE `vip_charge` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
