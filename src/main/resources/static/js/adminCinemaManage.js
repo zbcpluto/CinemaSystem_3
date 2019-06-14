@@ -86,6 +86,7 @@ $(document).ready(function() {
                 $('#changecinema').modal('hide');
                 console.log(hall);
                 getCinemaHalls();
+                getCinemaHall();
             },
             function () {
                 console.log(error);
