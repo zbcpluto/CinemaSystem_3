@@ -23,6 +23,10 @@ $(document).ready(function () {
      */
     function renderRefundList(list){
         var refundDomStr = "";
+        console.log(list.length);
+        if (list.length>=2){
+            $("#mmm").attr('disabled',true);
+        }
         list.forEach(function(refund){
             var prohibit = refund.falseTime.split(':');
             var prohibit_hour = parseInt(prohibit[0],10);
@@ -54,7 +58,7 @@ $(document).ready(function () {
             "                    </table>\n" +
             "                </div>\n" +
             "                <div class=\"button-container\">\n" +
-            "                    <button type=\"button\" class=\"btn btn-primary refund-btn-update\">修改</button>\n" +
+            "                    <button type=\"button\" class=\"btn btn-primary refund-btn-update\" data-target=\"#activityModal2\">修改</button>\n" +
             "                    <button type=\"button\" class=\"btn btn-danger refund-btn-delete\">删除</button>\n" +
             "                </div>\n" +
             "            </div>";
@@ -82,26 +86,13 @@ $(document).ready(function () {
     /**
      * 实现修改按钮
      */
-//    $('.refunds-box').on('click','.refund-btn-update',function(){
-//        var btn = $(this);
-//        var name = btn.parent().parent().first().find('.refund-name').text();
-//        getRequest(
-//            '/refund/delete/'+name,
-//            function(res){
-//                btn.parent().parent().remove();
-//            },
-//            function(error){
-//                alert(error)
-//            }
-//        );
-//    });
    $('.refunds-box').on('click','.refund-btn-update',function(){
        $('#activityModal2').modal('show');
        var btn = $(this);
        var name = btn.parent().parent().first().find('.refund-name').text();
        $("#refund-name-input2").attr("placeholder",name);
-       var formdata = getformdata(name);
            $('#refund-form-btn2').click(function (){
+               var formdata = getformdata(name);
                postRequest(
                    '/refund/update',
                    formdata,
@@ -145,7 +136,7 @@ $(document).ready(function () {
                 startTime[i]+
                 "                                <span>至</span>\n" +
                 endTime[i]+
-                "                            </td>\n" +
+                "                            </tDomStr(startd>\n" +
                 "                            <td>\n"+
                 penalty[i] +
                 "                            </td>\n" +
@@ -233,6 +224,7 @@ $(document).ready(function () {
                     $('#refund-time-end-'+i).val("");
                     $('#refund-penalty-'+i).val("");
                 }
+                inputRow=1;
             },
             function (error) {
                 alert('error');
@@ -244,6 +236,7 @@ $(document).ready(function () {
      */
     var inputRow=1;
     $('#input-plus').click(function(){
+        inputRow = 1;
         if(inputRow<5){
             inputRow++;
             html =
@@ -267,7 +260,7 @@ $(document).ready(function () {
         }else{
             alert('不可增加，时间区间划分过多！');
         }
-    })
+    });
     $('#input-minus').click(function(){
         if(inputRow>1){
             $('#input-minus').parent().parent().prev().remove();

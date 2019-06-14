@@ -405,7 +405,7 @@ DROP TABLE IF EXISTS `vip_charge`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `vip_charge` (
   `user_id` INT(11) NULL,
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `vip_service_id` INT(11) NULL,
   `charge_amount` double DEFAULT NULL,
   `charge_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

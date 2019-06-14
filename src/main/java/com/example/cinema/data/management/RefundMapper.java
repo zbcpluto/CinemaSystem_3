@@ -16,4 +16,6 @@ public interface RefundMapper {
     List<RefundStrategy> selectAllRefundStrategy();
 
     int deleteRefundStrategyByName(String name);
+
+    int updateRefundStrategy(List<RefundStrategy> refundStrategyList);
 }

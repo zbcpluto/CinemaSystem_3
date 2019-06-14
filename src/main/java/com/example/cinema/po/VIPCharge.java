@@ -64,9 +64,9 @@ public class VIPCharge {
         this.calculatedAmount = calculatedAmount;
     }
 
-    public VIPCharge(int userId,int id,int vipServiceId,double chargeAmount,double calculatedAmount,Timestamp chargeTime){
+    public VIPCharge(int userId,int vipServiceId,double chargeAmount,double calculatedAmount,Timestamp chargeTime){
         this.userId=userId;
-        this.id=id;
+        
         this.vipServiceId=vipServiceId;
         this.chargeAmount=chargeAmount;
         this.calculatedAmount=calculatedAmount;

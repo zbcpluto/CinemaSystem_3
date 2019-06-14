@@ -4,6 +4,7 @@ $(document).ready(function() {
 
     getCanSeeDayNum();
     getCinemaHalls();
+    getCinemaHall();
 
     function getCinemaHalls() {
         var halls = [];
@@ -12,6 +13,24 @@ $(document).ready(function() {
             function (res) {
                 halls = res.content;
                 renderHall(halls);
+            },
+            function (error) {
+                alert(JSON.stringify(error));
+            }
+        );
+    }
+    function getCinemaHall() {
+        var halls = [];
+        getRequest(
+            '/hall/all',
+            function (res) {
+                halls = res.content;
+                hallId = halls[0].id;
+                halls.forEach(function (hall) {
+                    $('#hall-select').append("<option value="+ hall.id +">"+hall.name+"</option>");
+                    $('#schedule-hall-input').append("<option value="+ hall.id +">"+hall.name+"</option>");
+                    $('#schedule-edit-hall-input').append("<option value="+ hall.id +">"+hall.name+"</option>");
+                });
             },
             function (error) {
                 alert(JSON.stringify(error));
@@ -58,6 +77,23 @@ $(document).ready(function() {
         );
     }
 
+    $('#change-btn').click(function () {
+        var hall = {name:$('#schedule-hall-input').val(), column:$('#cinema-width').val(),row:$('#cinema-height').val()};
+        postRequest(
+            '/hall/update',
+            hall,
+            function () {
+                $('#changecinema').modal('hide');
+                console.log(hall);
+                getCinemaHalls();
+                getCinemaHall();
+            },
+            function () {
+                console.log(error);
+            }
+        )
+
+    });
 
     $('#add-bn').click(function(){
         var hal = {name:$('#cinema-name').val(), column:$('#cinema-width-2').val(),row:$('#cinema-height-2').val()};

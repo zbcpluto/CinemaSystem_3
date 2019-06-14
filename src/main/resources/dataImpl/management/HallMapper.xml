@@ -8,10 +8,17 @@
         select * from hall where id = #{hallId}
     </select>
 
-    <resultMap id="Hall" type="com.example.cinema.po.Hall">
-    </resultMap>
     <insert id="addHall" parameterType="com.example.cinema.po.Hall" useGeneratedKeys="true" keyProperty="id">
         insert into hall(`name`,`column`,`row`)
         values(#{name}, #{column}, #{row})
     </insert>
+
+    <update id="updateHall" parameterType="com.example.cinema.po.Hall">
+        update hall set `column` = #{column}, `row` = #{row}
+        where name = #{name}
+    </update>
+
+    <resultMap id="Hall" type="com.example.cinema.po.Hall">
+    </resultMap>
+
 </mapper>
