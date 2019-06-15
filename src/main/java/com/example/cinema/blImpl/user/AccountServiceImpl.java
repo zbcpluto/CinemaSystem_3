@@ -61,5 +61,14 @@ public class AccountServiceImpl implements AccountService, AccountServiceForBl {
             return ResponseVO.buildFailure("更新消费数额失败");
         }
     }
-    
+
+    @Override
+    public ResponseVO getLevelByUserName(String username) {
+        try{
+            int level = accountMapper.getLevelByUserName(username);
+            return ResponseVO.buildSuccess(level);
+        }catch (Exception e){
+            return ResponseVO.buildFailure("获取用户等级失败");
+        }
+    }
 }

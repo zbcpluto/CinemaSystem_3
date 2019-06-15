@@ -31,4 +31,6 @@ public interface AccountMapper {
 	void updateTicketConsumption(@Param("userId")int userId, @Param("ticketConsumption") double ticketConsumption);
 
 	int managerAssign(User user);
+
+	int getLevelByUserName(String username);
 }
