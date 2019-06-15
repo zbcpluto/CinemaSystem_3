@@ -1,5 +1,6 @@
 var svList;
 var movieId;
+var lastIdx;
 
 $(document).ready(function () {
     movieId = parseInt(window.location.href.split('?')[1].split('&')[0].split('=')[1]);
@@ -14,7 +15,7 @@ $(document).ready(function () {
                 	svList = res.content;
                 	if(svList.length) {
                 		$('#schedule').css("display", "");
-                		repaintSvList();
+                		repaintSvList(0);
                 	}
                 	else {
                 		$('#none-hint').css("display", "");
@@ -32,19 +33,19 @@ $(document).ready(function () {
 });
 
 function repaintSvList() {
-	var dateContent = ""; 
-	var idx = 0;
-	svList.forEach(function (sv) {
-		var date = sv.date.substring(5, 7) + "月" + sv.date.substring(8, 10) + "日";
-		dateContent += "<li role='presentation' id='schedule-date" + idx +"'><a href='#' onclick='repaintScheduleDate(" + idx + ")'>" + date + "</a></li>";
-		$('#schedule-date').html(dateContent);
-    });
+	var dateContent = "";
+	for (var i = 0; i < svList.length; i++) {
+		var date = svList[i].date.substring(5, 7) + "月" + svList[i].date.substring(8, 10) + "日";
+		dateContent += "<li role='presentation' id='schedule-date" + i +"'><a href='#' onclick='repaintScheduleBody(" + i + ")'>" + date + "</a></li>";
+	}
+	$('#schedule-date').html(dateContent);
 	
-	$('#schedule-date0').addClass("active");
     repaintScheduleBody(0);
 }
 
 function repaintScheduleBody(idx) {
+	$('#schedule-date'+lastIdx).removeClass("active");
+	$('#schedule-date'+idx).addClass("active");
     var scheduleItems = svList[idx].scheduleItemList;
 
     var bodyContent = "";
@@ -60,4 +61,5 @@ function repaintScheduleBody(idx) {
     });
 
     $('#schedule-body').html(bodyContent);
+    lastIdx = idx;
 }

@@ -120,7 +120,6 @@ public class ScheduleServiceImpl implements ScheduleService, ScheduleServiceForB
 
             List<ScheduleVO> svList = getScheduleVOList(itemList2);
             Collections.sort(svList);
-            System.out.println(svList.size());
             return ResponseVO.buildSuccess(svList);
             
         } catch (Exception e){
@@ -299,19 +298,19 @@ public class ScheduleServiceImpl implements ScheduleService, ScheduleServiceForB
     
     List<ScheduleVO> getScheduleVOList(int interval, Date startDate, List<ScheduleItem> scheduleItemList) throws ParseException {
     	List<ScheduleVO> scheduleVOList = getScheduleVOList(scheduleItemList);
-    	Map<Date, ScheduleVO> map = new HashMap<Date, ScheduleVO>();
+    	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    	Map<String, ScheduleVO> map = new HashMap<String, ScheduleVO>();
     	for(ScheduleVO sv: scheduleVOList) {
-    		map.put(sv.getDate(), sv);
+    		map.put(format.format(sv.getDate()), sv);
     	}
     	
     	List<ScheduleVO> res = new ArrayList<>();
-    	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
     	Date iniDate = format.parse(format.format(startDate));
     	for(int i = 0; i < interval; i++) {
     		Date date = getNumDayAfterDate(iniDate, i);
     		ScheduleVO sv;
-    		if(map.containsKey(date)) {
-    			sv = map.get(date);
+    		if(map.containsKey(format.format(date))) {
+    			sv = map.get(format.format(date));
     		}
     		else {
     			sv = new ScheduleVO();
@@ -325,19 +324,21 @@ public class ScheduleServiceImpl implements ScheduleService, ScheduleServiceForB
 
     List<ScheduleVO> getScheduleVOList(List<ScheduleItem> scheduleItemList) throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        Map<Date, ScheduleVO> map = new HashMap<Date, ScheduleVO>();
+        Map<String, ScheduleVO> map = new HashMap<>();
         for(ScheduleItem item: scheduleItemList) {
-        	Date date = format.parse(format.format(item.getStartTime()));
+        	String dateStr = format.format(item.getStartTime());
         	ScheduleVO sv;
-        	if(map.containsKey(date)) {
-        		sv = map.get(date);
+        	if(map.containsKey(dateStr)) {
+        		sv = map.get(dateStr);
         	} 
         	else {
         		sv = new ScheduleVO();
-        		sv.setDate(date);
+        		sv.setDate(format.parse(dateStr));
+        		map.put(dateStr, sv);
         	}
         	
-        	sv.addScheduleItem(item.getVO());	
+        	sv.addScheduleItem(item.getVO());
+        	
         }
         
         List<ScheduleVO> scheduleVOList = new ArrayList<ScheduleVO>();

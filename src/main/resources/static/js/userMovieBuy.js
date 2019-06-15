@@ -20,12 +20,10 @@ $(document).ready(function () {
             '/ticket/get/occupiedSeats?scheduleId=' + scheduleId,
             function (res) {
                 if (res.success) {
-
                     renderSchedule(res.content.scheduleItem, res.content.seats);
                 }
             },
             function (error) {
-
                 alert(JSON.stringify(error));
             }
         );
@@ -40,11 +38,10 @@ function renderSchedule(schedule, seats) {
     $('#schedule-time').text(schedule.startTime.substring(5, 7) + "月" + schedule.startTime.substring(8, 10) + "日 " + schedule.startTime.substring(11, 16) + "场");
     $('#order-schedule-time').text(schedule.startTime.substring(5, 7) + "月" + schedule.startTime.substring(8, 10) + "日 " + schedule.startTime.substring(11, 16) + "场");
     fare = schedule.fare;
-    var hallDomStr = "";
     var seat = "";
-    for (var i = 0; i < seats.length; i++) {
+    for(var i = 0; i < seats.length; i++) {
         var temp = ""
-        for (var j = 0; j < seats[i].length; j++) {
+        for(var j = 0; j < seats[i].length; j++) {
             var id = "seat" + i + j
 
             if (seats[i][j] == 0) {
@@ -57,7 +54,7 @@ function renderSchedule(schedule, seats) {
         }
         seat += "<div>" + temp + "</div>";
     }
-    var hallDom =
+    var hallDomStr =
         "<div class='cinema-hall'>" +
         "<div>" +
         "<span class='cinema-hall-name'>" + schedule.hallName + "</span>" +
@@ -66,7 +63,6 @@ function renderSchedule(schedule, seats) {
         "<div class='cinema-seat'>" + seat +
         "</div>" +
         "</div>";
-    hallDomStr += hallDom;
 
     $('#hall-card').html(hallDomStr);
 }
