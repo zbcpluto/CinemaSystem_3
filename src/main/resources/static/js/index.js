@@ -15,7 +15,7 @@ $(document).ready(function () {
                     sessionStorage.setItem('id', res.content.id);
                     if (formData.username == "manager") {
                         sessionStorage.setItem('role', 'manager');
-                        window.location.href = "/admin/manager/account"
+                        window.location.href = "/manager/account"
                     }
                     else if (formData.username == "root") {
                         sessionStorage.setItem('role', 'admin');
