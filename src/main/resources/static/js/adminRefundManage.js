@@ -213,12 +213,35 @@ $(document).ready(function () {
         }
         return penaltyList;
     }
-
+    // function validateRefundForm(formData){
+    //     var isValidate = true;
+    //     if(!data.name) {
+    //         isValidate = false;
+    //         $('#movie-name-input').parent('.form-group').addClass('has-error');
+    //     }
+    //     if(!data.posterUrl) {
+    //         isValidate = false;
+    //         $('#movie-img-input').parent('.form-group').addClass('has-error');
+    //     }
+    //     if(!data.startDate) {
+    //         isValidate = false;
+    //         $('#movie-date-input').parent('.form-group').addClass('has-error');
+    //     }
+    //     if(!data.length) {
+    //         isValidate = false;
+    //         $('#movie-length-input').parent('.form-group').addClass('has-error');
+    //     }
+    //     return isValidate;
+    // }
     /**
      * 触发新增退票策略的确定按钮
      */
     $('#refund-form-btn').click(function () {
         var formData = getRefundForm();
+        // if(!validateRefundForm(formData)) {
+        //     alert("failed!");
+        //     return;
+        // }
         postRequest(
             '/refund/add',
             formData,
