@@ -8,10 +8,10 @@ $(document).ready(function () {
         var level = 1;
         getRequest(
           '/get/level/'+formData.username,
-          function (res) {
-              level = res;
+          function (resp) {
+              level = resp.content;
               console.log(level);
-              alert(res);
+              setTimeout(s,1000);
               postRequest(
                   '/login',
                   formData,
@@ -30,7 +30,7 @@ $(document).ready(function () {
                           }
                           else if(level==2){
                               sessionStorage.setItem('role','seller');
-                              window.location.href
+                              window.location.href = "/seller/movie"
                           } else{
                               sessionStorage.setItem('role', 'user');
                               window.location.href = "/user/home"
@@ -71,4 +71,8 @@ $(document).ready(function () {
         }
         return isValidate;
     }
+    function s(){
+        console.log("1s");
+    }
+
 });

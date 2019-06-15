@@ -92,4 +92,20 @@ public class ViewController {
     public String getManagerAccount() {
         return "managerAccount";
     }
+
+    @RequestMapping(value = "/seller/movie")
+    public String getSellerMovie() {
+        return "sellerMovie";
+    }
+
+    @RequestMapping(value = "/seller/movieDetail")
+    public String getSellerMovieDetail(@RequestParam int id) {
+        return "sellerMovieDetail";
+    }
+
+    @RequestMapping(value = "/seller/movieDetail/buy")
+    public String getSellerMovieBuy(@RequestParam int id) {
+        return "sellerMovieBuy";
+    }
+
 }
