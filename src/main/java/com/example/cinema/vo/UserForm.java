@@ -13,7 +13,7 @@ public class UserForm {
      * 用户密码
      */
     private String password;
-
+    
     private Integer level;
 
     public String getUsername() {
@@ -32,11 +32,12 @@ public class UserForm {
         this.password = password;
     }
 
-    public Integer getLevel() {
-        return level;
-    }
+	public Integer getLevel() {
+		return level;
+	}
 
-    public void setLevel(Integer level) {
-        this.level = level;
-    }
+	public void setLevel(Integer level) {
+		this.level = level;
+	}
+	
 }

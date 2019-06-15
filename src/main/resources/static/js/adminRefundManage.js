@@ -6,6 +6,7 @@ $(document).ready(function () {
 
     function getRefundStrategy() {
     	$('.refunds-box').empty();
+    	strategyNum = 0;
         getRequest(
             '/refund/manage',
             function (res) {
@@ -23,9 +24,8 @@ $(document).ready(function () {
      */
     function renderRefundList(list) {
         var refundDomStr = "";
-        console.log(list.length);
         if (list.length>=2) {
-        	$("#mmm").attr('disabled',true);
+        	$('#refund-add-btn').attr('disabled',true);
         }
         list.forEach(function(refund) {
             var prohibit = refund.falseTime.split(':');
@@ -76,6 +76,10 @@ $(document).ready(function () {
             '/refund/delete/'+name,
             function(res){
                 btn.parent().parent().remove();
+                strategyNum--;
+                if(strategyNum<2){
+                    $('#refund-add-btn').attr('disabled',false);
+                }
             },
             function(error){
                 alert(error)
@@ -98,7 +102,6 @@ $(document).ready(function () {
                     formdata,
                     function () {
                         getRefundStrategy();
-                        console.log(formdata);
                         for (let i=1;i<inputRow2;i++){
                             $('#refund-time-start2-'+i).val("");
                             $('#refund-time-end2-'+i).val("");

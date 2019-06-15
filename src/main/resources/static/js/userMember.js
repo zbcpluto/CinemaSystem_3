@@ -162,7 +162,7 @@ function confirmCommit() {
                         $('#buyModal').modal('hide');
                         getBalance();
                         setTimeout(function() {
-                        	if(charge_amount >= vipInfo.dicount_req) {
+                        	if(charge_amount >= vipInfo.discount_req) {
                             	alert("充值成功，充值满" + vipInfo.discount_req + "元，额外赠送" + vipInfo.discount_res + "元，目前您的余额为" + vipCard.balance + "元");
                             }
                             else {
@@ -219,7 +219,7 @@ function chargeHistory() {
 		function (res) {
 		    if (res.success) {
 		    	recordList = res.content;
-                renderVipInfo(recordList);
+		    	renderRecordList(recordList);
 		    } else {
 		        alert(res.content);
 		    }
@@ -234,7 +234,7 @@ function chargeHistory() {
 	
 }
 
-function renderVipInfo(recordList) {
+function renderRecordList(recordList) {
 	var joinDate = new Date(vipCard.joinDate);
 	$("#record-joinDate").text("购买日期：" + formatDateTime(joinDate));
 	$("#record-list").empty();
