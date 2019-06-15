@@ -43,8 +43,8 @@ public class AccountController {
         return "index";
     }
     
-    @RequestMapping(value = "/logadmin")
-    public ResponseVO managerAssign(UserForm userForm){
+    @PostMapping(value = "/logadmin")
+    public ResponseVO managerAssign(@RequestBody UserForm userForm){
         return accountService.managerAssign(userForm);
     }
 }
