@@ -18,9 +18,10 @@
         update user set ticket_consumption=ticket_consumption+#{ticketConsumption}
     </update>
 
-    <select id="getLevelByUserName">
+    <select id="getLevelByUserName"  parameterType="String" resultType="int">
         select `level` from user where `username`=#{username}
     </select>
+
 	<insert id="managerAssign" parameterType="com.example.cinema.po.User">
         insert into user(`username`, `password`, `level`)
         values(#{username}, #{password}, #{level})
