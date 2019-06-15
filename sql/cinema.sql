@@ -289,7 +289,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'testname','123456',1),(3,'test','123456',1),(5,'test1','123456',1),(7,'test121','123456',1),(8,'root','123456',2),(10,'roottt','123123',1),(12,'zhourui','123456',1),(13,'abc123','abc123',1),(15,'dd','123',1),(16,'AzureXH','441402026ok',1),(17,'manager','123456',3);
+INSERT INTO `user` VALUES (1,'testname','123456',1),(3,'test','123456',1),(5,'test1','123456',1),(7,'test121','123456',1),(8,'root','123456',3),(10,'roottt','123123',1),(12,'zhourui','123456',1),(13,'abc123','abc123',1),(15,'dd','123',1),(16,'AzureXH','441402026ok',1),(17,'manager','123456',4);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
