@@ -5,7 +5,7 @@ $(document).ready(function(){
     $("#movie-form-btn").click(function () {
         var formData = getMovieForm();
         if(!validateMovieForm(formData)) {
-        	alert("failed!")
+        	alert("failed!");
             return;
         }
         postRequest(
