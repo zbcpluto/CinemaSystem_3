@@ -28,6 +28,10 @@
 
     </select>
 
+    <select id="selectUserByTicketConsumption" resultMap="User">
+        select * from user where ticket_consumption >= #{ticketConsumption}
+    </select>
+
     <resultMap id="Coupon" type="com.example.cinema.po.Coupon">
         <result column="description" property="description"></result>
         <result column="id" property="id"></result>
@@ -36,6 +40,10 @@
         <result column="discount_amount" property="discountAmount"></result>
         <result column="start_time" property="startTime"></result>
         <result column="end_time" property="endTime"></result>
+    </resultMap>
+
+    <resultMap id="User" type="com.example.cinema.po.User">
+        <result column="ticket_consumption" property="ticketConsumption"></result>
     </resultMap>
 
 </mapper>

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.example.cinema.bl.user.AccountServiceForBl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +35,8 @@ public class TicketServiceImpl implements TicketService {
     MovieServiceForBl movieService;
     @Autowired
     ScheduleServiceForBl scheduleService;
+    @Autowired
+    AccountServiceForBl accountServiceForBl;
     @Autowired
     HallServiceForBl hallService;
     @Autowired
@@ -132,10 +135,13 @@ public class TicketServiceImpl implements TicketService {
 
             if(couponId!=-1 && coupon.getTargetAmount()<=total){
                 couponService.deleteCoupon(couponId,userId);
+                double discountByCoupon=couponService.getCouponById(couponId).getDiscountAmount();
+                accountServiceForBl.updateTicketConsumption(userId,total-discountByCoupon);
                 return ResponseVO.buildSuccess(ticketWithCouponVO);
 
             }
             else if(couponId==-1){
+                accountServiceForBl.updateTicketConsumption(userId,total);
                 return ResponseVO.buildSuccess(ticketWithCouponVO);
             }//校验优惠券（默认前端已经做好根据时间筛选优惠券的操作，即这里选择的优惠券是在优惠期限以内的）
             return ResponseVO.buildFailure("总额低于门槛");
@@ -299,6 +305,9 @@ public class TicketServiceImpl implements TicketService {
             if(vipCard.getBalance() >= payment){
                 vipCard.setBalance(vipCard.getBalance() - payment);
                 ticketMapper.VIPPay(userId,payment);  //会员卡扣费
+                accountServiceForBl.updateTicketConsumption(userId,payment); // user表中更新购票消费
+
+
                 couponService.deleteCoupon(couponId,userId);
                 System.out.println("付费成功");
                 for (Ticket t : tickets) {
@@ -394,6 +403,8 @@ public class TicketServiceImpl implements TicketService {
                     break;    //退款
                 }
             }
+
+            accountServiceForBl.updateTicketConsumption(userId,0-refund); // user表中更新购票消费
             List<Activity> activities = activityService.selectActivityByTimeAndMovie(timestamp, movieId);
             List<Coupon> couponsToCatch=new ArrayList<Coupon>();
             for(Activity i:activities){

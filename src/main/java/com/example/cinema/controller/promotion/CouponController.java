@@ -23,6 +23,11 @@ public class CouponController {
         return couponService.getCouponsByUser(userId);
     }
 
+    @GetMapping("{ConsumptionBottom}/getUser")
+    public ResponseVO getUserByConsumption(@PathVariable Double ConsumptionBottom){
+        return couponService.getUserByConsumption(ConsumptionBottom);
+    }
+
 
 
 }

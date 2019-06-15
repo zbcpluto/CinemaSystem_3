@@ -1,6 +1,7 @@
 package com.example.cinema.blImpl.user;
 
 import com.example.cinema.bl.user.AccountService;
+import com.example.cinema.bl.user.AccountServiceForBl;
 import com.example.cinema.data.user.AccountMapper;
 import com.example.cinema.po.User;
 import com.example.cinema.vo.UserForm;
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Service;
  * @date 2019/3/23
  */
 @Service
-public class AccountServiceImpl implements AccountService {
+public class AccountServiceImpl implements AccountService, AccountServiceForBl {
     private final static String ACCOUNT_EXIST = "账号已存在";
     @Autowired
     private AccountMapper accountMapper;
@@ -47,6 +48,17 @@ public class AccountServiceImpl implements AccountService {
         }catch(Exception e){
 
             return ResponseVO.buildFailure("经理分配职责失败");
+        }
+    }
+
+    @Override
+    public ResponseVO updateTicketConsumption(int userId,double ticketConsumption){
+        try {
+            accountMapper.updateTicketConsumption(userId,ticketConsumption);
+            return ResponseVO.buildSuccess();
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseVO.buildFailure("更新消费数额失败");
         }
     }
     

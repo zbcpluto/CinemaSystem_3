@@ -3,6 +3,7 @@ package com.example.cinema.blImpl.promotion;
 import com.example.cinema.bl.promotion.CouponService;
 import com.example.cinema.data.promotion.CouponMapper;
 import com.example.cinema.po.Coupon;
+import com.example.cinema.po.User;
 import com.example.cinema.vo.CouponForm;
 import com.example.cinema.vo.ResponseVO;
 
@@ -87,11 +88,7 @@ public class CouponServiceImpl implements CouponService, CouponServiceForBl {
         try{
             List<Coupon> coupons = couponMapper.selectCouponByUser(userId);
             for (Coupon coupon: coupons){
-                //System.out.println("size: "+coupons.size());
-                //System.out.println("userid"+userId);
-                //System.out.println("1`"+couponId+" "+coupon.getId());
                 if(couponId == coupon.getId()){
-                    //System.out.println("2`"+couponId+" "+coupon.getId());
                     return true;
                 }
             }
@@ -99,6 +96,20 @@ public class CouponServiceImpl implements CouponService, CouponServiceForBl {
         }catch (Exception e){
             e.printStackTrace();
             return false;
+        }
+    }
+
+    @Override
+    public ResponseVO getUserByConsumption(double consumptionBottom){
+        try {
+            List<User> result=couponMapper.selectUserByTicketConsumption(consumptionBottom);
+            if (result.size()!=0){
+                return ResponseVO.buildSuccess(result);
+            }
+            return ResponseVO.buildFailure("暂时没有消费超过该底线的用户");
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseVO.buildFailure("失败");
         }
     }
 }

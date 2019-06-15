@@ -26,5 +26,9 @@ public interface AccountMapper {
      */
 	User getAccountByName(@Param("username") String username);
 
+	User getAccountById(@Param("userId") int userId);
+
+	void updateTicketConsumption(@Param("userId")int userId, @Param("ticketConsumption") double ticketConsumption);
+
 	int managerAssign(User user);
 }

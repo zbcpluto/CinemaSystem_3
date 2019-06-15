@@ -10,6 +10,7 @@ public class User {
     private String username;
     private String password;
     private Integer level;
+    private double ticketConsumption;
     
     public User(){}
 
@@ -50,5 +51,12 @@ public class User {
     public void setLevel(Integer level) {
         this.level = level;
     }
-    
+
+    public double getTicketConsumption() {
+        return ticketConsumption;
+    }
+
+    public void setTicketConsumption(double ticketConsumption) {
+        this.ticketConsumption = ticketConsumption;
+    }
 }
