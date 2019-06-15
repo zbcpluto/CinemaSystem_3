@@ -29,11 +29,4 @@ public interface AccountService {
      */
     ResponseVO managerAssign(UserForm userForm);
 
-    /**
-     * 根据username获取职责
-     * @param username
-     * @return
-     */
-    ResponseVO getLevelByUserName(String username);
-
 }

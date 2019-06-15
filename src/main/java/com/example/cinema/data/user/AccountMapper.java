@@ -1,6 +1,8 @@
 package com.example.cinema.data.user;
 
 import com.example.cinema.po.User;
+import com.example.cinema.vo.UserForm;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -30,7 +32,6 @@ public interface AccountMapper {
 
 	void updateTicketConsumption(@Param("userId")int userId, @Param("ticketConsumption") double ticketConsumption);
 
-	int managerAssign(User user);
+	void managerAssign(UserForm userForm);
 
-	int getLevelByUserName(String username);
 }

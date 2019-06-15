@@ -33,42 +33,31 @@ public class AccountServiceImpl implements AccountService, AccountServiceForBl {
     @Override
     public UserVO login(UserForm userForm) {
         User user = accountMapper.getAccountByName(userForm.getUsername());
-        if (null == user || !user.getPassword().equals(userForm.getPassword())) {
+        if (user == null || !user.getPassword().equals(userForm.getPassword())) {
             return null;
         }
-        return new UserVO(user);
+        return user.getVO();
     }
 
     @Override
     public ResponseVO managerAssign(UserForm userForm) {
         try{
-            User user = new User(userForm.getUsername(), userForm.getPassword(), userForm.getLevel());
-            accountMapper.managerAssign(user);
+            accountMapper.managerAssign(userForm);
             return ResponseVO.buildSuccess("经理分配职责成功");
-        }catch(Exception e){
-
+        } catch(Exception e){
             return ResponseVO.buildFailure("经理分配职责失败");
         }
     }
 
     @Override
-    public ResponseVO updateTicketConsumption(int userId,double ticketConsumption){
+    public ResponseVO updateTicketConsumption(int userId, double ticketConsumption) {
         try {
-            accountMapper.updateTicketConsumption(userId,ticketConsumption);
-            return ResponseVO.buildSuccess();
+            accountMapper.updateTicketConsumption(userId, ticketConsumption);
+            return ResponseVO.buildSuccess("更新消费数额成功");
         }catch (Exception e){
             e.printStackTrace();
             return ResponseVO.buildFailure("更新消费数额失败");
         }
     }
 
-    @Override
-    public ResponseVO getLevelByUserName(String username) {
-        try{
-            int level = accountMapper.getLevelByUserName(username);
-            return ResponseVO.buildSuccess(level);
-        }catch (Exception e){
-            return ResponseVO.buildFailure("获取用户等级失败");
-        }
-    }
 }

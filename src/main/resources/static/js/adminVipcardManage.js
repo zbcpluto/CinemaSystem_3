@@ -11,7 +11,7 @@ $(document).ready(function() {
             '/vip/getVIPInfo',
             function (res) {
                 vipInfoList = res.content;
-                renderVipInfo(vipInfoList);
+                renderVipInfo();
             },
             function (error) {
                 alert(JSON.stringify(error));
@@ -19,7 +19,7 @@ $(document).ready(function() {
         );
     }
     
-    function renderVipInfo(vipInfoList) {
+    function renderVipInfo() {
         $(".content-vipInfo").empty();
         var vipInfoDomStr = "";
 

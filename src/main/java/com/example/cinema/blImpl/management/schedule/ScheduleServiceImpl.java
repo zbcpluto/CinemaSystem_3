@@ -1,6 +1,4 @@
 package com.example.cinema.blImpl.management.schedule;
-import java.util.Date;
-
 import com.example.cinema.bl.management.ScheduleService;
 import com.example.cinema.blImpl.management.hall.HallServiceForBl;
 import com.example.cinema.data.management.ScheduleMapper;
@@ -78,13 +76,14 @@ public class ScheduleServiceImpl implements ScheduleService, ScheduleServiceForB
     @Override
     public ResponseVO getScheduleById(int id) {
         try {
-            ScheduleItem scheduleItem = scheduleMapper.selectScheduleById(id);
-            if(scheduleItem != null){
-                return ResponseVO.buildSuccess(new ScheduleItemVO(scheduleItem));
-            }else{
+            ScheduleItem item = scheduleMapper.selectScheduleById(id);
+            if(item != null) {
+                return ResponseVO.buildSuccess(item.getVO());
+            }
+            else {
                 return ResponseVO.buildSuccess(null);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseVO.buildFailure("失败");
         }
@@ -94,7 +93,7 @@ public class ScheduleServiceImpl implements ScheduleService, ScheduleServiceForB
     public ResponseVO getScheduleView() {
         try {
             return ResponseVO.buildSuccess(scheduleMapper.selectView());
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseVO.buildFailure("失败");
         }
@@ -105,32 +104,32 @@ public class ScheduleServiceImpl implements ScheduleService, ScheduleServiceForB
         try{
             //根据view中设置的排片可见限制
             int days = scheduleMapper.selectView();
-            List<ScheduleItem> scheduleItems = scheduleMapper.selectScheduleByMovieId(movieId);
+            List<ScheduleItem> itemList = scheduleMapper.selectScheduleByMovieId(movieId);
 
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            Date today = simpleDateFormat.parse(simpleDateFormat.format(new Date()));
+            Date now = new Date();
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            Date today = format.parse(format.format(now));
             Date endDate = getNumDayAfterDate(today, days);
 
-            List<ScheduleItem> result = new ArrayList<>();
-            for(ScheduleItem s : scheduleItems){
-                if(s.getStartTime().before(endDate) && s.getStartTime().after(new Date())){
-                    result.add(s);
+            List<ScheduleItem> itemList2 = new ArrayList<>();
+            for(ScheduleItem item : itemList) {
+                if(item.getStartTime().before(endDate) && item.getStartTime().after(now)) {
+                	itemList2.add(item);
                 }
             }
-            int interval = 1;
-            if(result.size() > 0){
-                interval = (int)((result.get(result.size() - 1).getStartTime().getTime() - today.getTime()) / (1000 * 3600 * 24)) + 1;
-            }
 
-            return ResponseVO.buildSuccess(getScheduleVOList(interval, today, result));
-
-        }catch (Exception e){
+            List<ScheduleVO> svList = getScheduleVOList(itemList2);
+            Collections.sort(svList);
+            System.out.println(svList.size());
+            return ResponseVO.buildSuccess(svList);
+            
+        } catch (Exception e){
             e.printStackTrace();
             return ResponseVO.buildFailure("失败");
         }
     }
 
-    @Override
+	@Override
     public List<ScheduleItem> getScheduleByMovieIdList(List<Integer> movieIdList) {
         try {
             return scheduleMapper.selectScheduleByMovieIdList(movieIdList);
@@ -297,35 +296,55 @@ public class ScheduleServiceImpl implements ScheduleService, ScheduleServiceForB
 
         return false;
     }
+    
+    List<ScheduleVO> getScheduleVOList(int interval, Date startDate, List<ScheduleItem> scheduleItemList) throws ParseException {
+    	List<ScheduleVO> scheduleVOList = getScheduleVOList(scheduleItemList);
+    	Map<Date, ScheduleVO> map = new HashMap<Date, ScheduleVO>();
+    	for(ScheduleVO sv: scheduleVOList) {
+    		map.put(sv.getDate(), sv);
+    	}
+    	
+    	List<ScheduleVO> res = new ArrayList<>();
+    	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    	Date iniDate = format.parse(format.format(startDate));
+    	for(int i = 0; i < interval; i++) {
+    		Date date = getNumDayAfterDate(iniDate, i);
+    		ScheduleVO sv;
+    		if(map.containsKey(date)) {
+    			sv = map.get(date);
+    		}
+    		else {
+    			sv = new ScheduleVO();
+        		sv.setDate(date);
+    		}
+    		res.add(sv);
+    	}
+    	
+    	return res;
+    }
 
-    List<ScheduleVO> getScheduleVOList(int interval,Date startDate, List<ScheduleItem> scheduleItemList ) throws ParseException {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        List<ScheduleVO> scheduleVOList = new ArrayList<>();
-        for(int i = 0; i < interval; i++){
-            Date date = getNumDayAfterDate(startDate, i);
-            ScheduleVO scheduleVO = new ScheduleVO();
-            scheduleVO.setDate(date);
-            List<ScheduleItemVO> scheduleItems = new ArrayList<>();
-            List<ScheduleItemVO> scheduleItemVOList = scheduleItemList2ScheduleItemVOList(scheduleItemList);
-            for(ScheduleItemVO scheduleItem : scheduleItemVOList){
-                Date startTime = simpleDateFormat.parse(simpleDateFormat.format(scheduleItem.getStartTime()));
-                if(date.equals(startTime)){
-                    scheduleItems.add(scheduleItem);
-                }
-            }
-            scheduleVO.setScheduleItemList(scheduleItems);
-            scheduleVOList.add(scheduleVO);
+    List<ScheduleVO> getScheduleVOList(List<ScheduleItem> scheduleItemList) throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Map<Date, ScheduleVO> map = new HashMap<Date, ScheduleVO>();
+        for(ScheduleItem item: scheduleItemList) {
+        	Date date = format.parse(format.format(item.getStartTime()));
+        	ScheduleVO sv;
+        	if(map.containsKey(date)) {
+        		sv = map.get(date);
+        	} 
+        	else {
+        		sv = new ScheduleVO();
+        		sv.setDate(date);
+        	}
+        	
+        	sv.addScheduleItem(item.getVO());	
+        }
+        
+        List<ScheduleVO> scheduleVOList = new ArrayList<ScheduleVO>();
+        for(ScheduleVO sv: map.values()) {
+        	scheduleVOList.add(sv);
         }
         return scheduleVOList;
     }
-
-
-
-    private List<ScheduleItemVO> scheduleItemList2ScheduleItemVOList(List<ScheduleItem> scheduleItemList){
-        List<ScheduleItemVO> scheduleItemVOList = new ArrayList<>();
-        for(ScheduleItem scheduleItem : scheduleItemList){
-            scheduleItemVOList.add(new ScheduleItemVO(scheduleItem));
-        }
-        return scheduleItemVOList;
-    }
+    
 }

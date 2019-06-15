@@ -1,4 +1,4 @@
-var dates;
+var svList;
 var movieId;
 
 $(document).ready(function () {
@@ -11,9 +11,14 @@ $(document).ready(function () {
             '/schedule/search/audience?movieId=' + movieId,
             function (res) {
                 if (res.success) {
-                    $('#schedule').css("display", "");
-                    dates = res.content;
-                    repaintScheduleDate(0);
+                	svList = res.content;
+                	if(svList.length) {
+                		$('#schedule').css("display", "");
+                		repaintSvList();
+                	}
+                	else {
+                		$('#none-hint').css("display", "");
+                	}
                 } else {
                     $('#none-hint').css("display", "");
                 }
@@ -26,36 +31,33 @@ $(document).ready(function () {
 
 });
 
-function repaintScheduleDate(curDateLoc) {
-    var dateContent = ""
-    for (var i = 0; i < dates.length; i++) {
-        var date = dates[i].date.substring(5, 7) + "月" + dates[i].date.substring(8, 10) + "日";
-        if (i == 0) date += "（今天）";
-        else if (i == 1) date += "（明天）";
-        dateContent += '<li role="presentation" id="schedule-date' + i + '"><a href="#"  onclick="repaintScheduleDate(\'' + i + '\')">' + date + '</a></li>';
-    }
-    $('#schedule-date').html(dateContent);
-
-    $('#schedule-date' + curDateLoc).addClass("active");
-    repaintScheduleBody(curDateLoc);
+function repaintSvList() {
+	var dateContent = ""; 
+	var idx = 0;
+	svList.forEach(function (sv) {
+		var date = sv.date.substring(5, 7) + "月" + sv.date.substring(8, 10) + "日";
+		dateContent += "<li role='presentation' id='schedule-date" + idx +"'><a href='#' onclick='repaintScheduleDate(" + idx + ")'>" + date + "</a></li>";
+		$('#schedule-date').html(dateContent);
+    });
+	
+	$('#schedule-date0').addClass("active");
+    repaintScheduleBody(0);
 }
 
-function repaintScheduleBody(curDateLoc) {
-    var scheduleItems = dates[curDateLoc].scheduleItemList;
+function repaintScheduleBody(idx) {
+    var scheduleItems = svList[idx].scheduleItemList;
 
-    if (scheduleItems.length == 0) {
-        $('#date-none-hint').css("display", "");
-    } else {
-        $('#date-none-hint').css("display", "none");
-    }
     var bodyContent = "";
-    for (var i = 0; i < scheduleItems.length; i++) {
-        bodyContent += "<tr><td>" + scheduleItems[i].startTime.substring(11, 16) + "</td>" +
-            "<td>预计" + scheduleItems[i].endTime.substring(11, 16) + "散场</td>" +
-            "<td>" + scheduleItems[i].hallName + "</td>" +
-            "<td><b>" + scheduleItems[i].fare.toFixed(2) + "</b></td>" +
-            "<td><a class='btn btn-primary' href='/user/movieDetail/buy?id="+movieId+"&scheduleId="+scheduleItems[i].id+"' role='button'>选座购票</a></td></tr>";
-    }
+    scheduleItems.forEach(function (item) {
+    	bodyContent += 
+    		"<tr>" + 
+    		"<td>" + item.startTime.substring(11, 16) + "</td>" +
+    		"<td>" + item.endTime.substring(11, 16) + "</td>" +
+    		"<td>" + item.hallName + "</td>" +
+    		"<td><b>" + item.fare.toFixed(2) + "</b></td>" +
+    		"<td><a class='btn btn-primary' href='/user/movieDetail/buy?id="+movieId+"&scheduleId="+item.id+"' role='button'>选座购票</a></td>" +
+    		"</tr>";
+    });
 
     $('#schedule-body').html(bodyContent);
 }

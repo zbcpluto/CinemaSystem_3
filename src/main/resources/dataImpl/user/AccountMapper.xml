@@ -18,15 +18,15 @@
         update user set ticket_consumption=ticket_consumption+#{ticketConsumption}
     </update>
 
-    <select id="getLevelByUserName"  parameterType="String" resultType="int">
-        select `level` from user where `username`=#{username}
-    </select>
-
 	<insert id="managerAssign" parameterType="com.example.cinema.po.User">
         insert into user(`username`, `password`, `level`)
         values(#{username}, #{password}, #{level})
     </insert >
     	
     <resultMap id="User" type="com.example.cinema.po.User">
+    	<result column="id" property="id"></result>
+    	<result column="username" property="username"></result>
+    	<result column="level" property="level"></result>
+    	<result column="ticket_consumption" property="ticketConsumption"></result>
     </resultMap>
 </mapper>

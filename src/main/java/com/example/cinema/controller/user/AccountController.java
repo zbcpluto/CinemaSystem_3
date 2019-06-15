@@ -1,7 +1,6 @@
 package com.example.cinema.controller.user;
 
 import com.example.cinema.bl.user.AccountService;
-import com.example.cinema.blImpl.user.AccountServiceImpl;
 import com.example.cinema.config.InterceptorConfiguration;
 import com.example.cinema.vo.UserForm;
 import com.example.cinema.vo.ResponseVO;
@@ -23,11 +22,11 @@ public class AccountController {
     @PostMapping("/login")
     public ResponseVO login(@RequestBody UserForm userForm, HttpSession session){
         UserVO user = accountService.login(userForm);
-        if(user==null){
+        if(user == null) {
            return ResponseVO.buildFailure(ACCOUNT_INFO_ERROR);
         }
         //注册session
-        session.setAttribute(InterceptorConfiguration.SESSION_KEY,userForm);
+        session.setAttribute(InterceptorConfiguration.SESSION_KEY, userForm);
         return ResponseVO.buildSuccess(user);
     }
     @PostMapping("/register")
@@ -44,11 +43,6 @@ public class AccountController {
     @PostMapping(value = "/logadmin")
     public ResponseVO managerAssign(@RequestBody UserForm userForm){
         return accountService.managerAssign(userForm);
-    }
-
-    @RequestMapping(value = "/get/level/{username}", method = RequestMethod.GET)
-    public ResponseVO getLevelByUserName(@PathVariable String username){
-        return accountService.getLevelByUserName(username);
     }
 
 }

@@ -1,5 +1,7 @@
 package com.example.cinema.po;
 
+import com.example.cinema.vo.UserVO;
+
 /**
  * @author huwen
  * @date 2019/3/23
@@ -11,13 +13,15 @@ public class User {
     private String password;
     private Integer level;
     private double ticketConsumption;
-    
-    public User(){}
 
-    public User(String username, String password, Integer level) {
-        this.username = username;
-        this.password = password;
-        this.level = level;
+    public UserVO getVO() {
+    	UserVO uv = new UserVO();
+        uv.setId(id);
+        uv.setUsername(username);
+        uv.setPassword(password);
+        uv.setLevel(level);
+        uv.setTicketConsumption(ticketConsumption);
+        return uv;
     }
 
     public Integer getId() {

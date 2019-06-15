@@ -1,7 +1,5 @@
 package com.example.cinema.vo;
 
-import com.example.cinema.po.ScheduleItem;
-
 import java.util.Date;
 
 /**
@@ -42,16 +40,6 @@ public class ScheduleItemVO {
      */
     private double fare;
 
-    public ScheduleItemVO(ScheduleItem scheduleItem){
-        this.id = scheduleItem.getId();
-        this.hallId = scheduleItem.getHallId();
-        this.hallName = scheduleItem.getHallName();
-        this.movieId = scheduleItem.getMovieId();
-        this.movieName = scheduleItem.getMovieName();
-        this.startTime = scheduleItem.getStartTime();
-        this.endTime = scheduleItem.getEndTime();
-        this.fare = scheduleItem.getFare();
-    }
 
     public Integer getId() {
         return id;

@@ -2,6 +2,8 @@ package com.example.cinema.po;
 
 import java.util.Date;
 
+import com.example.cinema.vo.ScheduleItemVO;
+
 /**
  * @author fjj
  * @date 2019/4/12 3:34 PM
@@ -39,6 +41,19 @@ public class ScheduleItem {
      * 票价
      */
     private double fare;
+    
+    public ScheduleItemVO getVO() {
+    	ScheduleItemVO siv = new ScheduleItemVO();
+    	siv.setId(id);
+    	siv.setHallId(hallId);
+    	siv.setHallName(hallName);
+    	siv.setMovieId(movieId);
+    	siv.setMovieName(movieName);
+    	siv.setStartTime(startTime);
+    	siv.setEndTime(endTime);
+    	siv.setFare(fare);
+    	return siv;
+    }
 
     public Integer getId() {
         return id;
