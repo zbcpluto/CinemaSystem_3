@@ -38,7 +38,7 @@ public class RefundServiceImpl implements RefundService {
         try{
             List<RefundStrategy> refundStrategyList = refundMapper.selectAllRefundStrategy();
             List<RefundForm> refundFormList = refundPOList2refundVOList(refundStrategyList);
-            for (int i = 0; i < refundFormList.size(); i++) {
+            for(int i = 0; i < refundFormList.size(); i++) {
                 for (int j = i+1; j < refundFormList.size(); j++) {
                     RefundForm r1 = refundFormList.get(i);
                     RefundForm r2 = refundFormList.get(j);
@@ -49,7 +49,7 @@ public class RefundServiceImpl implements RefundService {
                 }
             }
             return ResponseVO.buildSuccess(refundFormList);
-        }catch(IndexOutOfBoundsException e){
+        } catch(IndexOutOfBoundsException e){
             //数据为空只要返回空值就好了
             return  ResponseVO.buildSuccess();
         }
