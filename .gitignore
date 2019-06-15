@@ -16,8 +16,6 @@ logs
 /log
 /tmp
 hotspot.log
-src\main\resources\application.yml
 pom.xml
-
 src/main/resources/application.yml
 .DS_Store
