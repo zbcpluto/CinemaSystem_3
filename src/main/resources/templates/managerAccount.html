@@ -22,24 +22,70 @@
             <p class="title">Manager</p>
         </div>
         <ul class="nav nav-pills nav-stacked">
-            <li role="presentation"><a href="#"><i class="icon-film"></i> 指责分配</a></li>
+            <li role="presentation"><a href="#"><i class="icon-film"></i> 账号分配</a></li>
         </ul>
     </div>
     <div class="content-container">
-        <div class="content-item">
-            <span class="title gray-text">管理员分配</span>
-            <div class="content-card card">
+        <div class="content-item" style="float:left;width:45%">
+            <span class="title gray-text"> &emsp;&emsp;管理员账号分配</span>
+
 <!--                <span class="">用户可见排片日期：</span><span id="can-see-num"></span>-->
 <!--                <a style="margin-left: 20px;" class="primary-text" id="canview-modify-btn">修改</a>-->
 <!--                <input type="number" class="form-control" id="canview-set-input" style="display: none;width: 200px;">-->
 <!--                <a style="display: none" class="primary-text" id="canview-confirm-btn">确认</a>-->
-               
-            </div>
-        </div>
-        <div class="content-item">
-            <span class="title gray-text">售票员分配</span>
-            <div class="content-card card" id="hall-card">
+            <div class="content-card card">
+                <div class="card" id="login-container">
 
+                    <form id="login-form">
+                        <div class="input-interval">
+                            <div class="input-group" id="basic-addon1">
+                                <span class="input-group-addon"><i class="icon-user"></i></span>
+                                <input style="height: 50px" id="index-name" type="text" class="form-control" placeholder="请输入用户名" aria-describedby="basic-addon1">
+                            </div>
+                            <p id="index-name-error" class="notice">用户名不能为空</p>
+                        </div>
+
+                        <div class="input-interval">
+                            <div class="input-group" id="basic-addon2">
+                                <span class="input-group-addon"><i class="icon-lock"></i></span>
+                                <input style="height: 50px;" id="index-password" type="text" class="form-control" placeholder="请输入密码" aria-describedby="basic-addon2">
+                            </div>
+                            <p id="index-password-error" class="notice">密码不能为空</p>
+                        </div>
+
+                        <button id="login-btn" type="button" class="btn btn-primary input-interval btn-block">分配账号</button>
+                    </form>
+                </div>
+            </div>
+
+        </form>
+
+        </div>
+
+    
+
+        <div class="content-item"  style="float:left;width:45%">
+            <span class="title gray-text">&emsp;&emsp;售票员账号分配</span>
+            <div class="content-card card" id="hall-card">
+                <form id="login-form-2">
+                    <div class="input-interval">
+                        <div class="input-group" id="basic-addon21">
+                            <span class="input-group-addon"><i class="icon-user"></i></span>
+                            <input style="height: 50px" id="index-name-2" type="text" class="form-control" placeholder="请输入用户名" aria-describedby="basic-addon1">
+                        </div>
+                        <p id="index-name-error-2" class="notice">用户名不能为空</p>
+                    </div>
+
+                    <div class="input-interval">
+                        <div class="input-group" id="basic-addon22">
+                            <span class="input-group-addon"><i class="icon-lock"></i></span>
+                            <input style="height: 50px;" id="index-password-2" type="text" class="form-control" placeholder="请输入密码" aria-describedby="basic-addon2">
+                        </div>
+                        <p id="index-password-error-2" class="notice">密码不能为空</p>
+                    </div>
+
+                    <button id="login-btn-2" type="button" class="btn btn-primary input-interval btn-block">分配账号</button>
+                </form>
             </div>
         </div>
     </div>
