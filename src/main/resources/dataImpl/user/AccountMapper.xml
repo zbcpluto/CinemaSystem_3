@@ -19,7 +19,7 @@
     </update>
 
 	<insert id="managerAssign" parameterType="com.example.cinema.po.User">
-        insert into(`username`, `password`, `level`)
+        insert into user(`username`, `password`, `level`)
         values(#{username}, #{password}, #{level})
     </insert >
     	
