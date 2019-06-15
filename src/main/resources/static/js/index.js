@@ -24,11 +24,12 @@ $(document).ready(function () {
                 if (res.success) {
                     sessionStorage.setItem('username', formData.username);
                     sessionStorage.setItem('id', res.content.id);
-                    if (level == 4) {
+                    console.log(formData.username);
+                    if (formData.username == "manager") {
                         sessionStorage.setItem('role', 'manager');
                         window.location.href = "/manager/account"
                     }
-                    else if (level == 3) {
+                    else if (formData.username == "root") {
                         sessionStorage.setItem('role', 'admin');
                         window.location.href = "/admin/movie/manage"
                     } else {
