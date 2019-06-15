@@ -21,6 +21,7 @@ public interface AccountService {
      * @return
      */
     UserVO login(UserForm userForm);
-
+    
     ResponseVO managerAssign(UserForm userForm);
+
 }

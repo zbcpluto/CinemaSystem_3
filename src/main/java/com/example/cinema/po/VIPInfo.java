@@ -3,6 +3,7 @@ package com.example.cinema.po;
 import com.example.cinema.vo.VIPInfoVO;
 
 public class VIPInfo {
+	
 	private int id;
 	
 	private String name;

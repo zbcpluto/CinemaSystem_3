@@ -132,7 +132,7 @@ $(document).ready(function() {
         });
         $('#selected-movies').append(moviesDomStr);
     }
-
+    
     var selectedUserNames = new Set();
     // 实现筛选金额的点击确认按钮
     $('#give-coupon-filter-money').click(function(){
@@ -155,4 +155,5 @@ $(document).ready(function() {
         });
         $('#selected-movies').append(usersDomStr);
     }
+    
 });

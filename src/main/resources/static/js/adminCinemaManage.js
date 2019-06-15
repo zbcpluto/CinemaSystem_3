@@ -5,7 +5,7 @@ $(document).ready(function() {
     getCanSeeDayNum();
     getCinemaHalls();
     getCinemaHall();
-
+    
     function getCinemaHalls() {
         var halls = [];
         getRequest(
@@ -19,6 +19,7 @@ $(document).ready(function() {
             }
         );
     }
+
     function getCinemaHall() {
         var halls = [];
         getRequest(
@@ -37,7 +38,7 @@ $(document).ready(function() {
             }
         );
     }
-
+    
     function renderHall(halls){
         $('#hall-card').empty();
         var hallDomStr = "";

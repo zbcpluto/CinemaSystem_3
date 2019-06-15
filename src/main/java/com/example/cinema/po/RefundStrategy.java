@@ -1,7 +1,5 @@
 package com.example.cinema.po;
 
-
-
 /**
  * Created by AzureXH on 2019/6/3
  */

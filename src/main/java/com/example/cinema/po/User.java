@@ -1,19 +1,17 @@
 package com.example.cinema.po;
 
-import javax.jws.soap.SOAPBinding;
-
 /**
  * @author huwen
  * @date 2019/3/23
  */
 public class User {
+	
     private Integer id;
     private String username;
     private String password;
     private Integer level;
-    public User(){
-
-    }
+    
+    public User(){}
 
     public User(String username, String password, Integer level) {
         this.username = username;
@@ -44,7 +42,7 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-
+    
     public Integer getLevel() {
         return level;
     }
@@ -52,4 +50,5 @@ public class User {
     public void setLevel(Integer level) {
         this.level = level;
     }
+    
 }

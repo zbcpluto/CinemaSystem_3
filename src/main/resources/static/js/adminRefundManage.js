@@ -4,8 +4,8 @@ $(document).ready(function () {
 
     var strategyNum = 0;
 
-    function getRefundStrategy(){
-        $('.refunds-box').empty();
+    function getRefundStrategy() {
+    	$('.refunds-box').empty();
         getRequest(
             '/refund/manage',
             function (res) {
@@ -21,13 +21,13 @@ $(document).ready(function () {
      * 页面展示退票策略
      * @param list
      */
-    function renderRefundList(list){
+    function renderRefundList(list) {
         var refundDomStr = "";
         console.log(list.length);
-        if (list.length>=2){
-            $("#mmm").attr('disabled',true);
+        if (list.length>=2) {
+        	$("#mmm").attr('disabled',true);
         }
-        list.forEach(function(refund){
+        list.forEach(function(refund) {
             var prohibit = refund.falseTime.split(':');
             var prohibit_hour = parseInt(prohibit[0],10);
             var prohibit_min = parseInt(prohibit[1],10);
@@ -86,40 +86,42 @@ $(document).ready(function () {
     /**
      * 实现修改按钮
      */
-   $('.refunds-box').on('click','.refund-btn-update',function(){
-       $('#activityModal2').modal('show');
-       var btn = $(this);
-       var name = btn.parent().parent().first().find('.refund-name').text();
-       $("#refund-name-input2").attr("placeholder",name);
-           $('#refund-form-btn2').click(function (){
-               var formdata = getformdata(name);
-               postRequest(
-                   '/refund/update',
-                   formdata,
-                   function () {
-                       getRefundStrategy();
-                       console.log(formdata);
-                       for (let i=1;i<inputRow2;i++){
-                           $('#refund-time-start2-'+i).val("");
-                           $('#refund-time-end2-'+i).val("");
-                           $('#refund-penalty2-'+i).val("");
-                       }
-                       inputRow2 = 1;
-                       $('#activityModal2').modal('hide');
-                   },
-                   function (error) {
-                     alert("error");
-                   }
-               )})
-   });
-   function getformdata(name){
-       return{name:name,
-            isVip:$('#is-vip2').val(),
-            falseTime:$('#false-time2').val(),
-            startTime:getRefundStart2(),
-            endTime:getRefundEnd2(),
-            penalty:getRefundPenalty2()};
-    }
+    $('.refunds-box').on('click','.refund-btn-update',function() {
+        $('#activityModal2').modal('show');
+        var btn = $(this);
+        var name = btn.parent().parent().first().find('.refund-name').text();
+        $("#refund-name-input2").attr("placeholder",name);
+            $('#refund-form-btn2').click(function (){
+                var formdata = getformdata(name);
+                postRequest(
+                    '/refund/update',
+                    formdata,
+                    function () {
+                        getRefundStrategy();
+                        console.log(formdata);
+                        for (let i=1;i<inputRow2;i++){
+                            $('#refund-time-start2-'+i).val("");
+                            $('#refund-time-end2-'+i).val("");
+                            $('#refund-penalty2-'+i).val("");
+                        }
+                        inputRow2 = 1;
+                        $('#activityModal2').modal('hide');
+                    },
+                    function (error) {
+                      alert("error");
+                    }
+                )})
+    });
+    
+    function getformdata(name) {
+        return{name:name,
+             isVip:$('#is-vip2').val(),
+             falseTime:$('#false-time2').val(),
+             startTime:getRefundStart2(),
+             endTime:getRefundEnd2(),
+             penalty:getRefundPenalty2()};
+     }
+    
     /**
      * 退票策略中的表格展示
      * @param startTime
@@ -168,6 +170,7 @@ $(document).ready(function () {
         }
         return startTimeList;
     }
+    
     function getRefundEnd(){
         var endTimeList=[];
         for(let i=1; i<=inputRow;i++){
@@ -175,6 +178,7 @@ $(document).ready(function () {
         }
         return endTimeList;
     }
+    
     function getRefundPenalty(){
         var penaltyList=[];
         for(let i=1; i<=inputRow;i++){
@@ -182,7 +186,7 @@ $(document).ready(function () {
         }
         return penaltyList;
     }
-
+    
     function getRefundStart2(){
         var startTimeList=[];
         for(let i=1; i<=inputRow2;i++){
@@ -190,6 +194,7 @@ $(document).ready(function () {
         }
         return startTimeList;
     }
+    
     function getRefundEnd2(){
         var endTimeList=[];
         for(let i=1; i<=inputRow2;i++){
@@ -197,6 +202,7 @@ $(document).ready(function () {
         }
         return endTimeList;
     }
+    
     function getRefundPenalty2(){
         var penaltyList=[];
         for(let i=1; i<=inputRow2;i++){
@@ -213,7 +219,6 @@ $(document).ready(function () {
         postRequest(
             '/refund/add',
             formData,
-            // console.log(formData),
             function(res){
                 getRefundStrategy();
                 $('#activityModal').modal('hide');
@@ -224,20 +229,21 @@ $(document).ready(function () {
                     $('#refund-time-end-'+i).val("");
                     $('#refund-penalty-'+i).val("");
                 }
-                inputRow=1;
+                inputRow = 1;
             },
             function (error) {
                 alert('error');
             });
     });
+    
     /**
      * 当前表单
      * @type {number}
      */
-    var inputRow=1;
-    $('#input-plus').click(function(){
-        inputRow = 1;
-        if(inputRow<5){
+    var inputRow = 1;
+    $('#input-plus').click(function() {
+    	inputRow = 1;
+        if(inputRow < 5){
             inputRow++;
             html =
                 '<div class="form-group">\n' +
@@ -261,7 +267,8 @@ $(document).ready(function () {
             alert('不可增加，时间区间划分过多！');
         }
     });
-    $('#input-minus').click(function(){
+    
+    $('#input-minus').click(function() {
         if(inputRow>1){
             $('#input-minus').parent().parent().prev().remove();
             $('#input-minus').parent().parent().prev().remove();
@@ -270,7 +277,8 @@ $(document).ready(function () {
             alert('不可删减，时间区间划分过少！');
         }
     });
-    var inputRow2=1;
+    
+    var inputRow2 = 1;
     $('#input-plus2').click(function(){
         inputRow2 = 1;
         if(inputRow2<5){
@@ -297,6 +305,7 @@ $(document).ready(function () {
             alert('不可增加，时间区间划分过多！');
         }
     });
+    
     $('#input-minus2').click(function(){
         if(inputRow2>1){
             $('#input-minus2').parent().parent().prev().remove();
@@ -305,5 +314,6 @@ $(document).ready(function () {
         }else{
             alert('不可删减，时间区间划分过少！');
         }
-    })
+    });
+    
 });

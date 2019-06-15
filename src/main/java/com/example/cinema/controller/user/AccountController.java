@@ -42,7 +42,7 @@ public class AccountController {
         session.removeAttribute(InterceptorConfiguration.SESSION_KEY);
         return "index";
     }
-
+    
     @RequestMapping(value = "/logadmin")
     public ResponseVO managerAssign(UserForm userForm){
         return accountService.managerAssign(userForm);
