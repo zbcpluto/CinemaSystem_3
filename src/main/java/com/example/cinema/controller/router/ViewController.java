@@ -87,7 +87,7 @@ public class ViewController {
     public String getUserMember() {
         return "userMember";
     }
-
+    
     @RequestMapping(value = "/manager/account")
     public String getManagerAccount() {
         return "managerAccount";

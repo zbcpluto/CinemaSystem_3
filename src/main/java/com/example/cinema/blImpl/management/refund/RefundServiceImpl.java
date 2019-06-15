@@ -38,11 +38,11 @@ public class RefundServiceImpl implements RefundService {
         try{
             List<RefundStrategy> refundStrategyList = refundMapper.selectAllRefundStrategy();
             List<RefundForm> refundFormList = refundPOList2refundVOList(refundStrategyList);
-            for (int i=0; i<refundFormList.size(); i++){
-                for (int j=i+1; j<refundFormList.size(); j++){
+            for (int i = 0; i < refundFormList.size(); i++) {
+                for (int j = i+1; j < refundFormList.size(); j++) {
                     RefundForm r1 = refundFormList.get(i);
                     RefundForm r2 = refundFormList.get(j);
-                    if (r1.getIsVip()<r2.getIsVip()){
+                    if (r1.getIsVip() < r2.getIsVip()) {
                         refundFormList.set(i, r2 );
                         refundFormList.set(j, r1);
                     }
@@ -63,6 +63,7 @@ public class RefundServiceImpl implements RefundService {
             return ResponseVO.buildFailure("删除退票策略失败");
         }
     }
+
 
     @Override
     public ResponseVO updateRefundStrategy(RefundForm refundForm) {
