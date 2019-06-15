@@ -12,37 +12,42 @@ $(document).ready(function () {
               level = res;
               console.log(level);
               alert(res);
+              postRequest(
+                  '/login',
+                  formData,
+                  function (res) {
+                      if (res.success) {
+                          sessionStorage.setItem('username', formData.username);
+                          sessionStorage.setItem('id', res.content.id);
+                          console.log(formData.username);
+                          if (level==4) {
+                              sessionStorage.setItem('role', 'manager');
+                              window.location.href = "/manager/account"
+                          }
+                          else if (level==3) {
+                              sessionStorage.setItem('role', 'admin');
+                              window.location.href = "/admin/movie/manage"
+                          }
+                          else if(level==2){
+                              sessionStorage.setItem('role','seller');
+                              window.location.href
+                          } else{
+                              sessionStorage.setItem('role', 'user');
+                              window.location.href = "/user/home"
+                          }
+                      } else {
+                          alert(res.message);
+                      }
+                  },
+                  function (error) {
+                      alert(error);
+                  });
           },
           function () {
-              alert("error");
+
           }
         );
-        postRequest(
-            '/login',
-            formData,
-            function (res) {
-                if (res.success) {
-                    sessionStorage.setItem('username', formData.username);
-                    sessionStorage.setItem('id', res.content.id);
-                    console.log(formData.username);
-                    if (formData.username == "manager") {
-                        sessionStorage.setItem('role', 'manager');
-                        window.location.href = "/manager/account"
-                    }
-                    else if (formData.username == "root") {
-                        sessionStorage.setItem('role', 'admin');
-                        window.location.href = "/admin/movie/manage"
-                    } else {
-                        sessionStorage.setItem('role', 'user');
-                        window.location.href = "/user/home"
-                    }
-                } else {
-                    alert(res.message);
-                }
-            },
-            function (error) {
-                alert(error);
-            });
+
     });
 
     function getLoginForm() {
