@@ -36,7 +36,7 @@ function deleteRequest(url, data, onSuccess, onError) {
 }
 
 
-function formatDate(date){
+function formatDate(date) {
     var year = date.getFullYear();
     var month = date.getMonth()+1+'';
     var day = date.getDate()+'';
@@ -45,12 +45,16 @@ function formatDate(date){
     return year+'-'+month+'-'+day;
 }
 
-function formatTime(date){
+function formatTime(date) {
     var hour = date.getHours()+'';
     var minutes = date.getMinutes()+'';
     hour.length===1 && (hour = '0'+hour)
     minutes.length===1 && (minutes = '0'+minutes)
     return hour+":"+minutes;
+}
+
+function formatDateTime(date) {
+	return formatDate(date)+" "+formatTime(date);
 }
 
 $(document).ready(function () {

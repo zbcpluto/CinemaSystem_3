@@ -36,9 +36,9 @@ $(document).ready(function() {
                 "           <span class='primary-text'>" + vipInfo.price + "</span>" +
                 "       </div>" +
                 "       <div class='vipInfo-line'>" +
-                "           <span>优惠：满  " +
+                "           <span>优惠：充  " +
                 "           <span class='primary-text'>" + vipInfo.discount_req + "</span>" +
-                "           <span> 减  </span>" +
+                "           <span> 送 </span>" +
                 "           <span class='primary-text'>" + vipInfo.discount_res + "</span>" +
                 "           </span>" +
                 "           <span class='change-btn'>" +

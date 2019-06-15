@@ -1,8 +1,8 @@
 package com.example.cinema.data.promotion;
 
-import com.example.cinema.po.VIPCard;
-import com.example.cinema.po.VIPCharge;
-import com.example.cinema.po.VIPInfo;
+import com.example.cinema.po.*;
+import com.example.cinema.vo.VIPCardForm;
+import com.example.cinema.vo.VIPChargeRecordForm;
 import com.example.cinema.vo.VIPInfoForm;
 
 import java.util.List;
@@ -16,11 +16,11 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface VIPCardMapper {
 
-    int insertOneCard(VIPCard vipCard);
+    void insertOneCard(VIPCardForm card);
 
     VIPCard selectCardById(int id);
 
-    void updateCardBalance(@Param("id") int id,@Param("balance") double balance);
+    void updateCardBalance(@Param("id") int id, @Param("balance") double balance);
 
     VIPCard selectCardByUserId(int userId);
 
@@ -28,8 +28,11 @@ public interface VIPCardMapper {
 
 	void insertOneVIPInfo(VIPInfoForm vipInfoForm);
 
-	void insertVIPCharge(VIPCharge vipCharge);
 	void updateOneVIPInfo(VIPInfoForm vipInfoForm); 
 
-	List<VIPCharge> getChargeHistory(int userId);
+	List<VIPChargeRecord> getRecordsByUserId(int userId);
+
+	VIPInfo selectServiceById(int id);
+
+	void insertOneRecord(VIPChargeRecordForm vrf);
 }

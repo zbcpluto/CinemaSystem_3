@@ -8,10 +8,10 @@ import java.sql.Timestamp;
  */
 
 public class VIPCard {
-
-    public static final double price = 25;
-
-    public static final String description="满200送30";
+	/**
+     * 会员卡id
+     */
+    private int id;
 
     /**
      * 用户id
@@ -19,9 +19,9 @@ public class VIPCard {
     private int userId;
 
     /**
-     * 会员卡id
+     * 会员卡种类ID
      */
-    private int id;
+    private int serviceId;
 
     /**
      * 会员卡余额
@@ -33,59 +33,46 @@ public class VIPCard {
      */
     private Timestamp joinDate;
 
-    /**
-     * 会员卡种类ID
-     */
-    private int vipSerivceId;
-
-
-    public VIPCard() {
-
-    }
-
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
+    
     public int getId() {
-        return id;
-    }
+		return id;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public int getServiceId() {
+		return serviceId;
+	}
 
-    public double getBalance() {
-        return balance;
-    }
+	public void setServiceId(int serviceId) {
+		this.serviceId = serviceId;
+	}
 
-    public void setBalance(double balance) {
-        this.balance = balance;
-    }
 
-    public Timestamp getJoinDate() {
-        return joinDate;
-    }
+	public int getUserId() {
+		return userId;
+	}
 
-    public void setJoinDate(Timestamp joinDate) {
-        this.joinDate = joinDate;
-    }
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
 
-    public double calculate(double amount) {
-        return (int)(amount/200)*30+amount;
+	public double getBalance() {
+		return balance;
+	}
 
-    }
+	public void setBalance(double balance) {
+		this.balance = balance;
+	}
 
-    public int getVipSerivceId(){
-        return this.vipSerivceId;
-    }
+	public Timestamp getJoinDate() {
+		return joinDate;
+	}
 
-    public void setVipServiceId(int vipSerivceId){
-        this.vipSerivceId=vipSerivceId;
-    }
+	public void setJoinDate(Timestamp joinDate) {
+		this.joinDate = joinDate;
+	}
+
 }

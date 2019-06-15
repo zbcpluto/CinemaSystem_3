@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.cinema.data.promotion.VIPCardMapper">
-    <insert id="insertOneCard" parameterType="com.example.cinema.po.VIPCard"
+    <insert id="insertOneCard" parameterType="com.example.cinema.vo.VIPCardForm"
             useGeneratedKeys="true" keyProperty="id">
-        insert into vip_card(user_id, balance)
-        values(#{userId}, #{balance})
+        insert into vip_card(user_id, service_id)
+        values(#{userId}, #{serviceId})
     </insert>
 
     <select id="selectCardById" resultMap="VIPCard">
@@ -18,10 +18,10 @@
     <select id="selectVIPInfo" resultMap="VIPInfo">
     	select * from vip_service
     </select>
-
-    <select id="getChargeHistory" resultMap="VIPCharge">
-        select * from vip_charge where user_id=#{userId}
-    </select>
+    
+    <update id="updateCardBalance" >
+        update vip_card set balance = #{balance} where id=#{id}
+    </update>
     
     <insert id="insertOneVIPInfo" parameterType="com.example.cinema.vo.VIPInfoForm"
             useGeneratedKeys="true" keyProperty="id">
@@ -34,40 +34,49 @@
     	discount_req = #{discount_req}, discount_res = #{discount_res}
         where id = #{id}
     </update>
-
-    <insert id="insertVIPCharge" parameterType="com.example.cinema.po.VIPCharge"
+    
+    <select id="selectServiceById" resultMap="VIPInfo">
+        select * from vip_service where id=#{id}
+    </select>
+    
+    <insert id="insertOneRecord" parameterType="com.example.cinema.vo.VIPChargeRecordForm"
             useGeneratedKeys="true" keyProperty="id">
-        insert into vip_charge(user_id,vip_service_id,charge_amount,calculated_amonut,charge_time)
-        values (#{userId},#{vipServiceId},#{chargeAmount},#{calculatedAmount},#{chargeTime})
+        insert into vip_charge(user_id, card_id, charge_amount, discount_amount)
+        values (#{userId}, #{cardId}, #{chargeAmount}, #{discountAmount})
     </insert>
+    
+    <select id="getRecordsByUserId" resultMap="VIPChargeRecord">
+        select * from vip_charge where user_id=#{userId}
+    </select>
+
+	<resultMap id="VIPCardForm" type="com.example.cinema.vo.VIPCardForm">
+        <result column="user_id" property="userId"></result>
+        <result column="service_id" property="serviceId"></result>
+    </resultMap>
 
     <resultMap id="VIPCard" type="com.example.cinema.po.VIPCard">
-        <result column="join_time" property="joinDate"></result>
-        <result column="id" property="id"></result>
+    	<result column="id" property="id"></result>
         <result column="user_id" property="userId"></result>
+        <result column="service_id" property="serviceId"></result>
+        <result column="join_time" property="joinDate"></result>
         <result column="balance" property="balance"></result>
     </resultMap>
     
     <resultMap id="VIPInfo" type="com.example.cinema.po.VIPInfo">
+    	<result column="id" property="id"></result>
     	<result column="name" property="name"></result>
     	<result column="price" property="price"></result>
     	<result column="discount_req" property="discount_req"></result>
     	<result column="discount_res" property="discount_res"></result>
     </resultMap>
-
-    <resultMap id="VIPCharge" type="com.example.cinema.po.VIPCharge">
-        <result column="user_id" property="userId"></result>
-        <result column="id" property="id"></result>
-        <result column="vip_service_id" property="vipServiceId"></result>
+    
+    <resultMap id="VIPChargeRecord" type="com.example.cinema.po.VIPChargeRecord">
+    	<result column="id" property="id"></result>
+    	<result column="user_id" property="userId"></result>
+        <result column="card_id" property="cardId"></result>
         <result column="charge_amount" property="chargeAmount"></result>
-        <result column="calculated_amount" property="calculatedAmount"></result>
+        <result column="discount_amount" property="discountAmount"></result>
         <result column="charge_time" property="chargeTime"></result>
     </resultMap>
-
-    <update id="updateCardBalance" >
-        update vip_card set balance = #{balance} where id=#{id}
-    </update>
-
-	
 
 </mapper>

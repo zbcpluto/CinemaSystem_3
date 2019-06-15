@@ -70,25 +70,39 @@
             <div class="content">
                 <div class="line">
                     <div><b>会员卡号：</b></div>
-                    <div id="member-id"></div>
+                    <div id="member-id" class="primary-text"></div>
                 </div>
                 <div class="line">
                     <div><b>入会日期：</b></div>
-                    <div id="member-joinDate"></div>
+                    <div id="member-joinDate" class="primary-text"></div>
+                </div>
+                <div class="line">
+                    <div><b>购买价格：</b></div>
+                    <div id="member-buy-price" class="primary-text"></div>
                 </div>
                 <div class="line">
                     <div><b>充值优惠：</b></div>
-                    <div id="member-description"></div>
+                    <div>
+                    	<span>充 </span>
+                    	<span id="member-buy-discount_req" class="primary-text"></span>
+                    	<span> 送 </span>
+                    	<span id="member-buy-discount_res" class="primary-text"></span>
+                    </div>
                 </div>
 
                 <hr/>
 
-                <div class="line">
-                    <div><b>余额：</b></div>
-                    <div id="member-balance"></div>
+                <div class="line footer">
+                    <div>
+                    	<span><b>余额：</b></span>
+						<span id="member-balance" class="primary-text"></span>
+					</div>
+					<div>
+						<button class="btn btn-primary" onclick="chargeHistory()" style="margin-right: 20px">充值记录</button>
+                    	<button class="btn btn-primary" onclick="chargeClick()">立即充值</button>
+					</div>
                 </div>
             </div>
-            <button onclick="chargeClick()">立即充值</button>
         </div>
     </div>
 
@@ -107,9 +121,13 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title" id="myModalLabel">购买会员卡</h4>
+                <h3 class="modal-title" id="myModalLabel"></h3>
             </div>
             <div class="modal-body" id="userMember-form">
+           		<div id="payInfo">
+           			<label>价格：</label>
+         			<span class="primary-text" id="payInfo-price"></span>
+            	</div>
                 <div class="form-group">
                     <label for="userMember-cardNum"><span class="error-text">*</span>银行卡号</label>
                     <input class="form-control" id="userMember-cardNum" placeholder="请输入银行卡号">
@@ -129,6 +147,24 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                 <button type="button" class="btn btn-primary" onclick="confirmCommit()">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="recordModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title">充值记录</h3>
+                <h4 class="modal-subTitle" id="record-joinDate"></h4>
+            </div>
+            <ul class="modal-body" id="record-list">
+            </ul>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
             </div>
         </div>
     </div>

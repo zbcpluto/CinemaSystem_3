@@ -28,12 +28,25 @@
     align-items: center;
 }
 
+.card .footer {
+	justify-content: space-between;
+}
+
 .card .line hr {
     flex-grow: 1;
     margin-left: 10px;
 }
 
-/* info为vip信息样式 */
+.primary-text {
+	font-size: 20px;
+}
+
+/* payInfo样式*/
+.payInfo {
+	margin: 20px 0;
+}
+
+/* vipInfo样式 */
 .vipInfo-container {
     display: flex;
     width: 100%;
@@ -57,6 +70,27 @@
 
 .vipInfo-line .primary-text {
 	font-size: 18px;
+}
+
+/* record-list样式*/
+.record-container {
+    display: flex;
+    width: 100%;
+    max-height: 100px;
+    margin-top: 20px;
+}
+.record-card {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    flex-basis: 100%;
+    justify-content: space-around;
+}
+
+.record-line {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
 }
 
 /* coupon为优惠券样式 */
