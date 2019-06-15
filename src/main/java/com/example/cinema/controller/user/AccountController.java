@@ -45,7 +45,7 @@ public class AccountController {
         return accountService.managerAssign(userForm);
     }
 
-    @GetMapping(value = "/get/level/{username}")
+    @RequestMapping(value = "/get/level/{username}", method = RequestMethod.GET)
     public ResponseVO getLevelByUserName(@PathVariable String username){
         return accountService.getLevelByUserName(username);
     }

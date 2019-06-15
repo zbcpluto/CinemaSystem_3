@@ -5,7 +5,18 @@ $(document).ready(function () {
         if (!validateLoginForm(formData)) {
             return;
         }
-
+        var level = 1;
+        getRequest(
+          '/get/level/'+formData.username,
+          function (res) {
+              level = res;
+              console.log(level);
+              alert(res);
+          },
+          function () {
+              alert("error");
+          }
+        );
         postRequest(
             '/login',
             formData,
@@ -13,11 +24,11 @@ $(document).ready(function () {
                 if (res.success) {
                     sessionStorage.setItem('username', formData.username);
                     sessionStorage.setItem('id', res.content.id);
-                    if (formData.username == "manager") {
+                    if (level == 4) {
                         sessionStorage.setItem('role', 'manager');
                         window.location.href = "/manager/account"
                     }
-                    else if (formData.username == "root") {
+                    else if (level == 3) {
                         sessionStorage.setItem('role', 'admin');
                         window.location.href = "/admin/movie/manage"
                     } else {

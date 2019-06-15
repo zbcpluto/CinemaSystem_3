@@ -7,7 +7,9 @@ $(document).ready(function () {
                 '/logadmin',
                 formData,
                 function () {
-                    alert("管理员账号分配成功")
+                    alert("管理员账号分配成功");
+                    $("#index-name").val("");
+                    $("#index-password").val("");
                 },
                 function () {
                     alert("fail");
@@ -22,7 +24,9 @@ $(document).ready(function () {
                 '/logadmin',
                 formData,
                 function () {
-                    alert("售票员账号分配成功")
+                    alert("售票员账号分配成功");
+                    $("#index-name-2").val("");
+                    $("#index-password-2").val("");
                 },
                 function () {
                     alert("fail");
