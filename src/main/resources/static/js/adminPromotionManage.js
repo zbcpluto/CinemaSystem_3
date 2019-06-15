@@ -153,7 +153,7 @@ $(document).ready(function() {
         selectedUserNames.forEach(function (userName) {
             usersDomStr += "<span class='label label-primary'>"+userName+"</span>";
         });
-        $('#selected-movies').append(usersDomStr);
+        $('#selected-users').append(usersDomStr);
     }
     
 });
