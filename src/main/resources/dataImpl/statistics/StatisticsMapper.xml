@@ -56,6 +56,6 @@
         right join
             (select id, movie_id from `schedule`) s
             on ticket.schedule_id=s.id
-        order by times desc
+        group by movie_id order by times desc
     </select>
 </mapper>
