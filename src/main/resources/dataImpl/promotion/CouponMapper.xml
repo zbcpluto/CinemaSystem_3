@@ -8,7 +8,7 @@
         values(#{description},#{name},#{targetAmount},#{discountAmount},#{startTime},#{endTime})
     </insert>
     
-    <select id="selectCounponById" resultMap="Coupon">
+    <select id="selectCouponById" resultMap="Coupon">
         select * from coupon where id=#{id}
     </select>
     

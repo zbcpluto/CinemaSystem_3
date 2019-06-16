@@ -5,7 +5,6 @@ import com.example.cinema.data.promotion.CouponMapper;
 import com.example.cinema.po.*;
 import com.example.cinema.vo.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,7 +79,7 @@ public class CouponServiceImpl implements CouponService, CouponServiceForBl {
     @Override
     public Coupon getCouponById(int couponId){
         try{
-            return couponMapper.selectCounponById(couponId);
+            return couponMapper.selectCouponById(couponId);
         }catch (Exception e){
             e.printStackTrace();
             return null;
@@ -99,12 +98,32 @@ public class CouponServiceImpl implements CouponService, CouponServiceForBl {
         return;
     }
 
-    @Override
+    /*@Override
     public boolean existCouponUser(int couponId, int userId) {
         try{
             List<CouponUser> cuList = couponMapper.selectCouponUserByUserId(userId);
             for (CouponUser cu: cuList) {
                 if(cu.getCouponId() == couponId){
+                    return true;
+                }
+            }
+            return false;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    } */
+    
+    @Override
+    public boolean existCouponUser(int couponId, int userId){
+        try{
+            List<Coupon> coupons = couponMapper.selectCouponByUser(userId);
+            for (Coupon coupon: coupons){
+                //System.out.println("size: "+coupons.size());
+                //System.out.println("userid"+userId);
+                //System.out.println("1`"+couponId+" "+coupon.getId());
+                if(couponId == coupon.getId()){
+                    //System.out.println("2`"+couponId+" "+coupon.getId());
                     return true;
                 }
             }
