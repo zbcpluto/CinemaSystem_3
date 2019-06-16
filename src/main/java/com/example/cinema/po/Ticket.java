@@ -44,7 +44,7 @@ public class Ticket {
     private int paymentMode;
 
     /**
-     * 票所用的优惠券ID
+     * 票所用的优惠券ID, 若没用到则为0
      */
     private int couponId;
 
@@ -58,10 +58,7 @@ public class Ticket {
         this.time = time;
     }
 
-    public Ticket() {
-    }
-
-
+    
     public TicketVO getVO() {
         TicketVO vo = new TicketVO();
         vo.setRowIndex(this.getRowIndex());

@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.example.cinema.blImpl.user.AccountServiceForBl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +18,7 @@ import com.example.cinema.blImpl.management.schedule.ScheduleServiceForBl;
 import com.example.cinema.blImpl.promotion.ActivityServiceForBl;
 import com.example.cinema.blImpl.promotion.CouponServiceForBl;
 import com.example.cinema.blImpl.promotion.VIPServiceForBl;
+import com.example.cinema.blImpl.user.AccountServiceForBl;
 import com.example.cinema.data.sales.TicketMapper;
 import com.example.cinema.po.*;
 import com.example.cinema.vo.*;
@@ -50,23 +50,20 @@ public class TicketServiceImpl implements TicketService {
     @Transactional
     public ResponseVO addTicket(TicketForm ticketForm) {
     	try{
-            int userId=ticketForm.getUserId();
-            int scheduleId=ticketForm.getScheduleId();
+            int userId = ticketForm.getUserId();
+            int scheduleId = ticketForm.getScheduleId();
             List<SeatForm> seats = ticketForm.getSeats();
-            List<Integer> tickeIdList = new ArrayList<Integer>();
+            List<Integer> tickeIdList = new ArrayList<>();
             
-            for(SeatForm s: seats){
-                Ticket ticket= new Ticket();
+            for(SeatForm s: seats) {
+                Ticket ticket = new Ticket();
                 ticket.setUserId(userId) ;
                 ticket.setScheduleId(scheduleId);
                 ticket.setColumnIndex(s.getColumnIndex());
                 ticket.setRowIndex(s.getRowIndex());
-                ticket.setState(0);
-                ticket.setPaymentMode(-1);
                 ticketMapper.insertTicket(ticket);
-
                 tickeIdList.add(ticket.getId());
-            }//对于每一张ticket都在数据库中添加一个ticket对象
+            }  //对于每一张ticket都在数据库中添加一个ticket对象
 
             return ResponseVO.buildSuccess(tickeIdList);
         }
@@ -249,33 +246,35 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     @Transactional
-    public ResponseVO completeByVIPCard(List<Integer> id, int couponId) {
+    public ResponseVO completeByVIPCard(List<Integer> ticketIdList, int couponId, double total) {
     	try{
-            Coupon coupon = couponService.getCouponById(couponId);
-            List<Ticket> tickets = new ArrayList<Ticket>();
-
-            for(int i: id){
-                tickets.add(ticketMapper.selectTicketById(i));
+    		List<Ticket> tickets = new ArrayList<Ticket>();
+            for(int id: ticketIdList) {
+                tickets.add(ticketMapper.selectTicketById(id));
             }
-            int movieId=tickets.get(0).getScheduleId();
-            int userId=tickets.get(0).getUserId();
+            int movieId = tickets.get(0).getScheduleId();
+            int userId = tickets.get(0).getUserId();
+    		//会员卡扣费
             VIPCard vipCard = vipService.selectCardByUserId(userId);
-            List<TicketVO> ticketVOS=new ArrayList<>();
-            Timestamp timestamp=tickets.get(0).getTime();
-            double total=0;
-
-            for(Ticket t: tickets){
-                int scheduleId=t.getScheduleId();
-                ScheduleItem schedule=scheduleService.getScheduleItemById(scheduleId);
-                double fare=schedule.getFare();
-                total+=fare;
+            ticketMapper.VIPPay(userId, total);
+    		//更新ticket状态
+            for (Ticket t: tickets) {
+                t.setState(1);
+                ticketMapper.updateTicketState(t.getId(), 1);
+                ticketMapper.updatePaymentMode(t.getId(), 1);  //改变ticket的购买方式为会员卡支付（1）
+                if(couponId != 0) {
+                    ticketMapper.updateTicketCoupon(t.getId(), couponId);
+                } //更新ticket使用的couponId
             }
+            
+            List<TicketVO> ticketVOs = new ArrayList<>();
+            Timestamp timestamp = tickets.get(0).getTime();
 
             List<Activity> activities = activityService.selectActivityByTimeAndMovie(timestamp, movieId);
             TicketWithCouponVO ticketWithCouponVO=new TicketWithCouponVO();
 
-            List<Coupon> couponsToGive=new ArrayList<>();
-            for(Activity i:activities){
+            List<Coupon> couponsToGive = new ArrayList<>();
+            for(Activity i: activities){
                 if(!couponService.existCouponUser(i.getCoupon().getId(),userId)){
                     ticketMapper.addCoupon(i.getCoupon().getId(),userId);
                     couponsToGive.add(i.getCoupon());

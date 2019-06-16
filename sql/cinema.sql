@@ -105,9 +105,12 @@ DROP TABLE IF EXISTS `coupon_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `coupon_user` (
-  `coupon_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+	`id` int(11) NOT NULL AUTO_INCREMENT,
+  	`user_id` int(11) DEFAULT NULL,
+  	`coupon_id` int(11) DEFAULT NULL,
+  	`num` int(11) DEFAULT 0,
+  	PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -116,7 +119,7 @@ CREATE TABLE `coupon_user` (
 
 LOCK TABLES `coupon_user` WRITE;
 /*!40000 ALTER TABLE `coupon_user` DISABLE KEYS */;
-INSERT INTO `coupon_user` VALUES (8,15),(5,15),(8,15),(6,15),(5,15),(8,15),(6,15);
+INSERT INTO `coupon_user` VALUES (13, 3, 8, 4), (26, 3, 5, 2);
 /*!40000 ALTER TABLE `coupon_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -242,15 +245,15 @@ DROP TABLE IF EXISTS `ticket`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ticket` (
+						`id` int(11) NOT NULL AUTO_INCREMENT,
                         `user_id` int(11) DEFAULT NULL,
                         `schedule_id` int(11) DEFAULT NULL,
                         `column_index` int(11) DEFAULT NULL,
                         `row_index` int(11) DEFAULT NULL,
-                        `state` tinyint(4) DEFAULT NULL,
-                        `id` int(11) NOT NULL AUTO_INCREMENT,
+                        `state` tinyint(4) DEFAULT 0,
                         `time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-                        `paymentMode` tinyint(4) DEFAULT NULL,
-                        `couponId` int(11) DEFAULT NULL,
+                        `paymentMode` tinyint(4) DEFAULT -1,
+                        `couponId` int(11) DEFAULT 0,
                         PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -261,7 +264,7 @@ CREATE TABLE `ticket` (
 
 LOCK TABLES `ticket` WRITE;
 /*!40000 ALTER TABLE `ticket` DISABLE KEYS */;
-INSERT INTO `ticket` VALUES (12,50,5,3,2,1,'2019-04-23 13:50:52',-1,-1);
+INSERT INTO `ticket` VALUES (12,50,5,3,2,1,'2019-04-23 13:50:52',-1,0);
 /*!40000 ALTER TABLE `ticket` ENABLE KEYS */;
 UNLOCK TABLES;
 

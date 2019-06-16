@@ -48,9 +48,10 @@ public interface TicketService {
      *
      * @param id
      * @param couponId
+     * @param total 
      * @return
      */
-    ResponseVO completeByVIPCard(List<Integer> id, int couponId);
+    ResponseVO completeByVIPCard(List<Integer> ticketIdList, int couponId, double total);
 
     /**
      * TODO:取消锁座（只有状态是"锁定中"的可以取消）

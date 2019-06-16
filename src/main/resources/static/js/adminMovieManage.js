@@ -8,6 +8,7 @@ $(document).ready(function(){
         	alert("failed!");
             return;
         }
+        
         postRequest(
             '/movie/add',
             formData,

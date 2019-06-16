@@ -91,6 +91,4 @@ public class Coupon {
         this.discountAmount = discountAmount;
     }
 
-    public Coupon() {
-    }
 }

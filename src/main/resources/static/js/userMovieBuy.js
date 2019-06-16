@@ -1,13 +1,17 @@
-var selectedSeats = []
+var userId = sessionStorage.getItem('id');
 var scheduleId;
+var selectedSeats = []
 var order = {ticketId: [], couponId: 0};
 var coupons = [];
+var vipCard;
+var vipInfo;
 var isVIP = false;
 var useVIP = true;
-var userId = sessionStorage.getItem('id');
-var fare ;
+
+var fare;
 let allcoupons = [];
 var total;
+var actualTotal;
 
 
 $(document).ready(function () {
@@ -35,8 +39,8 @@ function renderSchedule(schedule, seats) {
     $('#order-schedule-hall-name').text(schedule.hallName);
     $('#schedule-fare').text(schedule.fare.toFixed(2));
     $('#order-schedule-fare').text(schedule.fare.toFixed(2));
-    $('#schedule-time').text(schedule.startTime.substring(5, 7) + "月" + schedule.startTime.substring(8, 10) + "日 " + schedule.startTime.substring(11, 16) + "场");
-    $('#order-schedule-time').text(schedule.startTime.substring(5, 7) + "月" + schedule.startTime.substring(8, 10) + "日 " + schedule.startTime.substring(11, 16) + "场");
+    $('#schedule-time').text(schedule.startTime.substring(5, 7) + "月" + schedule.startTime.substring(8, 10) + "日 " + schedule.startTime.substring(11, 16) + " ~ " + schedule.endTime.substring(11, 16));
+    $('#order-schedule-time').text(schedule.startTime.substring(5, 7) + "月" + schedule.startTime.substring(8, 10) + "日 " + schedule.startTime.substring(11, 16) + " ~ " + schedule.endTime.substring(11, 16));
     fare = schedule.fare;
     var seat = "";
     for(var i = 0; i < seats.length; i++) {
@@ -98,37 +102,7 @@ function seatClick(id, i, j) {
         }
         $('#order-confirm-btn').removeAttr("disabled");
     }
-    total = parseFloat((selectedSeats.length * fare)+"").toFixed(2);
-    getRequest(
-        '/coupon/'+userId+'/get',
-        function(res) {
-            allcoupons = res.content;
-            console.log(res);
-            console.log(allcoupons);
-            for (var i = 0;i<allcoupons.length;i++){
-                console.log(allcoupons[i].startTime);
-                var start = new Date(allcoupons[i].startTime);
-                var end = new Date(allcoupons[i].endTime);
-                var now = new Date();
-                if(now.getTime()<=end.getTime()){
-                    console.log(1);
-                    if(now.getTime()>=start.getTime()){
-                        console.log(2);
-                        console.log(total);
-                        if(total>=allcoupons[i].targetAmount){
-                            console.log(3);
-                            coupons.push(allcoupons[i]);
-                        }
-                    }
-                }
-            }
-            //orderInfo.coupons = coupons;
-            console.log(coupons);
-        },
-        function(error){
-            alert(error);
-        }
-    );
+    
     $('#seat-detail').html(seatDetailStr);
 }
 
@@ -136,110 +110,108 @@ function orderConfirmClick() {
     $('#seat-state').css("display", "none");
     $('#order-state').css("display", "");
 
-    // TODO:这里是假数据，需要连接后端获取真数据，数据格式可以自行修改，但如果改了格式，别忘了修改renderOrder方法
+    lockSeat();  //锁座
+    renderOrder();
+    
+    checkVip();
+}
 
-    //console.log(userId);
-
-    //console.log(allcoupons);
-
-    // allcoupons=[{
-    //     "id": 5,
-    //     "description": "测试优惠券",
-    //     "name": "品质联盟",
-    //     "targetAmount": 50.0,
-    //     "discountAmount": 4.0,
-    //     "startTime": "2019-04-21T05:14:46.000+0800",
-    //     "endTime": "2019-04-25T05:14:51.000+0800"
-    // }, {
-    //     "id": 5,
-    //     "description": "测试优惠券",
-    //     "name": "品质联盟",
-    //     "targetAmount": 20.0,
-    //     "discountAmount": 2.0,
-    //     "startTime": "2019-04-21T05:14:46.000+0800",
-    //     "endTime": "2019-06-25T05:14:51.000+0800"
-    // }];
-
-
-
-    //console.log(coupons);
-    var orderInfo = {
-        // ticketVOList: [{
-        //     "id": 63,
-        //     "userId": 15,
-        //     "scheduleId": 67,
-        //     "columnIndex": 5,
-        //     "rowIndex": 1,
-        //     "state": "未完成"
-        // }, {"id": 64, "userId": 15, "scheduleId": 67, "columnIndex": 6, "rowIndex": 1, "state": "未完成"}],
-        // "total": 120.0,
-        "coupons":coupons
-        // [{
-        //      "id": 5,
-        //      "description": "测试优惠券",
-        //      "name": "品质联盟",
-        //      "targetAmount": 50.0,
-        //      "discountAmount": 4.0,
-        //      "startTime": "2019-04-21T05:14:46.000+0800",
-        //      "endTime": "2019-04-25T05:14:51.000+0800"
-        //  }, {
-        //     "id": 5,
-        //     "description": "测试优惠券",
-        //     "name": "品质联盟",
-        //     "targetAmount": 20.0,
-        //     "discountAmount": 2.0,
-        //     "startTime": "2019-04-21T05:14:46.000+0800",
-        //     "endTime": "2019-04-25T05:14:51.000+0800"
-        // }]
-        // "activities": [{
-        //     "id": 4,
-        //     "name": "测试活动",
-        //     "description": "测试活动",
-        //     "startTime": "2019-04-21T00:00:00.000+0800",
-        //     "endTime": "2019-04-27T00:00:00.000+0800",
-        //     "movieList": [{
-        //         "id": 10,
-        //         "name": "夏目友人帐",
-        //         "posterUrl": "http://n.sinaimg.cn/translate/640/w600h840/20190312/ampL-hufnxfm4278816.jpg",
-        //         "director": "大森贵弘 /伊藤秀樹",
-        //         "screenWriter": "",
-        //         "starring": "神谷浩史 /井上和彦 /高良健吾 /小林沙苗 /泽城美雪",
-        //         "type": "动画",
-        //         "country": null,
-        //         "language": null,
-        //         "startDate": "2019-04-14T22:54:31.000+0800",
-        //         "length": 120,
-        //         "description": "在人与妖怪之间过着忙碌日子的夏目，偶然与以前的同学结城重逢，由此回忆起了被妖怪缠身的苦涩记忆。此时，夏目认识了在归还名字的妖怪记忆中出现的女性·津村容莉枝。和玲子相识的她，现在和独子椋雄一同过着平稳的生活。夏目通过与他们的交流，心境也变得平和。但这对母子居住的城镇，却似乎潜伏着神秘的妖怪。在调查此事归来后，寄生于猫咪老师身体的“妖之种”，在藤原家的庭院中，一夜之间就长成树结出果实。而吃掉了与自己形状相似果实的猫咪老师，竟然分裂成了3个",
-        //         "status": 0,
-        //         "islike": null,
-        //         "likeCount": null
-        //     }],
-        //     "coupon": {
-        //         "id": 8,
-        //         "description": "测试优惠券",
-        //         "name": "123",
-        //         "targetAmount": 100.0,
-        //         "discountAmount": 99.0,
-        //         "startTime": "2019-04-21T00:00:00.000+0800",
-        //         "endTime": "2019-04-27T00:00:00.000+0800"
-        //     }
-        // }]
+function lockSeat() {
+    var temp = [];
+    for (let seatLoc of selectedSeats) {
+        temp.push({columnIndex: seatLoc[1], rowIndex: seatLoc[0]});
+    }
+    var form = {
+        userId: userId,
+        scheduleId: scheduleId,
+        seats: temp
     };
-    //锁座完成
-    lockSeat(selectedSeats);
-    renderOrder(orderInfo);
+    
+    postRequest(
+        '/ticket/lockSeat',
+        form,
+        function (res) {
+        	if(res.success) {
+        		for(let it of res.content){
+                    order.ticketId.push(it);
+                }
+        	}
+        	else {
+        		alert("选座失败！");
+        	}
+        },
+        function (error) {
+            alert(error);
+            alert("选座失败！");
+        });
+}
 
+function renderOrder() {
+    var ticketStr = "<div>" + selectedSeats.length + "张</div>";
+    for (let ticketInfo of selectedSeats) {
+        ticketStr += "<div>" + (ticketInfo[0] + 1) + "排" + (ticketInfo[1] + 1) + "座</div>";
+    }
+    $('#order-tickets').html(ticketStr);
 
+    total = parseFloat((selectedSeats.length * fare)+"").toFixed(2);
+    $('#order-total').text(total);
+    $('#order-footer-total').text("总金额： ¥" + total);
 
+    getCoupons();
+    
+}
 
-    getRequest(
+function getCoupons() {
+	getRequest(
+        '/coupon/user/getByUser' + userId,
+        function (res) {
+        	if(res.success) {
+        		coupons = res.content.filter(function (coupon) {
+        			return total >= coupon.targetAmount;
+        		})
+        		var couponTicketStr = "";
+        		if (coupons.length == 0) {
+        			actualTotal = total;
+			        $('#order-discount').text("优惠金额：¥0");
+			        $('#order-actual-total').text("¥" + actualTotal);
+			        $('#pay-amount').html("<div><b>金额：</b>" + actualTotal + "元</div>");
+			    } else {
+			        for(let coupon of coupons) {
+			            couponTicketStr += "<option>" + coupon.name +"：满" + coupon.targetAmount + "减" + coupon.discountAmount + "（剩" + coupon.num + "张）" + "</option>"
+			        }
+			        $('#order-coupons').html(couponTicketStr);
+			        changeCoupon(0);
+			    }
+        	}
+        	else {
+        		alert("获取优惠券失败！");
+        	}
+        },
+        function (error) {
+            alert(error);
+            alert("获取优惠券失败！");
+        });
+}
+
+function changeCoupon(idx) {
+	order.couponId = coupons[idx].id;
+    $('#order-discount').text("优惠金额： ¥" + coupons[idx].discountAmount.toFixed(2));
+    actualTotal = (total - parseFloat(coupons[idx].discountAmount)).toFixed(2);
+    $('#order-actual-total').text("¥" + actualTotal);
+    $('#pay-amount').html("<div><b>金额：</b>" + actualTotal + "元</div>");
+}
+
+function checkVip() {
+	getRequest(
         '/vip/' + sessionStorage.getItem('id') + '/get',
         function (res) {
-            isVIP = res.success;
+            vipCard = res.content;
             useVIP = res.success;
-            if (isVIP) {
-                $('#member-balance').html("<div><b>会员卡余额：</b>" + res.content.balance.toFixed(2) + "元</div>");
-            } else {
+            if (vipCard != null) {
+                $('#member-balance').html("<div><b>会员卡余额：</b>" + vipCard.balance.toFixed(2) + "元</div>");
+                checkBalance();
+            } 
+            else {
                 $("#member-pay").css("display", "none");
                 $("#nonmember-pay").addClass("active");
 
@@ -252,6 +224,23 @@ function orderConfirmClick() {
         });
 }
 
+function checkBalance() {
+	if(vipCard.balance < actualTotal) {
+		$("#buyModal-notice").css("display", "");
+		$("#buyModal-confirm").html("立即充值");
+		$("#buyModal-confirm").attr("onclick", "chargeClick()");
+	}
+	else {
+		restoreDefault();
+	}
+}
+
+function restoreDefault() {
+	$("#buyModal-notice").css("display", "none");
+	$("#buyModal-confirm").html("确认支付");
+	$("#buyModal-confirm").attr("onclick", "payConfirmClick()");
+}
+
 function switchPay(type) {
     useVIP = (type == 0);
     if (type == 0) {
@@ -260,61 +249,89 @@ function switchPay(type) {
 
         $("#modal-body-member").css("display", "");
         $("#modal-body-nonmember").css("display", "none");
+        checkBalance();
     } else {
         $("#member-pay").removeClass("active");
         $("#nonmember-pay").addClass("active");
 
         $("#modal-body-member").css("display", "none");
         $("#modal-body-nonmember").css("display", "");
+        restoreDefault();
     }
 }
 
-function renderOrder(orderInfo) {
-    var ticketStr = "<div>" + selectedSeats.length + "张</div>";
-    for (let ticketInfo of selectedSeats) {
-        ticketStr += "<div>" + (ticketInfo[0] + 1) + "排" + (ticketInfo[1] + 1) + "座</div>";
-        //order.ticketId.push(ticketInfo.id);
-        //更改
-    }
-    $('#order-tickets').html(ticketStr);
-
-    // var total = orderInfo.total.toFixed(2);需要更改
-    total = parseFloat((selectedSeats.length * fare)+"").toFixed(2);
-    console.log(total);
-    $('#order-total').text(total);
-    $('#order-footer-total').text("总金额： ¥" + total);
-
-    console.log("jf"+orderInfo.coupons);
-    var couponTicketStr = "";
-    if (coupons.length == 0) {
-        $('#order-discount').text("优惠金额：无");
-        $('#order-actual-total').text(" ¥" + total);
-        $('#pay-amount').html("<div><b>金额：</b>" + total + "元</div>");
-    } else {
-        //coupons = orderInfo.coupons;
-        for (let coupon of coupons) {
-            couponTicketStr += "<option>满" + coupon.targetAmount + "减" + coupon.discountAmount + "</option>"
-        }
-        $('#order-coupons').html(couponTicketStr);
-        changeCoupon(0);
-    }
+function chargeClick() {
+	$('#buyModal').modal('hide');
+	$('#chargeModal').modal('show');
+	$('#chargeModal-notice').html("至少充值" + (actualTotal - vipCard.balance) + "才能完成本次购票");
 }
 
-function changeCoupon(couponIndex) {
-    order.couponId = coupons[couponIndex].id;
-    $('#order-discount').text("优惠金额： ¥" + coupons[couponIndex].discountAmount.toFixed(2));
-    var actualTotal = (parseFloat($('#order-total').text()) - parseFloat(coupons[couponIndex].discountAmount)).toFixed(2);
-    $('#order-actual-total').text(" ¥" + actualTotal);
-    $('#pay-amount').html("<div><b>金额：</b>" + actualTotal + "元</div>");
+function chargeConfirmClick() {
+	if(validateChargeForm()) {
+		getVipInfo();
+		var charge_amount = $('#userBuy-chargeMoney').val();
+        postRequest(
+            '/vip/charge',
+            {vipId: vipCard.id, amount: parseInt(charge_amount)},
+            function (res) {
+            	if(res.success) {
+            		$('#chargeModal').modal('hide');
+            		checkVip();
+                    setTimeout(function() {
+                    	if(charge_amount >= vipInfo.discount_req) {
+                        	alert("充值成功，充值满" + vipInfo.discount_req + "元，额外赠送" + vipInfo.discount_res + "元，目前您的余额为" + vipCard.balance + "元");
+                        }
+                        else {
+                        	alert("充值成功，目前您的余额为" + vipCard.balance + "元");
+                        }
+                    }, 100);
+            	}
+            	else {
+            		alert(res.message);
+            	}
+            },
+            function (error) {
+            	alert("充值失败！");
+                alert(error);
+            });
+	}
+}
+
+function getVipInfo() {
+	getRequest(
+		'/vip/getVIPInfo/' + vipCard.serviceId,
+		function (res) {
+		    if (res.success) {
+		    	vipInfo = res.content;
+		    } 
+		    else {
+		        alert(res.content);
+		    }
+		
+		},
+		function (error) {
+		    alert(error);
+		});
+}
+
+function validateChargeForm() {
+	var isValidate = true;
+    if (!$('#userBuy-chargeMoney').val()) {
+        isValidate = false;
+        $('#userBuy-chargeMoney').parent('.form-group').addClass('has-error');
+        $('#userBuy-chargeMoney-error').css("visibility", "visible");
+    }
+    return isValidate;
 }
 
 function payConfirmClick() {
-    if (useVIP) {
+    if(useVIP) {
+    	
         postRequest(
-            '/ticket/vip/buy?' + "ticketId=" + order.ticketId + "&couponId=" + order.couponId,
+            '/ticket/vip/buy?' + "ticketId=" + order.ticketId + "&couponId=" + order.couponId + "&total=" + actualTotal,
             {},
             function (res) {
-                console.log(order.ticketId + " +++");
+                if(res)
             },
             function (error) {
                 alert(error);
@@ -348,34 +365,6 @@ function postPayRequest() {
     $('#order-state').css("display", "none");
     $('#success-state').css("display", "");
     $('#buyModal').modal('hide')
-}
-function lockSeat(ticketlist){
-    //console.log(ticketlist);
-    var temp = [];
-    for (let seatLoc of selectedSeats) {
-        temp.push({columnIndex:seatLoc[1],rowIndex:seatLoc[0]});
-    }
-    var form = {
-        userId:userId,
-        scheduleId:scheduleId,
-        seats:temp
-    };
-    postRequest(
-        '/ticket/lockSeat',
-        form,
-        function (res) {
-            console.log(res.content);
-            if(res.content!=null){
-                for(let it of res.content){
-                    order.ticketId.push(it);
-                    console.log(it);
-                }
-            }
-        },
-        function (error) {
-            alert(error);
-        })
-
 }
 
 function validateForm() {

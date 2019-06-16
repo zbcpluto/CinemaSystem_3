@@ -40,10 +40,6 @@ public class Activity {
     private Coupon coupon;
 
 
-    public Activity() {
-
-    }
-
     public ActivityVO getVO() {
         ActivityVO vo = new ActivityVO();
         vo.setId(id);
