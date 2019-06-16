@@ -105,12 +105,9 @@ DROP TABLE IF EXISTS `coupon_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `coupon_user` (
-	`id` int(11) NOT NULL AUTO_INCREMENT,
-  	`user_id` int(11) DEFAULT NULL,
-  	`coupon_id` int(11) DEFAULT NULL,
-  	`num` int(11) DEFAULT 0,
-  	PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
+	`coupon_id` int(11) NOT NULL,
+  	`user_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -119,7 +116,7 @@ CREATE TABLE `coupon_user` (
 
 LOCK TABLES `coupon_user` WRITE;
 /*!40000 ALTER TABLE `coupon_user` DISABLE KEYS */;
-INSERT INTO `coupon_user` VALUES (13, 3, 8, 4), (26, 3, 5, 2);
+INSERT INTO `coupon_user` VALUES (8,15),(5,15),(8,15),(6,15),(5,15),(8,15),(6,15);
 /*!40000 ALTER TABLE `coupon_user` ENABLE KEYS */;
 UNLOCK TABLES;
 

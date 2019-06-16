@@ -267,40 +267,19 @@ public class TicketServiceImpl implements TicketService {
                 } //更新ticket使用的couponId
             }
             
-            List<TicketVO> ticketVOs = new ArrayList<>();
             Timestamp timestamp = tickets.get(0).getTime();
 
             List<Activity> activities = activityService.selectActivityByTimeAndMovie(timestamp, movieId);
-            TicketWithCouponVO ticketWithCouponVO=new TicketWithCouponVO();
 
             List<Coupon> couponsToGive = new ArrayList<>();
-            for(Activity i: activities){
+            CouponUser cu = couponService.get
+            for(Activity i: activities) {
                 if(!couponService.existCouponUser(i.getCoupon().getId(),userId)){
                     ticketMapper.addCoupon(i.getCoupon().getId(),userId);
                     couponsToGive.add(i.getCoupon());
                 }
             }
 
-
-            
-
-            double payment;
-            double discountAmount = 0;
-            double targetAmount = 0;
-
-            if(coupon!=null){
-                discountAmount = coupon.getDiscountAmount();
-                targetAmount = coupon.getTargetAmount();
-            }
-            
-            if(targetAmount <= total) {
-                payment = total - discountAmount;
-            }
-            else{
-                System.out.println("总额未达到优惠券使用门槛"); 
-                payment = total;
-            }
-            
             if(vipCard.getBalance() >= payment){
                 vipCard.setBalance(vipCard.getBalance() - payment);
                 ticketMapper.VIPPay(userId,payment);  //会员卡扣费
