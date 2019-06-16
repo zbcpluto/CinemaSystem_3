@@ -43,7 +43,7 @@ public class StatisticsController {
     }
 
     @RequestMapping(value = "/user/home/navi", method = RequestMethod.GET)
-    public ResponseVO navigatePopularMovies(@RequestParam int movieNum){
-        return statisticsService.navigatePopularMovies(movieNum);
+    public ResponseVO navigatePopularMovies(){
+        return statisticsService.navigatePopularMovies();
     }
 }

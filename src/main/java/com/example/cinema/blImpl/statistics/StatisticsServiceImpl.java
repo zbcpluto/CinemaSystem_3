@@ -2,13 +2,10 @@ package com.example.cinema.blImpl.statistics;
 
 import com.example.cinema.bl.statistics.StatisticsService;
 import com.example.cinema.blImpl.management.hall.HallServiceForBl;
+import com.example.cinema.blImpl.management.movie.MovieServiceForBl;
 import com.example.cinema.data.statistics.StatisticsMapper;
 import com.example.cinema.po.*;
-import com.example.cinema.vo.AudiencePriceVO;
-import com.example.cinema.vo.MoviePlacingRateVO;
-import com.example.cinema.vo.MovieScheduleTimeVO;
-import com.example.cinema.vo.MovieTotalBoxOfficeVO;
-import com.example.cinema.vo.ResponseVO;
+import com.example.cinema.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +23,9 @@ import java.util.List;
 public class StatisticsServiceImpl implements StatisticsService {
     @Autowired
     private StatisticsMapper statisticsMapper;
+    @Autowired
+    private MovieServiceForBl movieServiceForBl;
+
     @Override
     public ResponseVO getScheduleRateByDate(Date date) {
         try{
@@ -138,11 +138,19 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
-    public ResponseVO navigatePopularMovies(int movieNum) {
+    public ResponseVO navigatePopularMovies() {
         try{
             List<PopularMovie> popularMovieList = statisticsMapper.selectMostPopularMovies();
-
-            return ResponseVO.buildSuccess(popularMovieList);
+            List<MovieVO> movieVOList = new ArrayList<MovieVO>();
+            for (int i=0; i < popularMovieList.size()&& i < 7; i++){
+                PopularMovie popularMovie = popularMovieList.get(i);
+                Movie moviePO = movieServiceForBl.getMovieById(popularMovie.getMovieId());
+                if (moviePO.getStatus() == 0){
+                    MovieVO movieVO = new MovieVO(moviePO);
+                    movieVOList.add(movieVO);
+                }
+            }
+            return ResponseVO.buildSuccess(movieVOList);
         }catch(Exception e){
             return ResponseVO.buildFailure("获取最受欢迎电影失败");
         }

@@ -53,5 +53,5 @@ public interface StatisticsService {
      * @param movieNum
      * @return
      */
-    ResponseVO navigatePopularMovies(int movieNum);
+    ResponseVO navigatePopularMovies();
 }
