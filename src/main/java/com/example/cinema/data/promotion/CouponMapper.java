@@ -26,4 +26,6 @@ public interface CouponMapper {
     List<Coupon> selectCouponByUserAndAmount(@Param("userId") int userId,@Param("amount") double amount);
 
     List<User> selectUserByTicketConsumption(@Param("ticketConsumption")double ticketConsumption);
+
+    void addCoupon(int id, int userId);
 }

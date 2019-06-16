@@ -4,6 +4,7 @@ import com.example.cinema.bl.promotion.CouponService;
 import com.example.cinema.data.promotion.CouponMapper;
 import com.example.cinema.po.Coupon;
 import com.example.cinema.po.User;
+import com.example.cinema.vo.UserVO;
 import com.example.cinema.vo.CouponForm;
 import com.example.cinema.vo.ResponseVO;
 
@@ -107,6 +108,19 @@ public class CouponServiceImpl implements CouponService, CouponServiceForBl {
                 return ResponseVO.buildSuccess(result);
             }
             return ResponseVO.buildFailure("暂时没有消费超过该底线的用户");
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseVO.buildFailure("失败");
+        }
+    }
+
+    @Override
+    public ResponseVO giveCoupon(List<UserVO> users, int couponId){
+        try {
+            for(UserVO user: users){
+                couponMapper.addCoupon(couponId,user.getId());
+            }
+            return ResponseVO.buildSuccess("添加优惠券成功");
         }catch (Exception e){
             e.printStackTrace();
             return ResponseVO.buildFailure("失败");

@@ -1,7 +1,12 @@
 package com.example.cinema.bl.promotion;
 
 import com.example.cinema.vo.CouponForm;
+
+import com.example.cinema.vo.UserVO;
+
 import com.example.cinema.vo.ResponseVO;
+
+import java.util.List;
 
 /**
  * Created by liying on 2019/4/17.
@@ -15,6 +20,8 @@ public interface CouponService {
     ResponseVO issueCoupon(int couponId,int userId);
 
     ResponseVO getUserByConsumption(double ConsumptionBottom);
+
+    ResponseVO giveCoupon(List<UserVO> users, int couponId);
 
 
 }

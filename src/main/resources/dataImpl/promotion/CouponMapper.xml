@@ -32,6 +32,11 @@
         select * from user where ticket_consumption >= #{ticketConsumption}
     </select>
 
+    <insert id="addCoupon">
+        insert into coupon_user(coupon_id, user_id)
+        values (#{couponId}, #{userId})
+    </insert>
+
     <resultMap id="Coupon" type="com.example.cinema.po.Coupon">
         <result column="description" property="description"></result>
         <result column="id" property="id"></result>
