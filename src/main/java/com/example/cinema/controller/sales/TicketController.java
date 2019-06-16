@@ -2,6 +2,7 @@ package com.example.cinema.controller.sales;
 
 import com.example.cinema.bl.sales.TicketService;
 import com.example.cinema.vo.ResponseVO;
+import com.example.cinema.vo.TicketBuyForm;
 import com.example.cinema.vo.TicketForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +19,8 @@ public class TicketController {
     TicketService ticketService;
 
     @PostMapping("/vip/buy")
-    public ResponseVO buyTicketByVIPCard(@RequestParam List<Integer> ticketIdList, @RequestParam int couponId, @RequestParam double total) {
-        return ticketService.completeByVIPCard(ticketIdList, couponId, total);
+    public ResponseVO buyTicketByVIPCard(@RequestBody TicketBuyForm ticketBuyForm) {
+        return ticketService.completeByVIPCard(ticketBuyForm);
     }
 
     @PostMapping("/lockSeat")
@@ -27,8 +28,8 @@ public class TicketController {
         return ticketService.addTicket(ticketForm);
     }
     @PostMapping("/buy")
-    public ResponseVO buyTicket(@RequestParam List<Integer> ticketId,@RequestParam int couponId){
-        return ticketService.completeTicket(ticketId,couponId);
+    public ResponseVO buyTicket(@RequestBody TicketBuyForm ticketBuyForm){
+        return ticketService.completeTicket(ticketBuyForm);
     }
     @GetMapping("/get/{userId}")
     public ResponseVO getTicketByUserId(@PathVariable int userId){

@@ -1,8 +1,6 @@
 package com.example.cinema.data.user;
 
 import com.example.cinema.po.User;
-import com.example.cinema.vo.UserForm;
-
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

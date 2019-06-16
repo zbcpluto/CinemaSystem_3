@@ -37,10 +37,6 @@ public class ActivityVO {
     private Coupon coupon;
 
 
-    public ActivityVO() {
-
-    }
-
     public int getId() {
         return id;
     }

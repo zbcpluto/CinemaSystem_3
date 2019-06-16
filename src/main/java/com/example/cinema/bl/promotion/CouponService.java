@@ -11,6 +11,8 @@ import com.example.cinema.vo.UserVO;
  */
 public interface CouponService {
 	
+	ResponseVO getCouponsByUser(int userId);
+	
     ResponseVO addCoupon(CouponForm couponForm);
 
     ResponseVO issueCoupon(int couponId,int userId);
@@ -18,4 +20,5 @@ public interface CouponService {
     ResponseVO getUserByConsumption(double ConsumptionBottom);
 
 	ResponseVO giveCoupon(List<UserVO> users, int couponId);
+	
 }

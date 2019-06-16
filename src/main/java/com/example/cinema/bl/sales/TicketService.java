@@ -1,6 +1,7 @@
 package com.example.cinema.bl.sales;
 
 import com.example.cinema.vo.ResponseVO;
+import com.example.cinema.vo.TicketBuyForm;
 import com.example.cinema.vo.TicketForm;
 
 import java.util.List;
@@ -21,11 +22,10 @@ public interface TicketService {
     /**
      * TODO:完成购票【不使用会员卡】流程包括校验优惠券和根据优惠活动赠送优惠券
      *
-     * @param id
-     * @param couponId
+     * @param ticketBuyForm
      * @return
      */
-    ResponseVO completeTicket(List<Integer> id, int couponId);
+    ResponseVO completeTicket(TicketBuyForm ticketBuyForm);
 
     /**
      * 获得该场次的被锁座位和场次信息
@@ -45,13 +45,10 @@ public interface TicketService {
 
     /**
      * TODO:完成购票【使用会员卡】流程包括会员卡扣费、校验优惠券和根据优惠活动赠送优惠券
-     *
-     * @param id
-     * @param couponId
-     * @param total 
+     * @param ticketBuyForm
      * @return
      */
-    ResponseVO completeByVIPCard(List<Integer> ticketIdList, int couponId, double total);
+    ResponseVO completeByVIPCard(TicketBuyForm ticketBuyForm);
 
     /**
      * TODO:取消锁座（只有状态是"锁定中"的可以取消）
@@ -60,5 +57,7 @@ public interface TicketService {
      * @return
      */
     ResponseVO cancelTicket(List<Integer> id);
+    
     ResponseVO getTicketRefund(List<Integer> ticketId);
+    
 }

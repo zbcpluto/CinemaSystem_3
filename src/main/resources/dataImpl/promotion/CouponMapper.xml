@@ -21,8 +21,8 @@
         delete from coupon_user where coupon_id=#{couponId} and user_id =#{userId} limit 1
     </delete>
 
-    <select id="selectCouponUserByUserId" resultMap="CouponUser">
-    	select * from coupon_user where user_id=#{userId}
+    <select id="selectCouponByUser" resultMap="Coupon">
+        select * from coupon c left join coupon_user  cu on c.id=cu.coupon_id where cu.user_id=#{userId} and c.start_time &lt; Now() and c.end_time &gt; Now()
     </select>
 
     <select id="selectCouponByUserAndAmount" resultMap="Coupon">
@@ -53,11 +53,4 @@
         <result column="ticket_consumption" property="ticketConsumption"></result>
     </resultMap>
     
-    <resultMap id="CouponUser" type="com.example.cinema.po.CouponUser">
-        <result column="id" property="id"></result>
-        <result column="user_id" property="userId"></result>
-        <result column="coupon_id" property="couponId"></result>
-        <result column="num" property="num"></result>
-    </resultMap>
-
 </mapper>

@@ -75,73 +75,39 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     @Transactional
-    public ResponseVO completeTicket(List<Integer> id, int couponId) {
-    	try{
-            List<Ticket> tickets = new ArrayList<Ticket>();
-            for(Integer i: id){
-                tickets.add(ticketMapper.selectTicketById(i));
+    public ResponseVO completeTicket(TicketBuyForm ticketBuyForm) {
+    	try {
+    		int movieId = ticketBuyForm.getMovieId();
+    		int couponId = ticketBuyForm.getCouponId();
+    		List<Integer> ticketIdList = ticketBuyForm.getTicketId();
+    		List<Ticket> tickets = new ArrayList<Ticket>();
+            for(int id: ticketIdList) {
+                tickets.add(ticketMapper.selectTicketById(id));
             }
-            List<TicketVO> ticketVOs = new ArrayList<TicketVO>();
-            Coupon coupon=new Coupon();
-            if(couponId==-1){
-                coupon = couponService.getCouponById(couponId);
-            }
-
-            int movieId = tickets.get(0).getScheduleId(); //通过ticket寻找movieId，由于多张tickets都只对应1部电影，因此只要取第一张ticket
             int userId = tickets.get(0).getUserId();
-
-            double total = 0;
-            Timestamp timestamp = tickets.get(0).getTime();
-
-            for(Ticket t: tickets){
-                int scheduleId = t.getScheduleId();
-                ScheduleItem schedule = scheduleService.getScheduleItemById(scheduleId);
-                double fare = schedule.getFare();
-
-                ticketMapper.updateTicketState(t.getId(), 1);   // 改变ticket状态为已购买（"1"）
-                ticketMapper.updatePaymentMode(t.getId(),0);  //改变ticket的购买方式为银行卡支付（0）
-                if(couponId!=-1){
-                    ticketMapper.updateTicketCoupon(t.getId(),couponId);
-                }
+            
+    		//更新ticket状态
+            for (Ticket t: tickets) {
                 t.setState(1);
-
-                TicketVO ticketVO = t.getVO();
-                ticketVOs.add(ticketVO);  //构造ticketVO后加入一个ticketVOS的列表
-                total += fare;
+                ticketMapper.updateTicketState(t.getId(), 1);
+                ticketMapper.updatePaymentMode(t.getId(), 0);  //改变ticket的购买方式为银行卡支付（0）
+                if(couponId != 0) {
+                    ticketMapper.updateTicketCoupon(t.getId(), couponId);
+                } //更新ticket使用的couponId
             }
-
+            
+            //得到所有满足条件的活动
+            Timestamp timestamp = tickets.get(0).getTime();
             List<Activity> activities = activityService.selectActivityByTimeAndMovie(timestamp, movieId);
-            //根据时间和电影ID在数据库中寻找满足条件的活动
-
-            List<Coupon> couponsToGive=new ArrayList<Coupon>();  //构造根据活动赠送的优惠券列表
-            for(Activity i:activities){
-
-                if(!couponService.existCouponUser(i.getCoupon().getId(), userId)){
-                    couponsToGive.add(i.getCoupon());
-                    ticketMapper.addCoupon(i.getCoupon().getId(), userId);
-                }
-
-            }//添加赠送的优惠券
-
-
-            TicketWithCouponVO ticketWithCouponVO = new TicketWithCouponVO();
-            ticketWithCouponVO.setCoupons(couponsToGive);
-            ticketWithCouponVO.setTicketVOList(ticketVOs);
-            ticketWithCouponVO.setTotal(total);
-            //构造ticketWithCouponVO作为ResponseVO中的content
-
-            if(couponId!=-1 && coupon.getTargetAmount()<=total){
-                couponService.deleteCoupon(couponId,userId);
-                double discountByCoupon=couponService.getCouponById(couponId).getDiscountAmount();
-                accountServiceForBl.updateTicketConsumption(userId,total-discountByCoupon);
-                return ResponseVO.buildSuccess(ticketWithCouponVO);
-
+            
+            //统计本次订单中获得的优惠券
+            List<ActivityVO> activitieVOs = new ArrayList<>();
+            for(Activity ac: activities) {
+                ticketMapper.addCoupon(ac.getCoupon().getId(), userId);
+                activitieVOs.add(ac.getVO());
             }
-            else if(couponId==-1){
-                accountServiceForBl.updateTicketConsumption(userId,total);
-                return ResponseVO.buildSuccess(ticketWithCouponVO);
-            }//校验优惠券（默认前端已经做好根据时间筛选优惠券的操作，即这里选择的优惠券是在优惠期限以内的）
-            return ResponseVO.buildFailure("总额低于门槛");
+
+            return ResponseVO.buildSuccess(activitieVOs);
 
         }catch (Exception e){
             e.printStackTrace();
@@ -246,16 +212,19 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     @Transactional
-    public ResponseVO completeByVIPCard(List<Integer> ticketIdList, int couponId, double total) {
-    	try{
+    public ResponseVO completeByVIPCard(TicketBuyForm ticketBuyForm) {
+    	try {
+    		int movieId = ticketBuyForm.getMovieId();
+    		int couponId = ticketBuyForm.getCouponId();
+    		double total = ticketBuyForm.getTotal();
+    		List<Integer> ticketIdList = ticketBuyForm.getTicketId();
+    		
     		List<Ticket> tickets = new ArrayList<Ticket>();
             for(int id: ticketIdList) {
                 tickets.add(ticketMapper.selectTicketById(id));
             }
-            int movieId = tickets.get(0).getScheduleId();
             int userId = tickets.get(0).getUserId();
     		//会员卡扣费
-            VIPCard vipCard = vipService.selectCardByUserId(userId);
             ticketMapper.VIPPay(userId, total);
     		//更新ticket状态
             for (Ticket t: tickets) {
@@ -267,45 +236,18 @@ public class TicketServiceImpl implements TicketService {
                 } //更新ticket使用的couponId
             }
             
+            //得到所有满足条件的活动
             Timestamp timestamp = tickets.get(0).getTime();
-
             List<Activity> activities = activityService.selectActivityByTimeAndMovie(timestamp, movieId);
-
-            List<Coupon> couponsToGive = new ArrayList<>();
-            CouponUser cu = couponService.get
-            for(Activity i: activities) {
-                if(!couponService.existCouponUser(i.getCoupon().getId(),userId)){
-                    ticketMapper.addCoupon(i.getCoupon().getId(),userId);
-                    couponsToGive.add(i.getCoupon());
-                }
+            
+            //统计本次订单中获得的优惠券
+            List<ActivityVO> activitieVOs = new ArrayList<>();
+            for(Activity ac: activities) {
+                ticketMapper.addCoupon(ac.getCoupon().getId(), userId);
+                activitieVOs.add(ac.getVO());
             }
 
-            if(vipCard.getBalance() >= payment){
-                vipCard.setBalance(vipCard.getBalance() - payment);
-                ticketMapper.VIPPay(userId,payment);  //会员卡扣费
-                accountServiceForBl.updateTicketConsumption(userId,payment); // user表中更新购票消费
-
-
-                couponService.deleteCoupon(couponId,userId);
-                System.out.println("付费成功");
-                for (Ticket t : tickets) {
-                    t.setState(1);
-                    ticketMapper.updateTicketState(t.getId(),1);
-                    ticketMapper.updatePaymentMode(t.getId(),1);  //改变ticket的购买方式为会员卡支付（1）
-                    if(couponId!=-1){
-                        ticketMapper.updateTicketCoupon(t.getId(),couponId);
-                    } //更新ticket使用的couponId
-                    TicketVO ticketVO = t.getVO();
-                    ticketVOS.add(ticketVO);
-                }
-                ticketWithCouponVO.setCoupons(couponsToGive);
-                ticketWithCouponVO.setTicketVOList(ticketVOS);
-                ticketWithCouponVO.setTotal(total);
-                return ResponseVO.buildSuccess(ticketWithCouponVO);
-            }
-            else{
-                return ResponseVO.buildFailure("支付失败");
-            }
+            return ResponseVO.buildSuccess(activitieVOs);
         }
     	catch (Exception e){
             e.printStackTrace();

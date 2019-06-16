@@ -1,7 +1,6 @@
 package com.example.cinema.data.promotion;
 
 import com.example.cinema.po.Coupon;
-import com.example.cinema.po.CouponUser;
 import com.example.cinema.po.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -22,9 +21,9 @@ public interface CouponMapper {
 
     void deleteCouponUser(@Param("couponId") int couponId,@Param("userId")int userId);
     
-    List<CouponUser> selectCouponUserByUserId(int userId);
+    List<Coupon> selectCouponByUser(int userId);
 
-    List<Coupon> selectCouponByUserAndAmount(@Param("userId") int userId,@Param("amount") double amount);
+    List<Coupon> selectCouponByUserAndAmount(@Param("userId") int userId, @Param("amount") double amount);
 
     List<User> selectUserByTicketConsumption(@Param("ticketConsumption")double ticketConsumption);
 	

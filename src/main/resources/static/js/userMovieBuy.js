@@ -1,4 +1,5 @@
 var userId = sessionStorage.getItem('id');
+var movieId;
 var scheduleId;
 var selectedSeats = []
 var order = {ticketId: [], couponId: 0};
@@ -15,6 +16,7 @@ var actualTotal;
 
 
 $(document).ready(function () {
+	movieId = parseInt(window.location.href.split('?')[1].split('&')[0].split('=')[1]);
     scheduleId = parseInt(window.location.href.split('?')[1].split('&')[1].split('=')[1]);
 
     getInfo();
@@ -326,12 +328,16 @@ function validateChargeForm() {
 
 function payConfirmClick() {
     if(useVIP) {
-    	
         postRequest(
-            '/ticket/vip/buy?' + "ticketId=" + order.ticketId + "&couponId=" + order.couponId + "&total=" + actualTotal,
-            {},
+            '/ticket/vip/buy',
+            {movieId: movieId, ticketId: order.ticketId, couponId: order.couponId, total: actualTotal},
             function (res) {
-                if(res)
+                if(res.success) {
+                	alert("购票成功！");
+                }
+                else {
+                	alert(res.message);
+                }
             },
             function (error) {
                 alert(error);
@@ -343,12 +349,17 @@ function payConfirmClick() {
         if (validateForm()) {
             if ($('#userBuy-cardNum').val() === "123123123" && $('#userBuy-cardPwd').val() === "123123") {
                 postRequest(
-                    '/ticket/buy?'+"ticketId="+order.ticketId+"&couponId="+order.couponId,
-                    {},
-                    function(res){
-                        console.log(order.ticketId+"&couponId="+order.couponId);
+                    '/ticket/buy',
+                    {movieId: movieId, ticketId: order.ticketId, couponId: order.couponId, total: actualTotal},
+                    function(res) {
+                    	if(res.success) {
+                    		alert("购票成功！");
+                    	}
+                    	else {
+                    		alert(res.message);
+                    	}
                     },
-                    function(error){
+                    function(error) {
                         alert(error);
                     }
                 );

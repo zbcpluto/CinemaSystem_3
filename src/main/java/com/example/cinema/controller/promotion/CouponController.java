@@ -22,9 +22,9 @@ public class CouponController {
     @Autowired
     CouponService couponService;
 
-    @GetMapping("/user/getByUser{userId}")
+    @GetMapping("{userId}/get")
     public ResponseVO getCoupons(@PathVariable int userId){
-        return couponService.getCouponUserByUserId(userId);
+        return couponService.getCouponsByUser(userId);
     }
 
     @GetMapping("{ConsumptionBottom}/getUser")

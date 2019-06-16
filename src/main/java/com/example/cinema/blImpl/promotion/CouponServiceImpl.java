@@ -20,7 +20,7 @@ public class CouponServiceImpl implements CouponService, CouponServiceForBl {
     @Autowired
     CouponMapper couponMapper;
 
-    @Override
+    /*@Override
     public ResponseVO getCouponUserByUserId(int userId) {
         try {
         	List<CouponUser> cuList = couponMapper.selectCouponUserByUserId(userId);
@@ -32,6 +32,15 @@ public class CouponServiceImpl implements CouponService, CouponServiceForBl {
         		cuvList.add(cuv);
         	}
             return ResponseVO.buildSuccess(cuvList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseVO.buildFailure("失败");
+        }
+    } */
+    @Override
+    public ResponseVO getCouponsByUser(int userId) {
+        try {
+            return ResponseVO.buildSuccess(couponMapper.selectCouponByUser(userId));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseVO.buildFailure("失败");
