@@ -1,26 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.cinema.data.promotion.CouponMapper">
-    <insert id="insertCoupon" parameterType="com.example.cinema.po.Coupon"
+
+    <insert id="insertOneCoupon" parameterType="com.example.cinema.po.Coupon"
             useGeneratedKeys="true" keyProperty="id">
         insert into coupon(description,name,target_amount,discount_amount,start_time,end_time)
         values(#{description},#{name},#{targetAmount},#{discountAmount},#{startTime},#{endTime})
     </insert>
+    
+    <select id="selectCounponById" resultMap="Coupon">
+        select * from coupon where id=#{id}
+    </select>
+    
     <insert id="insertCouponUser">
         insert into coupon_user(coupon_id,user_id)
         values(#{couponId},#{userId})
     </insert>
+    
     <delete id="deleteCouponUser">
         delete from coupon_user where coupon_id=#{couponId} and user_id =#{userId} limit 1
     </delete>
 
-    <select id="selectById" resultMap="Coupon">
-        select * from coupon where id=#{id}
-    </select>
-
-    <select id="selectCouponByUser" resultMap="Coupon">
-        select * from coupon c left join coupon_user  cu on c.id=cu.coupon_id where cu.user_id=#{userId} and c.start_time &lt; Now() and c.end_time &gt; Now()
-
+    <select id="selectCouponUserByUserId" resultMap="CouponUser">
+    	select * from coupon_user where user_id=#{userId}
     </select>
 
     <select id="selectCouponByUserAndAmount" resultMap="Coupon">
@@ -31,16 +33,16 @@
     <select id="selectUserByTicketConsumption" resultMap="User">
         select * from user where ticket_consumption >= #{ticketConsumption}
     </select>
-
-    <insert id="addCoupon">
+	
+	<insert id="addCoupon">
         insert into coupon_user(coupon_id, user_id)
         values (#{couponId}, #{userId})
     </insert>
 
     <resultMap id="Coupon" type="com.example.cinema.po.Coupon">
-        <result column="description" property="description"></result>
         <result column="id" property="id"></result>
         <result column="name" property="name"></result>
+        <result column="description" property="description"></result>
         <result column="target_amount" property="targetAmount"></result>
         <result column="discount_amount" property="discountAmount"></result>
         <result column="start_time" property="startTime"></result>
@@ -49,6 +51,13 @@
 
     <resultMap id="User" type="com.example.cinema.po.User">
         <result column="ticket_consumption" property="ticketConsumption"></result>
+    </resultMap>
+    
+    <resultMap id="CouponUser" type="com.example.cinema.po.CouponUser">
+        <result column="id" property="id"></result>
+        <result column="user_id" property="userId"></result>
+        <result column="coupon_id" property="couponId"></result>
+        <result column="num" property="num"></result>
     </resultMap>
 
 </mapper>

@@ -2,12 +2,10 @@ package com.example.cinema.blImpl.promotion;
 
 import com.example.cinema.bl.promotion.CouponService;
 import com.example.cinema.data.promotion.CouponMapper;
-import com.example.cinema.po.Coupon;
-import com.example.cinema.po.User;
-import com.example.cinema.vo.UserVO;
-import com.example.cinema.vo.CouponForm;
-import com.example.cinema.vo.ResponseVO;
+import com.example.cinema.po.*;
+import com.example.cinema.vo.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +21,17 @@ public class CouponServiceImpl implements CouponService, CouponServiceForBl {
     CouponMapper couponMapper;
 
     @Override
-    public ResponseVO getCouponsByUser(int userId) {
+    public ResponseVO getCouponUserByUserId(int userId) {
         try {
-            return ResponseVO.buildSuccess(couponMapper.selectCouponByUser(userId));
+        	List<CouponUser> cuList = couponMapper.selectCouponUserByUserId(userId);
+        	List<CouponUserVO> cuvList = new ArrayList<>();
+        	// 暂时不做时间筛选
+        	for(CouponUser cu: cuList) {
+        		Coupon c = couponMapper.selectCounponById(cu.getCouponId());
+        		CouponUserVO cuv = new CouponUserVO(c, cu.getNum());
+        		cuvList.add(cuv);
+        	}
+            return ResponseVO.buildSuccess(cuvList);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseVO.buildFailure("失败");
@@ -35,14 +41,14 @@ public class CouponServiceImpl implements CouponService, CouponServiceForBl {
     @Override
     public ResponseVO addCoupon(CouponForm couponForm) {
         try {
-            Coupon coupon=new Coupon();
+            Coupon coupon = new Coupon();
             coupon.setName(couponForm.getName());
             coupon.setDescription(couponForm.getDescription());
             coupon.setTargetAmount(couponForm.getTargetAmount());
             coupon.setDiscountAmount(couponForm.getDiscountAmount());
             coupon.setStartTime(couponForm.getStartTime());
             coupon.setEndTime(couponForm.getEndTime());
-            couponMapper.insertCoupon(coupon);
+            couponMapper.insertOneCoupon(coupon);
             return ResponseVO.buildSuccess(coupon);
         } catch (Exception e) {
             e.printStackTrace();
@@ -65,7 +71,7 @@ public class CouponServiceImpl implements CouponService, CouponServiceForBl {
     @Override
     public Coupon getCouponById(int couponId){
         try{
-            return couponMapper.selectById(couponId);
+            return couponMapper.selectCounponById(couponId);
         }catch (Exception e){
             e.printStackTrace();
             return null;
@@ -85,11 +91,11 @@ public class CouponServiceImpl implements CouponService, CouponServiceForBl {
     }
 
     @Override
-    public boolean existCouponUser(int couponId, int userId){
+    public boolean existCouponUser(int couponId, int userId) {
         try{
-            List<Coupon> coupons = couponMapper.selectCouponByUser(userId);
-            for (Coupon coupon: coupons){
-                if(couponId == coupon.getId()){
+            List<CouponUser> cuList = couponMapper.selectCouponUserByUserId(userId);
+            for (CouponUser cu: cuList) {
+                if(cu.getCouponId() == couponId){
                     return true;
                 }
             }
@@ -113,8 +119,8 @@ public class CouponServiceImpl implements CouponService, CouponServiceForBl {
             return ResponseVO.buildFailure("失败");
         }
     }
-
-    @Override
+	
+	@Override
     public ResponseVO giveCoupon(List<UserVO> users, int couponId){
         try {
             for(UserVO user: users){
