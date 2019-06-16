@@ -1,10 +1,6 @@
 package com.example.cinema.data.statistics;
 
-import com.example.cinema.po.AudiencePrice;
-import com.example.cinema.po.Hall;
-import com.example.cinema.po.MoviePlacingAudience;
-import com.example.cinema.po.MovieScheduleTime;
-import com.example.cinema.po.MovieTotalBoxOffice;
+import com.example.cinema.po.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -57,4 +53,6 @@ public interface StatisticsMapper {
      * @return
      */
 	List<MovieTotalBoxOffice> selectRecentMovieBoxOffice(@Param("date") Date startDate);
+
+	List<PopularMovie> selectMostPopularMovies();
 }

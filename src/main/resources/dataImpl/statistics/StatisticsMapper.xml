@@ -50,4 +50,12 @@
         on s.movieId = movie.id
         order by boxOffice desc
     </select>
+
+    <select id="selectMostPopularMovies" resultType="com.example.cinema.po.PopularMovie">
+        select movie_id as movieId,count(schedule_id) as times from ticket
+        right join
+            (select id, movie_id from `schedule`) s
+            on ticket.schedule_id=s.id
+        order by times desc
+    </select>
 </mapper>

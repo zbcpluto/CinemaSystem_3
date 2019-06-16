@@ -47,4 +47,11 @@ public interface StatisticsService {
      * @return
      */
     ResponseVO getPopularMovies(int days, int movieNum);
+
+    /**
+     * 给导航页面返回最受欢迎电影
+     * @param movieNum
+     * @return
+     */
+    ResponseVO navigatePopularMovies(int movieNum);
 }

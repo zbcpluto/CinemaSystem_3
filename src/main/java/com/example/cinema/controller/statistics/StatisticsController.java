@@ -42,13 +42,8 @@ public class StatisticsController {
         return statisticsService.getPopularMovies(days, movieNum);
     }
 
-
-
-
-
-
-
-
-
-
+    @RequestMapping(value = "/user/home/navi", method = RequestMethod.GET)
+    public ResponseVO navigatePopularMovies(@RequestParam int movieNum){
+        return statisticsService.navigatePopularMovies(movieNum);
+    }
 }

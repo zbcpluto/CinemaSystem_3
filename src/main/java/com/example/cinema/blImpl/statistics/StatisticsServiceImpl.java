@@ -1,6 +1,7 @@
 package com.example.cinema.blImpl.statistics;
 
 import com.example.cinema.bl.statistics.StatisticsService;
+import com.example.cinema.blImpl.management.hall.HallServiceForBl;
 import com.example.cinema.data.statistics.StatisticsMapper;
 import com.example.cinema.po.*;
 import com.example.cinema.vo.AudiencePriceVO;
@@ -136,8 +137,18 @@ public class StatisticsServiceImpl implements StatisticsService {
     	}
     }
 
-    
-	/**
+    @Override
+    public ResponseVO navigatePopularMovies(int movieNum) {
+        try{
+            List<PopularMovie> popularMovieList = statisticsMapper.selectMostPopularMovies();
+
+            return ResponseVO.buildSuccess(popularMovieList);
+        }catch(Exception e){
+            return ResponseVO.buildFailure("获取最受欢迎电影失败");
+        }
+    }
+
+    /**
      * 获得num天后的日期
      * @param oldDate
      * @param num
