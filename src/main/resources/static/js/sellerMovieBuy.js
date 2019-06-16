@@ -30,21 +30,6 @@ $(document).ready(function () {
             }
         );
     }
-    $("#order-actual-total").click(function () {
-        postRequest(
-            '/ticket/buy?' + "ticketId=" + order.ticketId + "&couponId=-1",
-            {},
-            function (res) {
-                console.log(order.ticketId + " +++");
-                alert("购票员购片成功！");
-                window.location.href="/seller/movie";
-            },
-            function (error) {
-                alert(error);
-            }
-        );
-        postPayRequest();
-    })
 });
 
 function renderSchedule(schedule, seats) {
@@ -322,15 +307,15 @@ function changeCoupon(couponIndex) {
     $('#pay-amount').html("<div><b>金额：</b>" + actualTotal + "元</div>");
 }
 
-function payConfirmClick() {
+function payConfirm() {
 
         postRequest(
             '/ticket/buy?' + "ticketId=" + order.ticketId + "&couponId=-1",
             {},
             function (res) {
                 console.log(order.ticketId + " +++");
-                alert("购票员购片成功！");
-                window.location.href="/seller/movie";
+                // alert("购票员购片成功！");
+                // window.location.href="/seller/movie";
             },
             function (error) {
                 alert(error);
