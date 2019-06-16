@@ -7,14 +7,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.example.cinema.bl.user.AccountServiceForBl;
+import com.example.cinema.blImpl.user.AccountServiceForBl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.cinema.bl.sales.TicketService;
 import com.example.cinema.blImpl.management.hall.HallServiceForBl;
-import com.example.cinema.blImpl.management.schedule.MovieServiceForBl;
+import com.example.cinema.blImpl.management.movie.MovieServiceForBl;
 import com.example.cinema.blImpl.management.schedule.ScheduleServiceForBl;
 import com.example.cinema.blImpl.promotion.ActivityServiceForBl;
 import com.example.cinema.blImpl.promotion.CouponServiceForBl;

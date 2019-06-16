@@ -1,4 +1,4 @@
-package com.example.cinema.bl.user;
+package com.example.cinema.blImpl.user;
 
 import com.example.cinema.vo.ResponseVO;
 

@@ -1,7 +1,6 @@
 package com.example.cinema.blImpl.user;
 
 import com.example.cinema.bl.user.AccountService;
-import com.example.cinema.bl.user.AccountServiceForBl;
 import com.example.cinema.data.user.AccountMapper;
 import com.example.cinema.po.User;
 import com.example.cinema.vo.UserForm;
