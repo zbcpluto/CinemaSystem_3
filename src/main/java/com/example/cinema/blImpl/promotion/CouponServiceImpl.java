@@ -1,14 +1,21 @@
 package com.example.cinema.blImpl.promotion;
 
-import com.example.cinema.bl.promotion.CouponService;
-import com.example.cinema.data.promotion.CouponMapper;
-import com.example.cinema.po.*;
-import com.example.cinema.vo.*;
-
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.example.cinema.bl.promotion.CouponService;
+import com.example.cinema.data.promotion.CouponMapper;
+import com.example.cinema.po.Coupon;
+import com.example.cinema.po.User;
+import com.example.cinema.vo.CouponForm;
+import com.example.cinema.vo.CouponVO;
+import com.example.cinema.vo.ResponseVO;
+import com.example.cinema.vo.UserVO;
 
 /**
  * Created by liying on 2019/4/17.
@@ -39,7 +46,21 @@ public class CouponServiceImpl implements CouponService, CouponServiceForBl {
     @Override
     public ResponseVO getCouponsByUser(int userId) {
         try {
-            return ResponseVO.buildSuccess(couponMapper.selectCouponByUser(userId));
+        	List<Coupon> couponList = couponMapper.selectCouponByUser(userId);
+        	Map<Integer, CouponVO> map = new HashMap<>();
+        	couponList.stream().forEach(coupon -> {
+        		int id = coupon.getId();
+        		if(!map.containsKey(id)) {
+        			map.put(id, coupon.getVO());
+        		}
+        		map.get(id).addNum();
+        	});
+        	
+        	List<CouponVO> res = new ArrayList<>();
+        	map.values().stream().forEach(cv -> {
+        		res.add(cv);
+        	});
+            return ResponseVO.buildSuccess(res);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseVO.buildFailure("失败");

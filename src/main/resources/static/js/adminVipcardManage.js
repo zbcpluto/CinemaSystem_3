@@ -73,20 +73,20 @@ $(document).ready(function() {
 		}
 		else {
 			postRequest(
-					'/vip/update',
-					getForm(),
-					function (res) {
-						if(res.success) {
-							getVipInfo();
-							$("#vipInfoModal").modal('hide');
-						} else {
-							alert(res.message);
-						}
-					 },
-					 function (error) {
-					     alert(JSON.stringify(error));
-					 }
-		        );
+				'/vip/update',
+				getForm(),
+				function (res) {
+					if(res.success) {
+						getVipInfo();
+						$("#vipInfoModal").modal('hide');
+					} else {
+						alert(res.message);
+					}
+				 },
+				 function (error) {
+				     alert(JSON.stringify(error));
+				 }
+	        );
 		}
         
 		isChanging = false;

@@ -2,6 +2,8 @@ package com.example.cinema.po;
 
 import java.sql.Timestamp;
 
+import com.example.cinema.vo.CouponVO;
+
 /**
  * Created by liying on 2019/4/16.
  */
@@ -11,13 +13,13 @@ public class Coupon {
      */
     private int id;
     /**
-     * 优惠券描述
-     */
-    private String description;
-    /**
      * 优惠券名称
      */
     private String name;
+    /**
+     * 优惠券描述
+     */
+    private String description;
     /**
      * 优惠券使用门槛
      */
@@ -34,21 +36,18 @@ public class Coupon {
      * 失效时间
      */
     private Timestamp endTime;
-
-    public Timestamp getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Timestamp startTime) {
-        this.startTime = startTime;
-    }
-
-    public Timestamp getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Timestamp endTime) {
-        this.endTime = endTime;
+    
+    
+    public CouponVO getVO() {
+    	CouponVO cv = new CouponVO();
+    	cv.setName(name);
+    	cv.setDescription(description);
+    	cv.setTargetAmount(targetAmount);
+    	cv.setDiscountAmount(discountAmount);
+    	cv.setStartTime(startTime);
+    	cv.setEndTime(endTime);
+    	
+    	return cv;
     }
 
     public int getId() {
@@ -89,6 +88,22 @@ public class Coupon {
 
     public void setDiscountAmount(double discountAmount) {
         this.discountAmount = discountAmount;
+    }
+    
+    public Timestamp getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Timestamp startTime) {
+        this.startTime = startTime;
+    }
+    
+    public Timestamp getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Timestamp endTime) {
+        this.endTime = endTime;
     }
 
 }

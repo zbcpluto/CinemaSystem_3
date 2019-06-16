@@ -2,9 +2,7 @@ package com.example.cinema.vo;
 
 import java.sql.Timestamp;
 
-import com.example.cinema.po.Coupon;
-
-public class CouponUserVO {
+public class CouponVO {
 	
 	/**
      * 优惠券名称
@@ -36,18 +34,11 @@ public class CouponUserVO {
      */
     private int num;
     
-    public CouponUserVO() {}
-    
-	public CouponUserVO(Coupon c, int num) {
-		this.name = c.getName();
-		this.description = c.getDescription();
-		this.targetAmount = c.getTargetAmount();
-		this.discountAmount = c.getDiscountAmount();
-		this.startTime = c.getStartTime();
-		this.endTime = c.getEndTime();
-		this.num = num;
-	}
 	
+    public void addNum() {
+    	num++;
+    }
+    
 	public String getName() {
 		return name;
 	}

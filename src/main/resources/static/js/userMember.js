@@ -265,34 +265,33 @@ function getCoupon() {
         function (res) {
             if (res.success) {
                 var couponList = res.content;
+                alert(couponList.length);
                 var couponListContent = '';
-                for (let coupon of couponList) {
-                    couponListContent += '<div class="col-md-6 coupon-wrapper"><div class="coupon"><div class="content">' +
-                        '<div class="col-md-8 left">' +
-                        '<div class="name">' +
-                        coupon.name +
-                        '</div>' +
-                        '<div class="description">' +
-                        coupon.description +
-                        '</div>' +
-                        '<div class="price">' +
-                        '满' + coupon.targetAmount + '送' + coupon.discountAmount +
-                        '</div>' +
-                        '</div>' +
-                        '<div class="col-md-4 right">' +
-                        '<div>有效日期：</div>' +
-                        '<div>' + formatDate(coupon.startTime) + ' ~ ' + formatDate(coupon.endTime) + '</div>' +
-                        '</div></div></div></div>'
+                for(let coupon of couponList) {
+                    couponListContent += 
+                    	"<div class='col-md-6 coupon-wrapper'>" +
+                    	"	<div class='coupon'>" +
+                    	"   	<div class='content'>" +
+                    	"   		<div class='col-md-8 left'>" +
+                    	"				<div class='name'>" + coupon.name + "</div>" +
+                        "				<div class='description'>" + coupon.description + "</div>" +
+                        "				<div class='price'>" + "满" + coupon.targetAmount + "送" + coupon.discountAmount + "</div>" +
+                        "			</div>" +
+                        "  			<div class='col-md-4 middle'>" +
+                        "				<div>有效日期：</div>" +
+                        "				<div>" + formatDate(new Date(coupon.startTime)) + " ~ " + formatDate(new Date(coupon.endTime)) + "</div>" +
+                        "			</div>" +
+                        "  			<div class='col-md-4 right'>" +
+                        "				<div class='num'>" + coupon.num + "张" + "</div>" +
+                        "			</div>" +
+                        "		</div>" +
+                        "	</div>" +
+                        "</div>";
                 }
                 $('#coupon-list').html(couponListContent);
-
             }
         },
         function (error) {
             alert(error);
         });
 }
-
-/*function formatDate(date) {
-    return date.substring(5, 10).replace("-", ".");
-} */

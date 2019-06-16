@@ -22,7 +22,7 @@
     </delete>
 
     <select id="selectCouponByUser" resultMap="Coupon">
-        select * from coupon c left join coupon_user  cu on c.id=cu.coupon_id where cu.user_id=#{userId} and c.start_time &lt; Now() and c.end_time &gt; Now()
+        select * from coupon c left join coupon_user cu on c.id=cu.coupon_id where cu.user_id=#{userId} and c.start_time &lt; Now() and c.end_time &gt; Now()
     </select>
 
     <select id="selectCouponByUserAndAmount" resultMap="Coupon">
