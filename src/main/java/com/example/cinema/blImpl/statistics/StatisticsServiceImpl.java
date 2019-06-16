@@ -144,7 +144,7 @@ public class StatisticsServiceImpl implements StatisticsService {
             for (int i=0; i < popularMovieList.size()&& i < 7; i++){
                 PopularMovie popularMovie = popularMovieList.get(i);
                 Movie moviePO = movieServiceForBl.getMovieById(popularMovie.getMovieId());
-                if (moviePO.getStatus() == 0){
+                if (popularMovie.getTimes() != 0 && moviePO.getStatus() == 0){
                     MovieVO movieVO = new MovieVO(moviePO);
                     movieVOList.add(movieVO);
                 }
