@@ -32,6 +32,6 @@ public interface AccountMapper {
 
 	void updateTicketConsumption(@Param("userId")int userId, @Param("ticketConsumption") double ticketConsumption);
 
-	void managerAssign(UserForm userForm);
+	void managerAssign(User user);
 
 }

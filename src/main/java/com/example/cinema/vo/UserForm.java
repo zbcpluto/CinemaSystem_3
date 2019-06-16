@@ -14,6 +14,11 @@ public class UserForm {
      */
     private String password;
 
+    /**
+     * 用户权限等级
+     */
+    private Integer level;
+
     public String getUsername() {
         return username;
     }
@@ -29,5 +34,12 @@ public class UserForm {
     public void setPassword(String password) {
         this.password = password;
     }
-	
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
 }

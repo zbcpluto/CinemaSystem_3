@@ -14,6 +14,15 @@ public class User {
     private Integer level;
     private double ticketConsumption;
 
+    public User() {
+    }
+
+    public User(String username, String password, Integer level) {
+        this.username = username;
+        this.password = password;
+        this.level = level;
+    }
+
     public UserVO getVO() {
     	UserVO uv = new UserVO();
         uv.setId(id);
