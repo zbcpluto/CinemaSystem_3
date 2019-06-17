@@ -58,7 +58,8 @@ function formatDateTime(date) {
 }
 
 $(document).ready(function () {
-
+    $("#account").val(sessionStorage.username);
+    console.log(sessionStorage.username);
     //全局事件
     document.addEventListener("error", function (e) {
         var elem = e.target;
