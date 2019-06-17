@@ -6,6 +6,7 @@ import com.example.cinema.bl.statistics.MovieLikeService;
 import com.example.cinema.blImpl.management.movie.MovieServiceForBl;
 import com.example.cinema.data.statistics.MovieLikeMapper;
 import com.example.cinema.po.DateLike;
+import com.example.cinema.po.MovieLikeNum;
 import com.example.cinema.vo.DateLikeVO;
 import com.example.cinema.vo.ResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Service;
  * @date 2019/4/28 3:07 PM
  */
 @Service
-public class MovieLikeServiceImpl implements MovieLikeService {
+public class MovieLikeServiceImpl implements MovieLikeService, MovieLikeServiceForBl{
     private static final String ALREADY_LIKE_ERROR_MESSAGE = "用户已标记该电影为想看";
     private static final String UNLIKE_ERROR_MESSAGE = "用户未标记该电影为想看";
     private static final String MOVIE_NOT_EXIST_ERROR_MESSAGE = "电影不存在";
@@ -76,6 +77,15 @@ public class MovieLikeServiceImpl implements MovieLikeService {
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseVO.buildFailure("失败");
+        }
+    }
+
+    @Override
+    public List<MovieLikeNum> getMovieLikeNumByLikeDesc() {
+        try{
+            return movieLikeMapper.getMovieLikeNumByLikeDesc();
+        }catch (Exception e){
+            return null;
         }
     }
 

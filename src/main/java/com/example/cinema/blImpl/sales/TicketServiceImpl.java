@@ -173,32 +173,32 @@ public class TicketServiceImpl implements TicketService {
     	tfs.add(tf2);
     	return ResponseVO.buildSuccess(tfs); */
     	try {
-    		List<Ticket> tickets = ticketMapper.selectTicketByUser(userId);
-    		Map<Timestamp ,TicketForm> map = new HashMap<Timestamp, TicketForm>();
-    		tickets.stream().forEach(ticket -> {
-    			Timestamp time = ticket.getTime();
-    			if(!map.containsKey(time)) {
-    				int scheduleId = ticket.getScheduleId();
-    				ScheduleItem scheduleItem = scheduleService.getScheduleItemById(scheduleId);
-    				Movie movie = movieService.getMovieById(scheduleItem.getMovieId());
-    				String posterUrl = movie.getPosterUrl();
-    				TicketForm tf = new TicketForm(userId, scheduleId, posterUrl, scheduleItem);
-    				tf.addSeat(ticket.getColumnIndex(), ticket.getRowIndex());
-    				tf.setState(ticket.getState());
-    				map.put(time, tf);
-    				System.out.println(tf.getPosterUrl());
-    			}
-    			else {
-    				TicketForm tf = map.get(time);
-    				tf.addSeat(ticket.getColumnIndex(), ticket.getRowIndex());
-    			}
-    		});
-    		
-    		List<TicketForm> tfs = new ArrayList<TicketForm>();
-    		for(TicketForm tf: map.values()) {
-    			tfs.add(tf);
-    		}
-    		return ResponseVO.buildSuccess(tfs);
+//    		List<Ticket> tickets = ticketMapper.selectTicketByUser(userId);
+//    		Map<Timestamp ,TicketForm> map = new HashMap<Timestamp, TicketForm>();
+//    		tickets.stream().forEach(ticket -> {
+//    			Timestamp time = ticket.getTime();
+//    			if(!map.containsKey(time)) {
+//    				int scheduleId = ticket.getScheduleId();
+//    				ScheduleItem scheduleItem = scheduleService.getScheduleItemById(scheduleId);
+//    				Movie movie = movieService.getMovieById(scheduleItem.getMovieId());
+//    				String posterUrl = movie.getPosterUrl();
+//    				TicketForm tf = new TicketForm(userId, scheduleId, posterUrl, scheduleItem);
+//    				tf.addSeat(ticket.getColumnIndex(), ticket.getRowIndex());
+//    				tf.setState(ticket.getState());
+//    				map.put(time, tf);
+//    				System.out.println(tf.getPosterUrl());
+//    			}
+//    			else {
+//    				TicketForm tf = map.get(time);
+//    				tf.addSeat(ticket.getColumnIndex(), ticket.getRowIndex());
+//    			}
+//    		});
+//
+//    		List<TicketForm> tfs = new ArrayList<TicketForm>();
+//    		for(TicketForm tf: map.values()) {
+//    			tfs.add(tf);
+//    		}
+    		return ResponseVO.buildSuccess(null);
         }
     	catch (Exception e){
             e.printStackTrace();

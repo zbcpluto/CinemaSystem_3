@@ -24,6 +24,8 @@ public class StatisticsServiceImpl implements StatisticsService {
     private StatisticsMapper statisticsMapper;
     @Autowired
     private MovieServiceForBl movieServiceForBl;
+    @Autowired
+    private MovieLikeServiceForBl movieLikeServiceForBl;
 
     @Override
     public ResponseVO getScheduleRateByDate(Date date) {
@@ -152,6 +154,25 @@ public class StatisticsServiceImpl implements StatisticsService {
             return ResponseVO.buildSuccess(movieVOList);
         }catch(Exception e){
             return ResponseVO.buildFailure("获取最受欢迎电影失败");
+        }
+    }
+
+    @Override
+    public ResponseVO getMoviesByLikeDesc() {
+        try{
+            List<MovieLikeNum> movieLikeNumList = movieLikeServiceForBl.getMovieLikeNumByLikeDesc();
+            List<MovieVO> movieVOList = new ArrayList<MovieVO>();
+            //根据获得的电影想看人数降序排列 去找到相应的电影返回给前端
+            for(int i = 0; i < movieLikeNumList.size(); i++){
+                MovieLikeNum movieLikeNum = movieLikeNumList.get(i);
+                int movieId = movieLikeNum.getMovieId();
+                Movie po = movieServiceForBl.getMovieById(movieId);
+                MovieVO vo = new MovieVO(po);
+                movieVOList.add(vo);
+            }
+            return ResponseVO.buildSuccess(movieVOList);
+        }catch(Exception e){
+            return ResponseVO.buildFailure("获取电影想看人数的降序排列失败");
         }
     }
 

@@ -46,4 +46,8 @@ public class StatisticsController {
     public ResponseVO navigatePopularMovies(){
         return statisticsService.navigatePopularMovies();
     }
+    @RequestMapping(value = "/user/home/like", method = RequestMethod.GET)
+    public ResponseVO getMoviesByLikeDesc(){
+        return statisticsService.getMoviesByLikeDesc();
+    }
 }
