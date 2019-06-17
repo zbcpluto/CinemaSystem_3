@@ -196,6 +196,33 @@ $(document).ready(function() {
         );
     }
     $('#give-coupon-form-btn').click(function () {
+        var couponId = $('#filter-coupon').val();
+        var id = [];
+        var name = [];
+        var users = [];
+        for (let i of selectedUserIds){
+            id.push(i);
+        }
+        for (let i of selectedUserNames){
+            name.push(i);
+        }
+        for(let i = 0; i < id.length; i++){
+            users.push({id: id[i], name:name[i], level: 1, consumption:null});
+        }
 
+        postRequest(
+            "/coupon/give/"+couponId,
+            users,
+            function (res) {
+                $('#giveCouponModal').modal('hide');
+            },
+            function (error) {
+                alert(error)
+            }
+        );
     })
+    function getGivenUsers(){
+
+    }
+
 });

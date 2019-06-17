@@ -30,7 +30,7 @@ public class CouponController {
     }
 
 	//    @GetMapping("不知道怎么同时得到users和couponId两个参数")
-    @RequestMapping(value = "/give/{couponId}")
+    @RequestMapping(value = "/give/{couponId}", method = RequestMethod.POST)
     public ResponseVO giveCoupon(@RequestBody List<UserVO> users, @PathVariable int couponId){
         return couponService.giveCoupon(users,couponId);
     }
