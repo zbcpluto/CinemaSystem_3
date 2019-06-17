@@ -161,9 +161,9 @@ public class StatisticsServiceImpl implements StatisticsService {
     public ResponseVO getMoviesByLikeDesc() {
         try{
             List<MovieLikeNum> movieLikeNumList = movieLikeServiceForBl.getMovieLikeNumByLikeDesc();
-            List<MovieLikeNumVO> movieLikeNumVOList = new ArrayList<MovieLikeNumVO>();
+            List<MovieLikeNumVO> movieLikeNumVOList = new ArrayList<>();
             //根据获得的电影想看人数降序排列 去找到相应的电影返回给前端
-            for(int i = 0; i < movieLikeNumList.size(); i++){
+            for(int i = 0; i < 7 && i < movieLikeNumList.size(); i++){
                 //获取电影喜欢人数的成员变量
                 MovieLikeNum movieLikeNum = movieLikeNumList.get(i);
                 int movieId = movieLikeNum.getMovieId();
@@ -171,11 +171,13 @@ public class StatisticsServiceImpl implements StatisticsService {
 
                 //构造要传上去的电影想看人数VO
                 Movie po = movieServiceForBl.getMovieById(movieId);
-                MovieLikeNumVO vo = new MovieLikeNumVO();
-                vo.setId(movieId);
-                vo.setName(po.getName());
-                vo.setLikeNum(likeNum);
-                movieLikeNumVOList.add(vo);
+                if(po.getStatus()==0){
+                    MovieLikeNumVO vo = new MovieLikeNumVO();
+                    vo.setId(movieId);
+                    vo.setName(po.getName());
+                    vo.setLikeNum(likeNum);
+                    movieLikeNumVOList.add(vo);
+                }
             }
             return ResponseVO.buildSuccess(movieLikeNumVOList);
         }catch(Exception e){
