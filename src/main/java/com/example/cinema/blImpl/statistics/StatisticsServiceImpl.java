@@ -161,16 +161,23 @@ public class StatisticsServiceImpl implements StatisticsService {
     public ResponseVO getMoviesByLikeDesc() {
         try{
             List<MovieLikeNum> movieLikeNumList = movieLikeServiceForBl.getMovieLikeNumByLikeDesc();
-            List<MovieVO> movieVOList = new ArrayList<MovieVO>();
+            List<MovieLikeNumVO> movieLikeNumVOList = new ArrayList<MovieLikeNumVO>();
             //根据获得的电影想看人数降序排列 去找到相应的电影返回给前端
             for(int i = 0; i < movieLikeNumList.size(); i++){
+                //获取电影喜欢人数的成员变量
                 MovieLikeNum movieLikeNum = movieLikeNumList.get(i);
                 int movieId = movieLikeNum.getMovieId();
+                int likeNum = movieLikeNum.getLikeNum();
+
+                //构造要传上去的电影想看人数VO
                 Movie po = movieServiceForBl.getMovieById(movieId);
-                MovieVO vo = new MovieVO(po);
-                movieVOList.add(vo);
+                MovieLikeNumVO vo = new MovieLikeNumVO();
+                vo.setId(movieId);
+                vo.setName(po.getName());
+                vo.setLikeNum(likeNum);
+                movieLikeNumVOList.add(vo);
             }
-            return ResponseVO.buildSuccess(movieVOList);
+            return ResponseVO.buildSuccess(movieLikeNumVOList);
         }catch(Exception e){
             return ResponseVO.buildFailure("获取电影想看人数的降序排列失败");
         }
