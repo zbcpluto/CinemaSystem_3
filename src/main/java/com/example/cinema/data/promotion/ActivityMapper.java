@@ -1,6 +1,8 @@
 package com.example.cinema.data.promotion;
 
 import com.example.cinema.po.Activity;
+import com.example.cinema.po.ActivityMovie;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -19,7 +21,7 @@ public interface ActivityMapper {
 
     List<Activity> selectActivities();
 
-    List<Activity> selectActivitiesByMovie(int movieId);
+    List<ActivityMovie> selectActivitiesByMovie(int movieId);
 
     Activity selectById(int id);
 

@@ -47,7 +47,7 @@
 
     </select>
 
-    <select id="selectActivitiesByMovie" resultMap="Activity">
+    <select id="selectActivitiesByMovie" resultMap="ActivityMovie">
         select
         *
         from
@@ -56,14 +56,9 @@
         activity_movie am
         on
         a.id=am.activity_id
-        left join
-        movie m
-        on
-        am.movie_id=m.id
-
-        where a.start_time &lt; Now() and a.end_time &gt; Now() and am.movie_id=#{movieId}
-
+        where a.start_time &lt; Now() and a.end_time &gt; Now() and (am.movie_id=#{movieId} or movie_id is null)
     </select>
+    
     <select id="selectActivitiesWithoutMovie" resultMap="Activity">
         select
         *
@@ -74,7 +69,6 @@
         on
         a.id=am.activity_id
         where a.start_time &lt; Now() and a.end_time &gt; Now() and movie_id is null
-
     </select>
 
 	<select id="selectByTime" resultMap="Activity">
@@ -88,7 +82,7 @@
                 a.id=am.activity_id
         where #{timestamp} between a.start_time and a.end_time and movie_id is null
     </select>
-
+    
     <resultMap id="Activity" type="com.example.cinema.po.Activity">
         <result column="a_description" property="description"></result>
         <result column="id" property="id"></result>
@@ -113,6 +107,16 @@
             <result column="status" property="status"></result>
             <result column="starring" property="starring"></result>
         </collection>
+    </resultMap>
+    
+    <resultMap id="ActivityMovie" type="com.example.cinema.po.ActivityMovie">
+    	<result column="movie_id" property="movieId"></result>
+    	<result column="activity_name" property="name"></result>
+    	<result column="a_description" property="description"></result>
+    	<result column="start_time" property="startTime"></result>
+    	<result column="end_time" property="endTime"></result>
+        <association property="coupon" column="coupon_id" select="com.example.cinema.data.promotion.CouponMapper.selectCouponById">
+        </association>
     </resultMap>
 
 </mapper>

@@ -77,10 +77,11 @@ public class TicketServiceImpl implements TicketService {
     @Transactional
     public ResponseVO completeTicket(TicketBuyForm ticketBuyForm) {
     	try {
-    		int movieId = ticketBuyForm.getMovieId();
     		int couponId = ticketBuyForm.getCouponId();
     		List<Integer> ticketIdList = ticketBuyForm.getTicketId();
     		List<Ticket> tickets = new ArrayList<Ticket>();
+    		List<Integer> couponIdToget = ticketBuyForm.getCouponIdToget();
+    		
             for(int id: ticketIdList) {
                 tickets.add(ticketMapper.selectTicketById(id));
             }
@@ -96,18 +97,13 @@ public class TicketServiceImpl implements TicketService {
                 } //更新ticket使用的couponId
             }
             
-            //得到所有满足条件的活动
-            Timestamp timestamp = tickets.get(0).getTime();
-            List<Activity> activities = activityService.selectActivityByTimeAndMovie(timestamp, movieId);
-            
-            //统计本次订单中获得的优惠券
-            List<ActivityVO> activitieVOs = new ArrayList<>();
-            for(Activity ac: activities) {
-            	couponService.addCouponUser(ac.getCoupon().getId(), userId);
-                activitieVOs.add(ac.getVO());
+            ///更新优惠券
+            couponService.deleteCouponUser(couponId, userId);
+            for(int id: couponIdToget) {
+                couponService.addCouponUser(id, userId);
             }
 
-            return ResponseVO.buildSuccess(activitieVOs);
+            return ResponseVO.buildSuccess();
 
         }catch (Exception e){
             e.printStackTrace();
@@ -214,10 +210,10 @@ public class TicketServiceImpl implements TicketService {
     @Transactional
     public ResponseVO completeByVIPCard(TicketBuyForm ticketBuyForm) {
     	try {
-    		int movieId = ticketBuyForm.getMovieId();
     		int couponId = ticketBuyForm.getCouponId();
     		double total = ticketBuyForm.getTotal();
     		List<Integer> ticketIdList = ticketBuyForm.getTicketId();
+    		List<Integer> couponIdToget = ticketBuyForm.getCouponIdToget();
     		
     		List<Ticket> tickets = new ArrayList<Ticket>();
             for(int id: ticketIdList) {
@@ -236,18 +232,13 @@ public class TicketServiceImpl implements TicketService {
                 } //更新ticket使用的couponId
             }
             
-            //得到所有满足条件的活动
-            Timestamp timestamp = tickets.get(0).getTime();
-            List<Activity> activities = activityService.selectActivityByTimeAndMovie(timestamp, movieId);
-            
-            //统计本次订单中获得的优惠券
-            List<ActivityVO> activitieVOs = new ArrayList<>();
-            for(Activity ac: activities) {
-                couponService.addCouponUser(ac.getCoupon().getId(), userId);
-                activitieVOs.add(ac.getVO());
+            //更新优惠券
+            couponService.deleteCouponUser(couponId, userId);
+            for(int id: couponIdToget) {
+                couponService.addCouponUser(id, userId);
             }
 
-            return ResponseVO.buildSuccess(activitieVOs);
+            return ResponseVO.buildSuccess();
         }
     	catch (Exception e){
             e.printStackTrace();

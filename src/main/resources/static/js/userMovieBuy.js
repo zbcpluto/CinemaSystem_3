@@ -3,6 +3,7 @@ var movieId;
 var scheduleId;
 var selectedSeats = []
 var order = {ticketId: [], couponId: 0};
+var activities;
 var coupons = [];
 var vipCard;
 var vipInfo;
@@ -24,17 +25,62 @@ $(document).ready(function () {
     function getInfo() {
         getRequest(
             '/ticket/get/occupiedSeats?scheduleId=' + scheduleId,
-            function (res) {
-                if (res.success) {
-                    renderSchedule(res.content.scheduleItem, res.content.seats);
+            function(res) {
+                if(res.success) {
+                	renderSchedule(res.content.scheduleItem, res.content.seats);
+                }
+                else {
+                	alert(res.message);
                 }
             },
             function (error) {
                 alert(JSON.stringify(error));
             }
         );
+        
+        getRequest(
+    		'/activity/getByMovie/' + movieId,
+    		function(res) {
+    			if(res.success) {
+    				activities = res.content;
+    				renderActivities();
+    			}
+    			else {
+    				alert(res.message);
+    			}
+    		},
+    		function (error) {
+                alert(JSON.stringify(error));
+            }
+        );
     }
 });
+
+function renderActivities() {
+	$(".content-activity").empty();
+    var activitiesDomStr = "<h3 class='text-info'>近期活动</h3>";
+
+    activities.forEach(function (activity) {
+        activitiesDomStr +=
+            "<div class='activity-container'>" +
+            "    <div class='activity-card card'>" +
+            "       <div class='activity-line'>" +
+            "           <span class='title'>"+activity.name+"</span>" +
+            "           <span class='gray-text'>"+activity.description+"</span>" +
+            "       </div>" +
+            "       <div class='activity-line'>" +
+            "           <span>活动时间："+formatDate(new Date(activity.startTime))+"至"+formatDate(new Date(activity.endTime))+"</span>" +
+            "       </div>" +
+            "    </div>" +
+            "    <div class='activity-coupon primary-bg'>" +
+            "        <span class='title'>优惠券："+activity.coupon.name+"</span>" +
+            "        <span class='title'>满"+activity.coupon.targetAmount+"减<span class='error-text title'>"+activity.coupon.discountAmount+"</span></span>" +
+            "        <span class='gray-text'>"+activity.coupon.description+"</span>" +
+            "    </div>" +
+            "</div>";
+    });
+    $(".content-activity").append(activitiesDomStr);
+}
 
 function renderSchedule(schedule, seats) {
     $('#schedule-hall-name').text(schedule.hallName);
@@ -327,19 +373,22 @@ function validateChargeForm() {
 }
 
 function payConfirmClick() {
+	var couponToget = getCouponsFormAc();
     if(useVIP) {
         postRequest(
             '/ticket/vip/buy',
-            {movieId: movieId, ticketId: order.ticketId, couponId: order.couponId, total: actualTotal},
+            {movieId: movieId, ticketId: order.ticketId, couponId: order.couponId, total: actualTotal, couponIdToget: getCouponIdsFormAc()},
             function (res) {
                 if(res.success) {
-                	alert("购票成功！");
+                	repainActivities(couponToget);
                 }
                 else {
+                	$(".content-activity").empty();
                 	alert(res.message);
                 }
             },
             function (error) {
+            	$(".content-activity").empty();
                 alert(error);
             }
         );
@@ -350,16 +399,18 @@ function payConfirmClick() {
             if ($('#userBuy-cardNum').val() === "123123123" && $('#userBuy-cardPwd').val() === "123123") {
                 postRequest(
                     '/ticket/buy',
-                    {movieId: movieId, ticketId: order.ticketId, couponId: order.couponId, total: actualTotal},
+                    {movieId: movieId, ticketId: order.ticketId, couponId: order.couponId, total: actualTotal, couponIdToget: getCouponIdsFormAc()},
                     function(res) {
                     	if(res.success) {
-                    		alert("购票成功！");
+                    		repainActivities(couponToget);
                     	}
                     	else {
+                    		$(".content-activity").empty();
                     		alert(res.message);
                     	}
                     },
                     function(error) {
+                    	$(".content-activity").empty();
                         alert(error);
                     }
                 );
@@ -369,6 +420,48 @@ function payConfirmClick() {
             }
         }
     }
+}
+
+function getCouponsFormAc() {
+	var couponToget = [];
+	activities.forEach(function (activity) {
+		couponToget.push(activity.coupon);
+	});
+	return couponToget;
+}
+
+function getCouponIdsFormAc() {
+	var couponIdToget = [];
+	activities.forEach(function (activity) {
+		couponIdToget.push(activity.coupon.id);
+	});
+	return couponIdToget;
+}
+
+function repainActivities() {
+	$(".content-activity").empty();
+    var activitiesDomStr = "<h3 class='text-info'>获得的优惠券</h3>";
+
+    activities.forEach(function (activity) {
+    	var coupon = activity.coupon
+    	activitiesDomStr += 
+        	"<div class='col-md-6 coupon-wrapper'>" +
+        	"	<div class='coupon'>" +
+        	"   	<div class='content'>" +
+        	"   		<div class='col-md-8 left'>" +
+        	"				<div class='name'>" + coupon.name + "</div>" +
+            "				<div class='description'>" + coupon.description + "</div>" +
+            "				<div class='price'>" + "满" + coupon.targetAmount + "送" + coupon.discountAmount + "</div>" +
+            "			</div>" +
+            "  			<div class='col-md-4 middle'>" +
+            "				<div>有效日期：</div>" +
+            "				<div>" + formatDate(new Date(coupon.startTime)) + " ~ " + formatDate(new Date(coupon.endTime)) + "</div>" +
+            "			</div>" +
+            "		</div>" +
+            "	</div>" +
+            "</div>";
+    });
+    $(".content-activity").append(activitiesDomStr);
 }
 
 // TODO:填空

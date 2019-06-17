@@ -6,31 +6,81 @@ $(document).ready(function () {
     movieId = parseInt(window.location.href.split('?')[1].split('&')[0].split('=')[1]);
 
     getSchedule();
-
-    function getSchedule() {
-        getRequest(
-            '/schedule/search/audience?movieId=' + movieId,
-            function (res) {
-                if (res.success) {
-                	svList = res.content;
-                	if(svList.length) {
-                		$('#schedule').css("display", "");
-                		repaintSvList(0);
-                	}
-                	else {
-                		$('#none-hint').css("display", "");
-                	}
-                } else {
-                    $('#none-hint').css("display", "");
-                }
-            },
-            function (error) {
-                alert(error);
-            }
-        );
-    }
-
+    getActivities();
 });
+
+function getSchedule() {
+    getRequest(
+        '/schedule/search/audience?movieId=' + movieId,
+        function (res) {
+            if (res.success) {
+            	svList = res.content;
+            	if(svList.length) {
+            		$('#schedule').css("display", "");
+            		repaintSvList(0);
+            	}
+            	else {
+            		$('#schedule-head').text("近期暂无排片");
+            	}
+            } else {
+            	alert(res.message);
+            }
+        },
+        function (error) {
+            alert(error);
+        }
+    );
+}
+
+function getActivities() {
+	getRequest(
+		'/activity/getByMovie/' + movieId,
+		function(res) {
+			if(res.success) {
+				var activities = res.content;
+				if(activities.length) {
+					$('#activity').css("display", "");
+					renderActivities(activities);
+	        	}
+	        	else {
+	        		$('#schedule-head').text("近期暂无活动");
+	        	}
+			}
+			else {
+				alert(res.message);
+			}
+		},
+		function (error) {
+            alert(JSON.stringify(error));
+        }
+    );
+}
+
+function renderActivities(activities) {
+	$("#activity").empty();
+    var activitiesDomStr = "";
+
+    activities.forEach(function (activity) {
+        activitiesDomStr +=
+            "<div class='activity-container'>" +
+            "    <div class='activity-card card'>" +
+            "       <div class='activity-line'>" +
+            "           <span class='title'>"+activity.name+"</span>" +
+            "           <span class='gray-text'>"+activity.description+"</span>" +
+            "       </div>" +
+            "       <div class='activity-line'>" +
+            "           <span>活动时间："+formatDate(new Date(activity.startTime))+"至"+formatDate(new Date(activity.endTime))+"</span>" +
+            "       </div>" +
+            "    </div>" +
+            "    <div class='activity-coupon primary-bg'>" +
+            "        <span class='title'>优惠券："+activity.coupon.name+"</span>" +
+            "        <span class='title'>满"+activity.coupon.targetAmount+"减<span class='error-text title'>"+activity.coupon.discountAmount+"</span></span>" +
+            "        <span class='gray-text'>"+activity.coupon.description+"</span>" +
+            "    </div>" +
+            "</div>";
+    });
+    $("#activity").append(activitiesDomStr);
+}
 
 function repaintSvList() {
 	var dateContent = "";

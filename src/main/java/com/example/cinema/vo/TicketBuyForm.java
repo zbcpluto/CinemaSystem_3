@@ -14,6 +14,8 @@ public class TicketBuyForm {
 	private int couponId;
 	
 	private double total;
+	
+	private List<Integer> couponIdToget;
 
 	
 	public int getMovieId() {
@@ -46,6 +48,14 @@ public class TicketBuyForm {
 
 	public void setTotal(double total) {
 		this.total = total;
+	}
+
+	public List<Integer> getCouponIdToget() {
+		return couponIdToget;
+	}
+
+	public void setCouponIdToget(List<Integer> couponIdToget) {
+		this.couponIdToget = couponIdToget;
 	}
 	
 }

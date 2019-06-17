@@ -4,6 +4,7 @@ import com.example.cinema.bl.promotion.ActivityService;
 import com.example.cinema.bl.promotion.CouponService;
 import com.example.cinema.data.promotion.ActivityMapper;
 import com.example.cinema.po.Activity;
+import com.example.cinema.po.ActivityMovie;
 import com.example.cinema.po.Coupon;
 import com.example.cinema.vo.ActivityForm;
 import com.example.cinema.vo.ResponseVO;
@@ -61,7 +62,7 @@ public class ActivityServiceImpl implements ActivityService, ActivityServiceForB
 
     @Override
     public List<Activity> selectActivityByTimeAndMovie(Timestamp timestamp, int movieId){
-        try{
+        /*try{
             List<Activity> ac1 = activityMapper.selectByTime(timestamp);
             List<Activity> ac2 = activityMapper.selectActivitiesByMovie(movieId);
             for(Activity i:ac2){
@@ -74,7 +75,20 @@ public class ActivityServiceImpl implements ActivityService, ActivityServiceForB
         }catch(Exception e){
             e.printStackTrace();
             return null;
-        }
+        } */
+    	return null;
     }
+
+	@Override
+	public ResponseVO getActivitiesByMovieId(int movieId) {
+		try {
+			List<ActivityMovie> amList = activityMapper.selectActivitiesByMovie(movieId);
+			return ResponseVO.buildSuccess(amList);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			return ResponseVO.buildFailure("获取近期该电影的相关活动失败！");
+		}
+	}
 
 }
