@@ -65,7 +65,7 @@ $(document).ready(function () {
     document.addEventListener("error", function (e) {
         var elem = e.target;
         if (elem.tagName.toLowerCase() == 'img') {
-            elem.src = "";
+            elem.src = "../images/defaultAvatar.jpg";
         }
     }, true);
 
