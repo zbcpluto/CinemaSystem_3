@@ -265,7 +265,6 @@ function getCoupon() {
         function (res) {
             if (res.success) {
                 var couponList = res.content;
-                alert(couponList.length);
                 var couponListContent = '';
                 for(let coupon of couponList) {
                     couponListContent += 

@@ -26,23 +26,6 @@ public class CouponServiceImpl implements CouponService, CouponServiceForBl {
     @Autowired
     CouponMapper couponMapper;
 
-    /*@Override
-    public ResponseVO getCouponUserByUserId(int userId) {
-        try {
-        	List<CouponUser> cuList = couponMapper.selectCouponUserByUserId(userId);
-        	List<CouponUserVO> cuvList = new ArrayList<>();
-        	// 暂时不做时间筛选
-        	for(CouponUser cu: cuList) {
-        		Coupon c = couponMapper.selectCounponById(cu.getCouponId());
-        		CouponUserVO cuv = new CouponUserVO(c, cu.getNum());
-        		cuvList.add(cuv);
-        	}
-            return ResponseVO.buildSuccess(cuvList);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseVO.buildFailure("失败");
-        }
-    } */
     @Override
     public ResponseVO getCouponsByUser(int userId) {
         try {
@@ -98,25 +81,31 @@ public class CouponServiceImpl implements CouponService, CouponServiceForBl {
     }
 
     @Override
-    public Coupon getCouponById(int couponId){
-        try{
+    public Coupon getCouponById(int couponId) {
+        try {
             return couponMapper.selectCouponById(couponId);
         }catch (Exception e){
             e.printStackTrace();
             return null;
         }
     }
-
+    
     @Override
-    public void deleteCoupon(int couponId, int userId){
-        try{
-            couponMapper.deleteCouponUser(couponId,userId);
-
-        }catch (Exception e){
+	public void addCouponUser(int couponId, int userId) {
+    	try {
+            couponMapper.insertCouponUser(couponId, userId);
+        } catch (Exception e){
             e.printStackTrace();
         }
+	}
 
-        return;
+    @Override
+    public void deleteCouponUser(int couponId, int userId) {
+    	try {
+            couponMapper.deleteCouponUser(couponId, userId);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     /*@Override
@@ -154,7 +143,7 @@ public class CouponServiceImpl implements CouponService, CouponServiceForBl {
             return false;
         }
     }
-
+    
     @Override
     public ResponseVO getUserByConsumption(double consumptionBottom){
         try {
@@ -173,7 +162,7 @@ public class CouponServiceImpl implements CouponService, CouponServiceForBl {
     public ResponseVO giveCoupon(List<UserVO> users, int couponId){
         try {
             for(UserVO user: users){
-                couponMapper.addCoupon(couponId,user.getId());
+                couponMapper.insertCouponUser(couponId, user.getId());
             }
             return ResponseVO.buildSuccess("添加优惠券成功");
         }catch (Exception e){
@@ -181,4 +170,5 @@ public class CouponServiceImpl implements CouponService, CouponServiceForBl {
             return ResponseVO.buildFailure("失败");
         }
     }
+
 }

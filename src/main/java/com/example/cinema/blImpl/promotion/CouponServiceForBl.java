@@ -9,9 +9,12 @@ public interface CouponServiceForBl {
      * @return
      */
     Coupon getCouponById(int id);
+    
+    void addCouponUser(int couponId, int userId);
 
-    void deleteCoupon(int couponId,int userId);
+    void deleteCouponUser(int couponId, int userId);
 
     boolean existCouponUser(int couponId, int userId);
+    
 }
 

@@ -165,7 +165,7 @@ function renderOrder() {
 
 function getCoupons() {
 	getRequest(
-        '/coupon/user/getByUser' + userId,
+		'/coupon/' + userId + '/get',
         function (res) {
         	if(res.success) {
         		coupons = res.content.filter(function (coupon) {

@@ -103,7 +103,7 @@ public class TicketServiceImpl implements TicketService {
             //统计本次订单中获得的优惠券
             List<ActivityVO> activitieVOs = new ArrayList<>();
             for(Activity ac: activities) {
-                ticketMapper.addCoupon(ac.getCoupon().getId(), userId);
+            	couponService.addCouponUser(ac.getCoupon().getId(), userId);
                 activitieVOs.add(ac.getVO());
             }
 
@@ -243,7 +243,7 @@ public class TicketServiceImpl implements TicketService {
             //统计本次订单中获得的优惠券
             List<ActivityVO> activitieVOs = new ArrayList<>();
             for(Activity ac: activities) {
-                ticketMapper.addCoupon(ac.getCoupon().getId(), userId);
+                couponService.addCouponUser(ac.getCoupon().getId(), userId);
                 activitieVOs.add(ac.getVO());
             }
 
@@ -335,7 +335,7 @@ public class TicketServiceImpl implements TicketService {
 
             if(couponsToCatch.size()!=0){
                 for(Coupon coupon:couponsToCatch){
-                    couponService.deleteCoupon(coupon.getId(),userId);
+                    couponService.deleteCouponUser(coupon.getId(),userId);
                 }
             }//删除已经给出的用户优惠券（在coupon_user表中删除）
             return ResponseVO.buildSuccess("退票成功");

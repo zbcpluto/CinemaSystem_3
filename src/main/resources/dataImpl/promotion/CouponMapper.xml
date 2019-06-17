@@ -14,7 +14,7 @@
     
     <insert id="insertCouponUser">
         insert into coupon_user(coupon_id,user_id)
-        values(#{couponId},#{userId})
+        values(#{couponId}, #{userId})
     </insert>
     
     <delete id="deleteCouponUser">

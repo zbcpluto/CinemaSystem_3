@@ -17,7 +17,7 @@ public interface CouponMapper {
 
     Coupon selectCouponById(int id);
 
-    void insertCouponUser(@Param("couponId") int couponId,@Param("userId")int userId);
+    void insertCouponUser(@Param("couponId") int couponId, @Param("userId") int userId);
 
     void deleteCouponUser(@Param("couponId") int couponId,@Param("userId")int userId);
     
@@ -26,7 +26,5 @@ public interface CouponMapper {
     List<Coupon> selectCouponByUserAndAmount(@Param("userId") int userId, @Param("amount") double amount);
 
     List<User> selectUserByTicketConsumption(@Param("ticketConsumption")double ticketConsumption);
-	
-	void addCoupon(int id, int userId);
 	
 }
