@@ -1,8 +1,5 @@
 package com.example.cinema.po;
 
-import com.example.cinema.vo.TicketVO;
-import com.example.cinema.vo.TicketWithScheduleVO;
-
 import java.sql.Timestamp;
 
 /**
@@ -49,68 +46,7 @@ public class Ticket {
     private int couponId;
 
     private Timestamp time;
-
-    public Timestamp getTime() {
-        return time;
-    }
-
-    public void setTime(Timestamp time) {
-        this.time = time;
-    }
-
     
-    public TicketVO getVO() {
-        TicketVO vo = new TicketVO();
-        vo.setRowIndex(this.getRowIndex());
-        vo.setColumnIndex(this.getColumnIndex());
-        vo.setScheduleId(this.getScheduleId());
-        vo.setId(this.getId());
-        vo.setUserId(this.getUserId());
-        String stateString;
-        switch (state) {
-            case 0:
-                stateString = "未完成";
-                break;
-            case 1:
-                stateString = "已完成";
-                break;
-            case 2:
-                stateString = "已失效";
-                break;
-            default:
-                stateString = "未完成";
-        }
-        vo.setState(stateString);
-        vo.setTime(time);
-        return vo;
-
-    }
-    
-    public TicketWithScheduleVO getWithScheduleVO() {
-        TicketWithScheduleVO vo = new TicketWithScheduleVO();
-        vo.setRowIndex(this.getRowIndex());
-        vo.setColumnIndex(this.getColumnIndex());
-        vo.setId(this.getId());
-        vo.setUserId(this.getUserId());
-        String stateString;
-        switch (state) {
-            case 0:
-                stateString = "未完成";
-                break;
-            case 1:
-                stateString = "已完成";
-                break;
-            case 2:
-                stateString = "已失效";
-                break;
-            default:
-                stateString = "未完成";
-        }
-        vo.setState(stateString);
-        return vo;
-
-    }
-
 
     public int getId() {
         return id;
@@ -175,4 +111,13 @@ public class Ticket {
     public void setCouponId(int couponId) {
         this.couponId = couponId;
     }
+    
+    public Timestamp getTime() {
+        return time;
+    }
+
+    public void setTime(Timestamp time) {
+        this.time = time;
+    }
+    
 }
