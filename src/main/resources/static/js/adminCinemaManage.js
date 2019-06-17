@@ -22,6 +22,9 @@ $(document).ready(function() {
 
     function getCinemaHall() {
         var halls = [];
+        $('#schedule-hall-input').empty();
+        $("#hall-select").empty();
+        $("#schedule-edit-hall-input").empty();
         getRequest(
             '/hall/all',
             function (res) {
@@ -79,6 +82,7 @@ $(document).ready(function() {
     }
 
     $('#change-btn').click(function () {
+
         var hall = {name:$('#schedule-hall-input').val(), column:$('#cinema-width').val(),row:$('#cinema-height').val()};
         postRequest(
             '/hall/update',
@@ -105,6 +109,7 @@ $(document).ready(function() {
            function () {
                $("#addcinema").modal('hide');
                getCinemaHalls();
+               getCinemaHall();
            },
            function(error){
                console.log(error);
