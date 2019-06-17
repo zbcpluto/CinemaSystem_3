@@ -58,7 +58,8 @@ function formatDateTime(date) {
 }
 
 $(document).ready(function () {
-    $("#account").val(sessionStorage.username);
+    var textobj=document.getElementById('account');
+    textobj.innerHTML=sessionStorage.username+"&nbsp;<span class=\"caret\"></span>";
     console.log(sessionStorage.username);
     //全局事件
     document.addEventListener("error", function (e) {
