@@ -43,7 +43,7 @@ function getActivities() {
 					renderActivities(activities);
 	        	}
 	        	else {
-	        		$('#schedule-head').text("近期暂无活动");
+	        		$('#schedule-head').text("");
 	        	}
 			}
 			else {

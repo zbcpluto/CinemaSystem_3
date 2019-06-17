@@ -8,6 +8,7 @@ var userId = sessionStorage.getItem('id');
 var fare ;
 let allcoupons = [];
 var total;
+var tot = 0;
 
 
 $(document).ready(function () {
@@ -305,13 +306,14 @@ function changeCoupon(couponIndex) {
     var actualTotal = (parseFloat($('#order-total').text()) - parseFloat(coupons[couponIndex].discountAmount)).toFixed(2);
     $('#order-actual-total').text(" ¥" + actualTotal);
     $('#pay-amount').html("<div><b>金额：</b>" + actualTotal + "元</div>");
+    tot = actualTotal;
 }
 
 function payConfirm() {
-
+        var movieId=parseInt(window.location.href.split('?')[1].split('&')[0].split('=')[1]);
         postRequest(
-            '/ticket/buy?' + "ticketId=" + order.ticketId + "&couponId=-1",
-            {},
+            '/ticket/buy',
+            {movieId: movieId, ticketId: order.ticketId, couponId:0, total: tot, couponIdToget:[]},
             function (res) {
                 console.log(order.ticketId + " +++");
                 // alert("购票员购片成功！");
