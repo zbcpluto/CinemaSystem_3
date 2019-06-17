@@ -1,10 +1,10 @@
 $(document).ready(function () {
     getNavi();
+    getMovieLikeNum();
     function getNavi(){
         getRequest(
             '/user/home/navi',
             function (res) {
-                console.log(res);
                 var movieList = res.content||[];
                 var carouselDomStr = "";
                 //跑马灯导航
@@ -45,6 +45,28 @@ $(document).ready(function () {
             },
             function (error) {
                 alert("error");
+            }
+        )
+    }
+    
+    function getMovieLikeNum(){
+        getRequest(
+           '/user/home/like',
+            function (res) {
+                var movieList = res.content;
+                console.log(movieList)
+                var movieLikeDomStr = "";
+                movieList.forEach(function(item) {
+                    movieLikeDomStr +=
+                        "                <div class=\"statistic-item\">\n" +
+                        "                    <span><a href="+"/user/movieDetail?id=\""+item.id+"\">"+item.name+"</a></span>\n" +
+                        "                    <span class=\"error-text\">"+1111+"</span>\n" +
+                        "                </div>";
+                });
+                $('.top-expectation-list').append(movieLikeDomStr);
+            },
+            function (error) {
+                alert(error);
             }
         )
     }

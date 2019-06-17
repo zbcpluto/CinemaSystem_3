@@ -22,7 +22,7 @@
         select count(*) as like_num ,DATE(like_time) as `time` from movie_like ml where movie_id=#{movieId} GROUP BY DATE(ml.like_time)
     </select>
 
-    <select id="getMovieIdByLikeDesc" resultType="com.example.cinema.po.MovieLikeNum">
+    <select id="getMovieLikeNumByLikeDesc" resultType="com.example.cinema.po.MovieLikeNum">
         select movie_id as movieId, count(user_id) as likeNum from movie_like
         group by movieId order by likeNum desc
     </select>
