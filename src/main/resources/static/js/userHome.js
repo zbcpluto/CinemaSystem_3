@@ -59,7 +59,7 @@ $(document).ready(function () {
                 movieList.forEach(function(item) {
                     movieLikeDomStr +=
                         "                <div class=\"statistic-item\">\n" +
-                        "                    <span><a href="+"/user/movieDetail?id=\""+item.id+"\">"+item.name+"</a></span>\n" +
+                        "                    <span><a href="+"/user/movieDetail?id="+item.id+">"+item.name+"</a></span>\n" +
                         "                    <span class=\"error-text\">"+1111+"</span>\n" +
                         "                </div>";
                 });
