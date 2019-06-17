@@ -31,7 +31,8 @@
     </select>
 
     <select id="selectUserByTicketConsumption" resultMap="User">
-        select * from user where ticket_consumption >= #{ticketConsumption}
+        select * from user
+        where ticket_consumption >= #{ticketConsumption} and level = 1
     </select>
 	
 	<insert id="addCoupon">

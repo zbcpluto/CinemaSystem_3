@@ -7,10 +7,7 @@ import com.example.cinema.vo.UserVO;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by liying on 2019/4/16.
@@ -27,13 +24,14 @@ public class CouponController {
         return couponService.getCouponsByUser(userId);
     }
 
-    @GetMapping("{ConsumptionBottom}/getUser")
-    public ResponseVO getUserByConsumption(@PathVariable Double ConsumptionBottom){
-        return couponService.getUserByConsumption(ConsumptionBottom);
+    @GetMapping("/get/user/{consumption}")
+    public ResponseVO getUserByConsumption(@PathVariable Double consumption){
+        return couponService.getUserByConsumption(consumption);
     }
 
 	//    @GetMapping("不知道怎么同时得到users和couponId两个参数")
-    public ResponseVO giveCoupon(@PathVariable List<UserVO> users, @PathVariable int couponId){
+    @RequestMapping(value = "/give/{couponId}")
+    public ResponseVO giveCoupon(@RequestBody List<UserVO> users, @PathVariable int couponId){
         return couponService.giveCoupon(users,couponId);
     }
 

@@ -88,7 +88,6 @@ $(document).ready(function() {
                endTime: $("#activity-end-date-input").val()
            }
        };
-
         postRequest(
             '/activity/publish',
             form,
@@ -135,18 +134,40 @@ $(document).ready(function() {
     }
     
     var selectedUserNames = new Set();
+    var selectedUserIds = new Set();
     // 实现筛选金额的点击确认按钮
-    $('#give-coupon-filter-money').click(function(){
+    $('#filter-money-btn').click(function(){
+        $('#filter-user').empty();
         var list=[];
-        //list = getRequest()
-        var selectDomStr = "";
-        list.forEach(function(user){
-
-            selectDomStr+="<option value="+"\""+user.username+"\">"+user.username+"</option>";
-        });
-        $('#filter-user').append(selectDomStr);
+        var consumption = $('#give-coupon-filter-money').val();
+        getRequest(
+            '/coupon/get/user/'+consumption,
+            function (res) {
+                list = res.content;
+                var selectDomStr = "<option value=\"-1\"> 所有人</option>";
+                list.forEach(function(user){
+                    selectDomStr+="<option value="+"\""+user.id+"\">"+user.username+"</option>";
+                });
+                $('#filter-user').append(selectDomStr);
+             },
+            function(error){
+                alert(error);
+            }
+        );
     });
 
+    $('#filter-user').change(function () {
+        var id = $('#filter-user').val();
+        var name = $('#filter-user').children('option:selected').text();
+        if(id == -1){
+            selectedUserIds.clear();
+            selectedUserNames.clear();
+        } else {
+            selectedUserIds.add(id);
+            selectedUserNames.add(name);
+        }
+        renderSelectedUsers();
+    });
     //渲染选择的赠送优惠券的用户
     function renderSelectedUsers() {
         $('#selected-users').empty();
@@ -158,20 +179,23 @@ $(document).ready(function() {
     }
 
     function getPromitions() {
-        var halls = [];
+        var activityList = [];
         getRequest(
-            '/hall/all',
+            '/activity/get',
             function (res) {
-                var coupons = res.content;
-                console.log(coupons);
-                coupons.forEach(function (coupon) {
-                    $('#filter-coupon').append("<option value="+ coupon.id +">"+coupon.name+"</option>");
+                activityList = res.content;
+                console.log(activityList);
+                activityList.forEach(function (item) {
+                    $('#filter-coupon').append("<option value="+ item.coupon.id +">"+item.coupon.name+"</option>");
                 });
-                getSchedules();
+                // getSchedules();
             },
             function (error) {
                 alert(JSON.stringify(error));
             }
         );
     }
+    $('#give-coupon-form-btn').click(function () {
+
+    })
 });
