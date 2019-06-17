@@ -9,7 +9,6 @@ import com.example.cinema.po.Coupon;
 import com.example.cinema.vo.ActivityForm;
 import com.example.cinema.vo.ResponseVO;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Created by liying on 2019/4/20.
  */
 @Service
-public class ActivityServiceImpl implements ActivityService, ActivityServiceForBl {
+public class ActivityServiceImpl implements ActivityService {
 
     @Autowired
     ActivityMapper activityMapper;
@@ -58,25 +57,6 @@ public class ActivityServiceImpl implements ActivityService, ActivityServiceForB
             e.printStackTrace();
             return ResponseVO.buildFailure("失败");
         }
-    }
-
-    @Override
-    public List<Activity> selectActivityByTimeAndMovie(Timestamp timestamp, int movieId){
-        /*try{
-            List<Activity> ac1 = activityMapper.selectByTime(timestamp);
-            List<Activity> ac2 = activityMapper.selectActivitiesByMovie(movieId);
-            for(Activity i:ac2){
-                if(!ac1.contains(i)){
-                    ac1.add(i);
-                }
-            }
-            return ac1;
-
-        }catch(Exception e){
-            e.printStackTrace();
-            return null;
-        } */
-    	return null;
     }
 
 	@Override

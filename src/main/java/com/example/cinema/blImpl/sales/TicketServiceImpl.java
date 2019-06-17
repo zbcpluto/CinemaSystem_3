@@ -15,7 +15,6 @@ import com.example.cinema.bl.sales.TicketService;
 import com.example.cinema.blImpl.management.hall.HallServiceForBl;
 import com.example.cinema.blImpl.management.movie.MovieServiceForBl;
 import com.example.cinema.blImpl.management.schedule.ScheduleServiceForBl;
-import com.example.cinema.blImpl.promotion.ActivityServiceForBl;
 import com.example.cinema.blImpl.promotion.CouponServiceForBl;
 import com.example.cinema.blImpl.promotion.VIPServiceForBl;
 import com.example.cinema.blImpl.user.AccountServiceForBl;
@@ -42,25 +41,25 @@ public class TicketServiceImpl implements TicketService {
     @Autowired
     CouponServiceForBl couponService;
     @Autowired
-    ActivityServiceForBl activityService;
-    @Autowired
     VIPServiceForBl vipService;
 
     @Override
     @Transactional
     public ResponseVO addTicket(TicketForm ticketForm) {
-    	try{
+    	try {
             int userId = ticketForm.getUserId();
             int scheduleId = ticketForm.getScheduleId();
             List<SeatForm> seats = ticketForm.getSeats();
             List<Integer> tickeIdList = new ArrayList<>();
             
+            Timestamp now = new Timestamp(new Date().getTime());
             for(SeatForm s: seats) {
                 Ticket ticket = new Ticket();
                 ticket.setUserId(userId) ;
                 ticket.setScheduleId(scheduleId);
                 ticket.setColumnIndex(s.getColumnIndex());
                 ticket.setRowIndex(s.getRowIndex());
+                ticket.setTime(now);
                 ticketMapper.insertTicket(ticket);
                 tickeIdList.add(ticket.getId());
             }  //对于每一张ticket都在数据库中添加一个ticket对象
@@ -97,8 +96,10 @@ public class TicketServiceImpl implements TicketService {
                 } //更新ticket使用的couponId
             }
             
-            ///更新优惠券
-            couponService.deleteCouponUser(couponId, userId);
+            //更新优惠券
+            if(couponId != 0) {
+            	couponService.deleteCouponUser(couponId, userId);
+            }
             for(int id: couponIdToget) {
                 couponService.addCouponUser(id, userId);
             }
@@ -109,7 +110,7 @@ public class TicketServiceImpl implements TicketService {
             e.printStackTrace();
             return ResponseVO.buildFailure("失败");
         }
-    }//返回的是一个TicketWithCouponVO,里面包含了js文件里面的TicketVOList、没有优惠后的总价total，以及赠送的coupons列表
+    }
 
     @Override
     public ResponseVO getBySchedule(int scheduleId) {
@@ -133,72 +134,33 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public ResponseVO getTicketByUser(int userId) {
-    	/*List<TicketForm> tfs = new ArrayList<TicketForm>();
-    	
-    	TicketForm tf1 = new TicketForm();
-    	tf1.setPostUrl("http://n.sinaimg.cn/translate/640/w600h840/20190312/ampL-hufnxfm4278816.jpg");
-    	tf1.setMovieName("夏目友人帐");
-    	tf1.setHallName("1号激光厅");
-    	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     	try {
-			tf1.setStartTime(format.parse("2019-6-10 18:00:00"));
-			tf1.setEndTime(format.parse("2019-6-10 20:00:00"));
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-    	tf1.setSinglePrice(40);
-    	tf1.setState(1);
-    	tf1.addSeat(1, 1);
-    	tf1.addSeat(2, 2);
-    	tf1.addSeat(3, 3);
-    	
-    	TicketForm tf2 = new TicketForm();
-    	tf2.setPostUrl("http://n.sinaimg.cn/translate/640/w600h840/20190312/ampL-hufnxfm4278816.jpg");
-    	tf2.setMovieName("惊奇队长");
-    	tf2.setHallName("2号激光厅");
-    	try {
-			tf2.setStartTime(format.parse("2019-6-11 15:00:00"));
-			tf2.setEndTime(format.parse("2019-6-11 19:00:00"));
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-    	tf2.setSinglePrice(55);
-    	tf2.setState(2);
-    	tf2.addSeat(1, 1);
-    	tf2.addSeat(2, 2);
-    	tf2.addSeat(3, 3);
-    	tf2.addSeat(4, 4);
-    	
-    	tfs.add(tf1);
-    	tfs.add(tf2);
-    	return ResponseVO.buildSuccess(tfs); */
-    	try {
-//    		List<Ticket> tickets = ticketMapper.selectTicketByUser(userId);
-//    		Map<Timestamp ,TicketForm> map = new HashMap<Timestamp, TicketForm>();
-//    		tickets.stream().forEach(ticket -> {
-//    			Timestamp time = ticket.getTime();
-//    			if(!map.containsKey(time)) {
-//    				int scheduleId = ticket.getScheduleId();
-//    				ScheduleItem scheduleItem = scheduleService.getScheduleItemById(scheduleId);
-//    				Movie movie = movieService.getMovieById(scheduleItem.getMovieId());
-//    				String posterUrl = movie.getPosterUrl();
-//    				TicketForm tf = new TicketForm(userId, scheduleId, posterUrl, scheduleItem);
-//    				tf.addSeat(ticket.getColumnIndex(), ticket.getRowIndex());
-//    				tf.setState(ticket.getState());
-//    				map.put(time, tf);
-//    				System.out.println(tf.getPosterUrl());
-//    			}
-//    			else {
-//    				TicketForm tf = map.get(time);
-//    				tf.addSeat(ticket.getColumnIndex(), ticket.getRowIndex());
-//    			}
-//    		});
-//
-//    		List<TicketForm> tfs = new ArrayList<TicketForm>();
-//    		for(TicketForm tf: map.values()) {
-//    			tfs.add(tf);
-//    		}
-    		return ResponseVO.buildSuccess(null);
+    		List<Ticket> tickets = ticketMapper.selectTicketByUser(userId);
+    		Map<Long, TicketVO> map = new HashMap<Long, TicketVO>();
+    		tickets.stream().forEach(ticket -> {
+    			long time = ticket.getTime().getTime();
+    			if(!map.containsKey(time)) {
+    				int scheduleId = ticket.getScheduleId();
+    				ScheduleItem scheduleItem = scheduleService.getScheduleItemById(scheduleId);
+    				Movie movie = movieService.getMovieById(scheduleItem.getMovieId());
+    				String posterUrl = movie.getPosterUrl();
+    				TicketVO tf = new TicketVO(userId, scheduleId, posterUrl, scheduleItem);
+    				tf.addSeat(ticket.getColumnIndex(), ticket.getRowIndex());
+    				tf.setState(ticket.getState());
+    				map.put(time, tf);
+    				System.out.println(tf.getPosterUrl());
+    			}
+    			else {
+    				TicketForm tf = map.get(time);
+    				tf.addSeat(ticket.getColumnIndex(), ticket.getRowIndex());
+    			}
+    		});
+    		
+    		List<TicketForm> tfs = new ArrayList<TicketForm>();
+    		for(TicketForm tf: map.values()) {
+    			tfs.add(tf);
+    		}
+    		return ResponseVO.buildSuccess(tfs);
         }
     	catch (Exception e){
             e.printStackTrace();
@@ -233,7 +195,9 @@ public class TicketServiceImpl implements TicketService {
             }
             
             //更新优惠券
-            couponService.deleteCouponUser(couponId, userId);
+            if(couponId != 0) {
+            	couponService.deleteCouponUser(couponId, userId);
+            }
             for(int id: couponIdToget) {
                 couponService.addCouponUser(id, userId);
             }
@@ -316,13 +280,13 @@ public class TicketServiceImpl implements TicketService {
             }
 
             accountServiceForBl.updateTicketConsumption(userId,0-refund); // user表中更新购票消费
-            List<Activity> activities = activityService.selectActivityByTimeAndMovie(timestamp, movieId);
-            List<Coupon> couponsToCatch=new ArrayList<Coupon>();
+            List<ActivityMovie> activityMovies = activityService.selectActivityByTimeAndMovie(timestamp, movieId);
+            List<Coupon> couponsToCatch = new ArrayList<Coupon>();
             for(Activity i:activities){
                 if(!couponService.existCouponUser(i.getCoupon().getId(), userId)){
                     couponsToCatch.add(i.getCoupon());
                 }
-            }//构造根据活动需要拿回的优惠券列表
+            } //构造根据活动需要拿回的优惠券列表
 
             if(couponsToCatch.size()!=0){
                 for(Coupon coupon:couponsToCatch){

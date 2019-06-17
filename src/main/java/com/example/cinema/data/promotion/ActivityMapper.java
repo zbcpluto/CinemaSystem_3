@@ -17,7 +17,7 @@ public interface ActivityMapper {
 
     int insertActivity(Activity activity);
 
-    int insertActivityAndMovie(@Param("activityId") int activityId,@Param("movieId") List<Integer> movieId);
+    int insertActivityAndMovie(@Param("activityId") int activityId, @Param("movieId") List<Integer> movieId);
 
     List<Activity> selectActivities();
 
