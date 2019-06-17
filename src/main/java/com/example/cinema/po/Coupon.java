@@ -40,6 +40,7 @@ public class Coupon {
     
     public CouponVO getVO() {
     	CouponVO cv = new CouponVO();
+    	cv.setId(id);
     	cv.setName(name);
     	cv.setDescription(description);
     	cv.setTargetAmount(targetAmount);

@@ -1,6 +1,7 @@
 package com.example.cinema.vo;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -9,9 +10,11 @@ import com.example.cinema.po.ScheduleItem;
 /**
  * Created by liying on 2019/4/16.
  */
-public class TicketVO {
+public class TicketVO implements Comparable<TicketVO> {
 
     private int userId;
+    
+    private int movieId;
     
     private int scheduleId;
     
@@ -31,26 +34,35 @@ public class TicketVO {
     
     private double singleFare;
     
-    private double discountAmount;
+    private String couponDes;
 
-    private String state;
+    private int state;
 
     private Timestamp time;
+    
+    private List<Integer> idList;
     
     
     public TicketVO(int userId, int scheduleId, String posterUrl, ScheduleItem scheduleItem) {
     	this.userId = userId;
     	this.scheduleId = scheduleId;
     	this.posterUrl = posterUrl;
+    	this.movieId = scheduleItem.getMovieId();
     	this.movieName = scheduleItem.getMovieName();
     	this.hallName = scheduleItem.getHallName();
     	this.startTime = scheduleItem.getStartTime();
     	this.endTime = scheduleItem.getEndTime();
     	this.singleFare = scheduleItem.getFare();
+    	this.seats = new ArrayList<>();
+    	this.idList = new ArrayList<>();
     }
 
     public void addSeat(int columnIndex, int rowIndex) {
     	seats.add(new SeatForm(columnIndex, rowIndex));
+    }
+    
+    public void addId(int id) {
+    	idList.add(id);
     }
 
 	public int getUserId() {
@@ -59,6 +71,14 @@ public class TicketVO {
 
 	public void setUserId(int userId) {
 		this.userId = userId;
+	}
+	
+	public int getMovieId() {
+		return movieId;
+	}
+
+	public void setMovieId(int movieId) {
+		this.movieId = movieId;
 	}
 
 	public int getScheduleId() {
@@ -133,19 +153,19 @@ public class TicketVO {
 		this.singleFare = singleFare;
 	}
 
-	public double getDiscountAmount() {
-		return discountAmount;
+	public String getCouponDes() {
+		return couponDes;
 	}
 
-	public void setDiscountAmount(double discountAmount) {
-		this.discountAmount = discountAmount;
+	public void setCouponDes(String couponDes) {
+		this.couponDes = couponDes;
 	}
 
-	public String getState() {
+	public int getState() {
 		return state;
 	}
 
-	public void setState(String state) {
+	public void setState(int state) {
 		this.state = state;
 	}
 
@@ -156,5 +176,18 @@ public class TicketVO {
 	public void setTime(Timestamp time) {
 		this.time = time;
 	}
-    
+
+	public List<Integer> getIdList() {
+		return idList;
+	}
+
+	public void setIdList(List<Integer> idList) {
+		this.idList = idList;
+	}
+
+	@Override
+	public int compareTo(TicketVO o) {
+		return time.compareTo(o.time);
+	}
+
 }

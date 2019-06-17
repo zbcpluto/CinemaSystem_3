@@ -5,6 +5,10 @@ import java.sql.Timestamp;
 public class CouponVO {
 	
 	/**
+     * 优惠券id
+     */
+	private int id;
+	/**
      * 优惠券名称
      */
     private String name;
@@ -39,6 +43,14 @@ public class CouponVO {
     	num++;
     }
     
+    public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -94,5 +106,5 @@ public class CouponVO {
 	public void setNum(int num) {
 		this.num = num;
 	}
-    
+
 }

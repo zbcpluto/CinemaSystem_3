@@ -2,6 +2,7 @@ package com.example.cinema.blImpl.sales;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -144,23 +145,41 @@ public class TicketServiceImpl implements TicketService {
     				ScheduleItem scheduleItem = scheduleService.getScheduleItemById(scheduleId);
     				Movie movie = movieService.getMovieById(scheduleItem.getMovieId());
     				String posterUrl = movie.getPosterUrl();
-    				TicketVO tf = new TicketVO(userId, scheduleId, posterUrl, scheduleItem);
-    				tf.addSeat(ticket.getColumnIndex(), ticket.getRowIndex());
-    				tf.setState(ticket.getState());
-    				map.put(time, tf);
-    				System.out.println(tf.getPosterUrl());
+    				TicketVO tv = new TicketVO(userId, scheduleId, posterUrl, scheduleItem);
+    				tv.addSeat(ticket.getColumnIndex(), ticket.getRowIndex());
+    				tv.addId(ticket.getId());
+    				tv.setState(ticket.getState());
+    				
+    				int couponId = ticket.getCouponId();
+    				tv.setCouponId(couponId);
+    				if(couponId == 0) {
+    					tv.setCouponDes("无");
+    				}
+    				else {
+    					Coupon coupon = couponService.getCouponById(tv.getCouponId());
+    					StringBuilder sb = new StringBuilder();
+    					sb.append(coupon.getName()).append("(满 ");
+    					sb.append(coupon.getTargetAmount()).append(" 减 ");
+    					sb.append(coupon.getDiscountAmount()).append(")");
+        				tv.setCouponDes(sb.toString());
+    				}
+    				tv.setTime(ticket.getTime());
+    				map.put(time, tv);
     			}
     			else {
-    				TicketForm tf = map.get(time);
-    				tf.addSeat(ticket.getColumnIndex(), ticket.getRowIndex());
+    				TicketVO tv = map.get(time);
+    				tv.addSeat(ticket.getColumnIndex(), ticket.getRowIndex());
+    				tv.addId(ticket.getId());
     			}
     		});
     		
-    		List<TicketForm> tfs = new ArrayList<TicketForm>();
-    		for(TicketForm tf: map.values()) {
-    			tfs.add(tf);
+    		List<TicketVO> tvs = new ArrayList<TicketVO>();
+    		for(TicketVO tv: map.values()) {
+    			tvs.add(tv);
     		}
-    		return ResponseVO.buildSuccess(tfs);
+    		Collections.sort(tvs);
+    		Collections.reverse(tvs);
+    		return ResponseVO.buildSuccess(tvs);
         }
     	catch (Exception e){
             e.printStackTrace();

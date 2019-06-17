@@ -46,6 +46,37 @@
         </div>
         <ul class="ticket-on-list">
         </ul>
+</div>
+<div class="modal fade" id="buyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h2 class="modal-title" id="myModalLabel">重新购票</h2>
+            </div>
+            <div class="modal-body">
+                <div id="modal-body-nonmember">
+                    <div class="form-group">
+                        <label for="userBuy-cardNum">银行卡号</label>
+                        <input class="form-control" id="userBuy-cardNum" placeholder="请输入银行卡号">
+                        <p id="userBuy-cardNum-error" class="notice">银行卡号不能为空</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="userBuy-cardPwd">密码</label>
+                        <input type="password" class="form-control" id="userBuy-cardPwd" placeholder="请输入密码">
+                        <p id="userBuy-cardPwd-error" class="notice">密码不能为空</p>
+                    </div>
+                </div>
+
+                <div id="pay-amount"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="buyModal-dismiss" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="buyModal-confirm" onclick="payConfirmClick()">确认支付</button>
+            </div>
+        </div>
     </div>
+</div>
 </body>
 </html>
