@@ -1,5 +1,5 @@
 $(document).ready(function() {
-
+    getPromitions();
     getAllMovies();
 
     getActivities();
@@ -96,6 +96,7 @@ $(document).ready(function() {
                 if(res.success){
                     getActivities();
                     $("#activityModal").modal('hide');
+                    getPromitions();
                 } else {
                     alert(res.message);
                 }
@@ -155,5 +156,22 @@ $(document).ready(function() {
         });
         $('#selected-users').append(usersDomStr);
     }
-    
+
+    function getPromitions() {
+        var halls = [];
+        getRequest(
+            '/hall/all',
+            function (res) {
+                var coupons = res.content;
+                console.log(coupons);
+                coupons.forEach(function (coupon) {
+                    $('#filter-coupon').append("<option value="+ coupon.id +">"+coupon.name+"</option>");
+                });
+                getSchedules();
+            },
+            function (error) {
+                alert(JSON.stringify(error));
+            }
+        );
+    }
 });
