@@ -2,6 +2,8 @@ var ticketList;
 var amountList = [];
 var index;
 var amount;
+var refundRatio;
+var refundAmount;
 
 $(document).ready(function () {
 	
@@ -108,7 +110,7 @@ function getPriceDes(idx) {
 		var i = ticket.couponDes.lastIndexOf("减");
 		if(i != -1) {
 			var discount = parseFloat(couponDes.substr(i+1, couponDes.length-1)).toFixed(2);
-			total = parseFloat(total-discount);
+			total = parseFloat(total-discount).toFixed(2);
 			res += " - " + discount + " = " + total;
 		}
 	}
@@ -145,9 +147,10 @@ function repay(idx) {
 }
 
 function refund(idx) {
-	
 	if(isPreBegin(idx)) {
-		alert(amountList[idx]);
+		getRefundRatio(idx);
+		$("#refundModal").modal('show');
+		index = idx;
 	}
 	else {
 		alert("电影已开始，无法退票，正在为您刷新界面");
@@ -202,4 +205,28 @@ function validateForm() {
         $('#userBuy-cardPwd-error').css("visibility", "visible");
     }
     return isValidate;
+}
+
+// 获得退票手续费的折算比
+function getRefundRatio(idx) {
+	var ticket = ticketList[index];
+	postRequest(
+        '/refund/get/ratio',
+        {buyMode: ticket.buyMode, startTime: ticket.startTime},
+        function (res) {
+        	refundRatio = res.contenet;
+        	$("#refund-ratio").val(refundRatio);
+        	amount = amountList[idx];
+        	var serviceFee = amount * refundRatio;
+        	var refundAmount = amount - serviceFee;
+        	$("#refund-amount").val(amount + "-" + serviceFee + "=" + refundAmount);
+        },
+        function (error) {
+            alert(error);
+        });
+}
+
+// 获得退票收回的优惠券
+function getWithDrawCoupons() {
+	
 }

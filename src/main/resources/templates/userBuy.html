@@ -53,7 +53,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
-                <h2 class="modal-title" id="myModalLabel">重新购票</h2>
+                <h2 class="modal-title">付款</h2>
             </div>
             <div class="modal-body">
                 <div id="modal-body-nonmember">
@@ -70,6 +70,35 @@
                 </div>
 
                 <div id="pay-amount"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="buyModal-dismiss" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="buyModal-confirm" onclick="payConfirmClick()">确认支付</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="refundModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h2 class="modal-title">退票</h2>
+            </div>
+            <div class="modal-body">
+                <div>
+                	<label>当前退款的手续费折算比：</label>
+                	<div id="refund-ratio" class="text-info"></div>
+                </div>
+                <div>
+                	<label>退款金额：</label>
+                	<div id="refund-amount" class="text-info"></div>
+                </div>
+                <div>
+                	<label>收回优惠券：</label>
+                	<div id="coupon-withdraw" class="text-info"></div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" id="buyModal-dismiss" data-dismiss="modal">取消</button>

@@ -75,6 +75,16 @@ public class RefundServiceImpl implements RefundService {
             return ResponseVO.buildFailure("删除退票策略失败");
         }
     }
+    
+    @Override
+	public ResponseVO getRefStraRatio(int state) {
+    	try {
+        	;
+            return ResponseVO.buildSuccess(refundMapper.selectRefundStrategyByState(state));
+        } catch(Exception e) {
+            return ResponseVO.buildFailure("获取退票折算比失败");
+        }
+	}
 
     /**
      * 将数据库传上来的POList转为给页面层的VO

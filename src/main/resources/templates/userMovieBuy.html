@@ -214,6 +214,16 @@
                 <h2 class="modal-title" id="myModalLabel">会员卡充值</h2>
             </div>
             <div class="modal-body">
+            	<div class="form-group">
+                    <label for="userBuy-cardNum">银行卡号</label>
+                    <input class="form-control" id="userBuy-chargeNum" placeholder="请输入银行卡号">
+                    <p id="userBuy-chargeNum-error" class="notice">银行卡号不能为空</p>
+                </div>
+                <div class="form-group">
+                    <label for="userBuy-cardPwd">密码</label>
+                    <input type="password" class="form-control" id="userBuy-chargePwd" placeholder="请输入密码">
+                    <p id="userBuy-chargePwd-error" class="notice">密码不能为空</p>
+                </div>
 	            <div class="form-group">
 	                <label for="userBuy-chargeMoney">充值金额</label>
 	                <input class="form-control" id="userBuy-chargeMoney" type="number" min=0 placeholder="请输入充值金额">

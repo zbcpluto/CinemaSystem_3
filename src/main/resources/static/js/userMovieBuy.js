@@ -316,32 +316,36 @@ function chargeClick() {
 
 function chargeConfirmClick() {
 	if(validateChargeForm()) {
-		getVipInfo();
-		var charge_amount = $('#userBuy-chargeMoney').val();
-        postRequest(
-            '/vip/charge',
-            {vipId: vipCard.id, amount: parseInt(charge_amount)},
-            function (res) {
-            	if(res.success) {
-            		$('#chargeModal').modal('hide');
-            		checkVip();
-                    setTimeout(function() {
-                    	if(charge_amount >= vipInfo.discount_req) {
-                        	alert("充值成功，充值满" + vipInfo.discount_req + "元，额外赠送" + vipInfo.discount_res + "元，目前您的余额为" + vipCard.balance + "元");
-                        }
-                        else {
-                        	alert("充值成功，目前您的余额为" + vipCard.balance + "元");
-                        }
-                    }, 100);
-            	}
-            	else {
-            		alert(res.message);
-            	}
-            },
-            function (error) {
-            	alert("充值失败！");
-                alert(error);
-            });
+		if($('#userBuy-cardNum').val() === "123123123" && $('#userBuy-cardPwd').val() === "123123") {
+			getVipInfo();
+			var charge_amount = $('#userBuy-chargeMoney').val();
+		    postRequest(
+		        '/vip/charge',
+		        {vipId: vipCard.id, amount: parseInt(charge_amount)},
+		        function (res) {
+		        	if(res.success) {
+		        		$('#chargeModal').modal('hide');
+		        		checkVip();
+		                setTimeout(function() {
+		                	if(charge_amount >= vipInfo.discount_req) {
+		                    	alert("充值成功，充值满" + vipInfo.discount_req + "元，额外赠送" + vipInfo.discount_res + "元，目前您的余额为" + vipCard.balance + "元");
+		                    }
+		                    else {
+		                    	alert("充值成功，目前您的余额为" + vipCard.balance + "元");
+		                    }
+		                }, 100);
+		        	}
+		        	else {
+		        		alert(res.message);
+		        	}
+		        },
+		        function (error) {
+		        	alert("充值失败！");
+		            alert(error);
+		        });
+	    else {
+	    	alert("银行卡号或密码错误");
+		}
 	}
 }
 
@@ -364,6 +368,16 @@ function getVipInfo() {
 
 function validateChargeForm() {
 	var isValidate = true;
+	if (!$('#userBuy-chargeNum').val()) {
+        isValidate = false;
+        $('#userBuy-chargeNum').parent('.form-group').addClass('has-error');
+        $('#userBuy-chargeNum-error').css("visibility", "visible");
+    }
+    if (!$('#userBuy-chargePwd').val()) {
+        isValidate = false;
+        $('#userBuy-chargePwd').parent('.form-group').addClass('has-error');
+        $('#userBuy-chargePwd-error').css("visibility", "visible");
+    }
     if (!$('#userBuy-chargeMoney').val()) {
         isValidate = false;
         $('#userBuy-chargeMoney').parent('.form-group').addClass('has-error');

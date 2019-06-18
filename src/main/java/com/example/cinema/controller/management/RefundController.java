@@ -42,13 +42,23 @@ public class RefundController {
     }
 
     /**
-     * 依据名称删除某个退票策略
-     * @param name
+     * 根据类型删除退票策略
+     * @param state  1：会员   0：非会员
      * @return
      */
     @RequestMapping(value = "/delete/{state}", method = RequestMethod.GET)
     public ResponseVO deleteRefundStrategy(@PathVariable int state) {
         return refundService.deleteRefundStrategyByState(state);
+    }
+    
+    /**
+     * 获取当前时间的退票折算系数
+     * @param state  1：会员   0：非会员
+     * @return
+     */
+    @RequestMapping(value = "/get/ratio/{state}", method = RequestMethod.GET)
+    public ResponseVO getRefStraRatio(@PathVariable int state) {
+        return refundService.getRefStraRatio(state);
     }
 
 }

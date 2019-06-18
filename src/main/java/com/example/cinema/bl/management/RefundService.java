@@ -33,4 +33,6 @@ public interface RefundService {
      */
     ResponseVO deleteRefundStrategyByState(int state);
 
+	ResponseVO getRefStraRatio(int state);
+
 }

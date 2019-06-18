@@ -42,6 +42,8 @@ public class TicketVO implements Comparable<TicketVO> {
     
     private List<Integer> idList;
     
+    private int buyMode;
+    
     
     public TicketVO(int userId, int scheduleId, String posterUrl, ScheduleItem scheduleItem) {
     	this.userId = userId;
@@ -188,6 +190,14 @@ public class TicketVO implements Comparable<TicketVO> {
 	@Override
 	public int compareTo(TicketVO o) {
 		return time.compareTo(o.time);
+	}
+
+	public int getBuyMode() {
+		return buyMode;
+	}
+
+	public void setBuyMode(int buyMode) {
+		this.buyMode = buyMode;
 	}
 
 }

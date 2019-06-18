@@ -19,5 +19,7 @@ public interface RefundMapper {
     void insertRefundStrategy(List<RefundStrategy> refundStrategyList);
 
 	void deleteRefundStrategyByState(int state);
+
+	double selectRefundStrategyByState(int state);
 	
 }
