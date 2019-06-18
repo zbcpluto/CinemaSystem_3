@@ -38,7 +38,7 @@ function getActivities() {
 		function(res) {
 			if(res.success) {
 				var activities = res.content;
-				if(activities.length) {
+				if(activities.length > 0) {
 					$('#activity').css("display", "");
 					renderActivities(activities);
 	        	}

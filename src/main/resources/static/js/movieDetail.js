@@ -51,7 +51,7 @@ $(document).ready(function(){
 
     function getMovie() {
         getRequest(
-            '/movie/'+movieId + '/' + userId,
+            '/movie/' + movieId + '/' + userId,
             function(res){
                 var data = res.content;
                 isOn = (data.status == 0);
@@ -67,7 +67,7 @@ $(document).ready(function(){
     function repaintMovieDetail(movie) {
         !isLike ? $('.icon-heart').removeClass('error-text') : $('.icon-heart').addClass('error-text');
         $('#like-btn span').text(isLike ? ' 已想看' : ' 想 看');
-        $('#movie-img').attr('src',movie.posterUrl);
+        $('#movie-img').attr('src', (movie.posterUrl || "/images/defaultAvatar.jpg"));
         $('#movie-name').text(movie.name);
         $('#order-movie-name').text(movie.name);
         $('#movie-description').text(movie.description);

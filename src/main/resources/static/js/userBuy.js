@@ -1,9 +1,12 @@
+var userId = sessionStorage.getItem('id');
 var ticketList;
 var amountList = [];
 var index;
 var amount;
+var isVip;
 var refundRatio;
 var refundAmount;
+var withdrawnCouponIds;
 
 $(document).ready(function () {
 	
@@ -13,7 +16,7 @@ $(document).ready(function () {
 
 function getTicketList() {
     getRequest(
-        '/ticket/get/' + sessionStorage.getItem('id'),
+        '/ticket/get/' + userId,
         function (res) {
         	ticketList = res.content;
             renderTicketList();
@@ -148,9 +151,7 @@ function repay(idx) {
 
 function refund(idx) {
 	if(isPreBegin(idx)) {
-		getRefundRatio(idx);
-		$("#refundModal").modal('show');
-		index = idx;
+		checkVip(idx); //嵌套做法
 	}
 	else {
 		alert("电影已开始，无法退票，正在为您刷新界面");
@@ -207,19 +208,40 @@ function validateForm() {
     return isValidate;
 }
 
+// 检查该用户是否为会员
+function checkVip(idx) {
+	getRequest(
+        '/vip/' + userId + '/get',
+        function (res) {
+            isVIP = res.success;
+            getRefundRatio(idx);
+        },
+        function (error) {
+            alert(error);
+        });
+}
+
 // 获得退票手续费的折算比
 function getRefundRatio(idx) {
-	var ticket = ticketList[index];
+	var ticket = ticketList[idx];
 	postRequest(
         '/refund/get/ratio',
-        {buyMode: ticket.buyMode, startTime: ticket.startTime},
+        {isVip: (isVIP ? 1:0), startTime: ticket.startTime},
         function (res) {
-        	refundRatio = res.contenet;
-        	$("#refund-ratio").val(refundRatio);
-        	amount = amountList[idx];
-        	var serviceFee = amount * refundRatio;
-        	var refundAmount = amount - serviceFee;
-        	$("#refund-amount").val(amount + "-" + serviceFee + "=" + refundAmount);
+        	if(res.success) {
+        		alert(res.content);
+        		refundRatio = res.content;
+            	$("#refund-ratio").html(refundRatio*100 + "%");
+            	amount = amountList[idx];
+            	var serviceFee = parseFloat(amount * refundRatio).toFixed(2);
+            	var refundAmount = parseFloat(amount - serviceFee).toFixed(2);
+            	$("#refund-amount").html(amount + " - " + serviceFee + " = " +  + refundAmount);
+            	getWithDrawCoupons(idx);
+            	$("#refundModal").modal('show');
+        	}
+        	else {
+        		alert(res.message);
+        	}
         },
         function (error) {
             alert(error);
@@ -227,6 +249,43 @@ function getRefundRatio(idx) {
 }
 
 // 获得退票收回的优惠券
-function getWithDrawCoupons() {
-	
+function getWithDrawCoupons(idx) {
+	var ticket = ticketList[idx];
+	getRequest(
+		'/activity/getByMovie/' + ticket.movieId,
+		function(res) {
+			if(res.success) {
+				var activities = res.content;
+				if(activities.length == 0) {
+					withdrawnCouponIds = [];
+				}
+				else {
+					var couponIdList = [];
+					var coupons = [];
+					for(let i = 0; i < activities.length; i++) {
+						couponIdList.push(activities[i].coupon.id);
+						coupons.push(activities[i].coupon);
+					}
+					withdrawnCouponIds = couponIdList;
+					renderCoupons(coupons);
+				}
+			}
+			else {
+				alert(res.message);
+			}
+		},
+		function (error) {
+            alert(JSON.stringify(error));
+        }
+    );
+}
+
+function renderCoupons(coupons) {
+	$("#coupon-withdraw").empty();
+	var couponDomStr = "";
+	coupons.forEach(function(coupon) {
+		couponDomStr += 
+			"<div>" + coupon.name +"：满" + coupon.targetAmount + "减" + coupon.discountAmount + "</div>";
+	});
+	$("#coupon-withdraw").append(couponDomStr);
 }

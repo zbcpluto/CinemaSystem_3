@@ -1,6 +1,7 @@
 package com.example.cinema.bl.management;
 
 import com.example.cinema.vo.RefundForm;
+import com.example.cinema.vo.RefundRatioForm;
 import com.example.cinema.vo.ResponseVO;
 
 /**
@@ -33,6 +34,6 @@ public interface RefundService {
      */
     ResponseVO deleteRefundStrategyByState(int state);
 
-	ResponseVO getRefStraRatio(int state);
+	ResponseVO getRefStraRatio(RefundRatioForm rrf);
 
 }
