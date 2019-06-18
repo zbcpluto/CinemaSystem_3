@@ -356,6 +356,7 @@ CREATE TABLE `refund` (
   `id` int(11)  NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `is_vip` tinyint(4) NOT NULL,
+  `free_time` VARCHAR(255) DEFAULT NULL,
   `false_time` VARCHAR(255) DEFAULT NULL,
   `start_time` VARCHAR(255) NOT NULL,
   `end_time` VARCHAR(255) NOT NULL,
@@ -370,7 +371,7 @@ CREATE TABLE `refund` (
 
 LOCK TABLES `refund` WRITE;
 /*!40000 ALTER TABLE `refund` DISABLE KEYS */;
-INSERT INTO `refund` VALUES (1,'退票策略1',1,'00:15','05:00','06:00',0.10),(2,'退票策略1',1,'00:15','03:00','05:00',0.30),(3,'退票策略1',1,'00:15','01:00','03:00',0.50),(4,'退票策略1',1,'00:15','00:15','01:00',0.80);
+INSERT INTO `refund` VALUES (1,'退票策略1',1,'06:00','00:15','05:00','06:00',0.10),(2,'退票策略1',1,'06:00','00:15','03:00','05:00',0.30),(3,'退票策略1',1,'06:00','00:15','01:00','03:00',0.50),(4,'退票策略1',1,'06:00','00:15','00:15','01:00',0.80);
 /*!40000 ALTER TABLE `refund` ENABLE KEYS */;
 UNLOCK TABLES;
 

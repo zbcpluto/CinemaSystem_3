@@ -259,11 +259,11 @@ public class TicketServiceImpl implements TicketService {
             ScheduleItem schedule=scheduleService.getScheduleItemById(scheduleId); // 得到电影的排片信息（主要是取得排片对应的票价）
             double penalty=0;//这里是假数据，之后的过程中要从数据库中获得penalty的比例
             int penaltyMode=isVip(userId); // 得到罚金的模式（vip是1，非vip是0）
-            List<RefundStrategy> refundStrategies=ticketMapper.getRefundStrategies(penaltyMode); // 得到退票的罚金策略（根据罚金模式不同而不同）
+            List<RefundStategy> refundStrategies=ticketMapper.getRefundStrategies(penaltyMode); // 得到退票的罚金策略（根据罚金模式不同而不同）
             Date currentTime= new Date(); //得到现在的时间
             Date onTime=schedule.getStartTime();  //得到电影的开场时间
             double beforeOn=(double)(currentTime.getTime()-onTime.getTime())/(double)(1000*60); //计算现在离开场的时间还有多久
-            for(RefundStrategy rs:refundStrategies){
+            for(RefundStategy rs:refundStrategies){
                 double startTime=Double.parseDouble(rs.getStartTime().split(":")[0])*60+
                         Double.parseDouble(rs.getStartTime().split(":")[1]);
                 double endTime=Double.parseDouble(rs.getEndTime().split(":")[0])*60+

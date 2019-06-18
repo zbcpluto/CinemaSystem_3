@@ -4,8 +4,8 @@ import java.util.List;
 /**
  * Created by AzureXH on 2019/6/3
  */
-public class RefundForm {
-
+public class RefStraVO {
+	
     /**
      * 退票策略名称
      */
@@ -34,17 +34,6 @@ public class RefundForm {
      */
     private List<Double> penalty;
 
-    public RefundForm(){}
-
-    public RefundForm(String name, Integer isVip, String freeTime, String falseTime, List<String> startTime, List<String> endTime, List<Double> penalty) {
-        this.name = name;
-        this.isVip = isVip;
-        this.setFreeTime(freeTime);
-        this.falseTime = falseTime;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.penalty = penalty;
-    }
     
     public String getName() {
         return name;

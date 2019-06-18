@@ -1,17 +1,23 @@
-.content-header{
-    display: flex;
-    justify-content: space-between;
+.content-container > div {
+	margin: 20px 0;
 }
-.refunds-box{
+
+.card-title {
+	display: flex;
+    justify-content: flex-start;
 }
-.refund-container{
+
+.card-title > button {
+	margin-left: 20px;
+}
+
+.card-body {
     display: flex;
-    flex-direction: row;
     margin: 20px 0;
     min-height: 281px;
-    flex-wrap: wrap;
 }
-.refund-string{
+
+.refund-string {
     display: flex;
     flex-direction: column;
     flex-basis: 30%;
@@ -22,32 +28,29 @@
     color: white;
     font-family: 幼圆;
 }
-.refund-name{
-    font-size: 24px;
+
+.refund-name {
+    font-size: 25px;
 }
-.refund-user-type{
-    font-size: 16px;
-}
-.refund-prohibit-time{
-    font-size: 16px;
-}
+
 .refund-red-text{
     color: red;
-    font-size: 23px;
+    font-size: 22px;
 }
+
 .refund-permit{
     display: flex;
-    flex-direction: row;
     justify-content: space-evenly;
     flex-basis: 65%;
     padding: 20px;
 }
-.button-container{
+
+.refund-button {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
     flex-basis: 5%;
 }
-.refund-btn-update,.refund-btn-delete{
+
+.refund-btn-update,.refund-btn-delete {
     height: 50%;
 }

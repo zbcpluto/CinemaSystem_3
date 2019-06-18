@@ -18,6 +18,10 @@ public class RefundStrategy {
      */
     private Integer isVip;
     /**
+     * 免费的退票的时间点 可能为空
+     */
+    private String freeTime;
+    /**
      * 不可退票的时间点 可能为空
      */
     private String falseTime;
@@ -37,9 +41,10 @@ public class RefundStrategy {
     public RefundStrategy(){
 
     }
-    public RefundStrategy(String name, Integer isVip, String falseTime, String startTime, String endTime, Double penalty) {
+    public RefundStrategy(String name, Integer isVip, String freeTime, String falseTime, String startTime, String endTime, Double penalty) {
         this.name = name;
         this.isVip = isVip;
+        this.freeTime = freeTime;
         this.falseTime = falseTime;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -70,6 +75,14 @@ public class RefundStrategy {
     public void setIsVip(Integer isVip) {
         this.isVip = isVip;
     }
+    
+    public String getFreeTime() {
+		return freeTime;
+	}
+    
+	public void setFreeTime(String freeTime) {
+		this.freeTime = freeTime;
+	}
 
     public String getFalseTime() {
         return falseTime;
@@ -102,4 +115,5 @@ public class RefundStrategy {
     public void setPenalty(Double penalty) {
         this.penalty = penalty;
     }
+    
 }

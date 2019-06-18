@@ -8,6 +8,18 @@ import com.example.cinema.vo.ResponseVO;
  */
 public interface RefundService {
     /**
+     * 得到会员的退票策略
+     * @return
+     */
+    ResponseVO getVipRefStra();
+    
+    /**
+     * 得到非会员的退票策略
+     * @return
+     */
+    ResponseVO getNonVipRefStra();
+    
+    /**
      * 加一个退票策略
      * @param refundForm
      * @return
@@ -15,22 +27,10 @@ public interface RefundService {
     ResponseVO addRefundStrategy(RefundForm refundForm);
 
     /**
-     * 得到所有退票策略
-     * @return
-     */
-    ResponseVO getAllRefundStrategy();
-
-    /**
      * 删除一个退票策略
      * @param name
      * @return
      */
-    ResponseVO deleteRefundStrategyByName(String name);
-    
-    /**
-     * 更新一个退票策略
-     * @param refundForm
-     * @return
-     */
-    ResponseVO updateRefundStrategy(RefundForm refundForm);
+    ResponseVO deleteRefundStrategyByState(int state);
+
 }

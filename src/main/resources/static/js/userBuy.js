@@ -108,7 +108,7 @@ function getPriceDes(idx) {
 		var i = ticket.couponDes.lastIndexOf("减");
 		if(i != -1) {
 			var discount = parseFloat(couponDes.substr(i+1, couponDes.length-1)).toFixed(2);
-			total -= discount;
+			total = parseFloat(total-discount);
 			res += " - " + discount + " = " + total;
 		}
 	}
@@ -145,8 +145,9 @@ function repay(idx) {
 }
 
 function refund(idx) {
+	
 	if(isPreBegin(idx)) {
-		
+		alert(amountList[idx]);
 	}
 	else {
 		alert("电影已开始，无法退票，正在为您刷新界面");

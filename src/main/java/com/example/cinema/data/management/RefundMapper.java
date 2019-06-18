@@ -1,6 +1,7 @@
 package com.example.cinema.data.management;
 
 import com.example.cinema.po.RefundStrategy;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -11,11 +12,12 @@ import java.util.List;
 @Mapper
 public interface RefundMapper {
 
-    int insertRefundStrategy(List<RefundStrategy> refundStrategyList);
+    List<RefundStrategy> selectVipRefStra();
 
-    List<RefundStrategy> selectAllRefundStrategy();
+    List<RefundStrategy> selectNonVipRefStra();
+    
+    void insertRefundStrategy(List<RefundStrategy> refundStrategyList);
 
-    int deleteRefundStrategyByName(String name);
-
-    int updateRefundStrategy(List<RefundStrategy> refundStrategyList);
+	void deleteRefundStrategyByState(int state);
+	
 }
