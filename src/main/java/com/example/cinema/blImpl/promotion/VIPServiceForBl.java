@@ -6,4 +6,6 @@ public interface VIPServiceForBl {
 
     VIPCard selectCardByUserId(int useId);
 
+	void chargeCardByUser(int userId, double amount);
+
 }

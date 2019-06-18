@@ -145,16 +145,19 @@ function repay(idx) {
 	}
 	else {
 		alert("电影已开始，无法重新购买，正在为您刷新界面");
+		ticketList = null;
 		getTicketList();
 	}
 }
 
 function refund(idx) {
 	if(isPreBegin(idx)) {
+		index = idx;
 		checkVip(idx); //嵌套做法
 	}
 	else {
 		alert("电影已开始，无法退票，正在为您刷新界面");
+		ticketList = null;
 		getTicketList();
 	}
 }
@@ -176,6 +179,7 @@ function payConfirmClick() {
                 function(res) {
                 	if(res.success) {
                 		alert("付款成功");
+                		ticketList = null;
                 		getTicketList();
                 	}
                 	else {
@@ -234,8 +238,8 @@ function getRefundRatio(idx) {
             	$("#refund-ratio").html(refundRatio*100 + "%");
             	amount = amountList[idx];
             	var serviceFee = parseFloat(amount * refundRatio).toFixed(2);
-            	var refundAmount = parseFloat(amount - serviceFee).toFixed(2);
-            	$("#refund-amount").html(amount + " - " + serviceFee + " = " +  + refundAmount);
+            	refundAmount = parseFloat(amount - serviceFee).toFixed(2);
+            	$("#refund-amount").html(amount + " - " + serviceFee + " = "  + refundAmount + "元");
             	getWithDrawCoupons(idx);
             	$("#refundModal").modal('show');
         	}
@@ -288,4 +292,25 @@ function renderCoupons(coupons) {
 			"<div>" + coupon.name +"：满" + coupon.targetAmount + "减" + coupon.discountAmount + "</div>";
 	});
 	$("#coupon-withdraw").append(couponDomStr);
+}
+
+function refundConfirmClick() {
+	var ticket = ticketList[index];
+	$("#refundModal").modal('hide');
+	postRequest(
+		"/ticket/refund",
+		{amount: refundAmount, ticketIds: ticket.idList, couponIds: withdrawnCouponIds, isVip: (isVIP ? 1:0), userId: userId},
+		function(res) {
+			if(res.success) {
+				alert("退票成功！");
+				ticketList = null;
+				getTicketList();
+			} 
+			else {
+				alert(res.message);
+			}
+		},
+		function (error) {
+            alert(error);
+        });
 }

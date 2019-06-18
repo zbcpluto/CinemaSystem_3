@@ -1,6 +1,7 @@
 package com.example.cinema.controller.sales;
 
 import com.example.cinema.bl.sales.TicketService;
+import com.example.cinema.vo.RefundComForm;
 import com.example.cinema.vo.ResponseVO;
 import com.example.cinema.vo.TicketBuyForm;
 import com.example.cinema.vo.TicketForm;
@@ -40,13 +41,15 @@ public class TicketController {
     public ResponseVO getOccupiedSeats(@RequestParam int scheduleId){
         return ticketService.getBySchedule(scheduleId);
     }
+    
     @PostMapping("/cancel")
     public ResponseVO cancelTicket(@RequestParam List<Integer> ticketId){
         return ticketService.cancelTicket(ticketId);
     }
 
-
-
-
+    @RequestMapping(value = "/rufund", method = RequestMethod.POST)
+    public ResponseVO completeRefund(@RequestBody RefundComForm rcf) {
+        return ticketService.completeRefund(rcf);
+    }
 
 }

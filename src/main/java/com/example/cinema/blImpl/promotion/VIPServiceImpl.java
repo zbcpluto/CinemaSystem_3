@@ -143,4 +143,12 @@ public class VIPServiceImpl implements VIPService, VIPServiceForBl {
             return ResponseVO.buildFailure("失败");
         }
 	}
+
+	@Override
+	public void chargeCardByUser(int userId, double amount) {
+		VIPCard vipCard = vipCardMapper.selectCardByUserId(userId);
+		if(vipCard != null) {
+			vipCardMapper.updateCardBalance(vipCard.getId(), vipCard.getBalance()+amount);
+		}
+	}
 }

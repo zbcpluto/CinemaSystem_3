@@ -1,5 +1,6 @@
 package com.example.cinema.bl.sales;
 
+import com.example.cinema.vo.RefundComForm;
 import com.example.cinema.vo.ResponseVO;
 import com.example.cinema.vo.TicketBuyForm;
 import com.example.cinema.vo.TicketForm;
@@ -58,6 +59,6 @@ public interface TicketService {
      */
     ResponseVO cancelTicket(List<Integer> id);
     
-    ResponseVO getTicketRefund(List<Integer> ticketId);
+	ResponseVO completeRefund(RefundComForm rcf);
     
 }
