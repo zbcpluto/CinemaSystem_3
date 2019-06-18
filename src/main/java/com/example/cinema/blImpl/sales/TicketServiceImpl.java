@@ -164,7 +164,6 @@ public class TicketServiceImpl implements TicketService {
         				tv.setCouponDes(sb.toString());
     				}
     				tv.setTime(ticket.getTime());
-    				tv.setBuyMode(ticket.getPaymentMode());
     				map.put(time, tv);
     			}
     			else {

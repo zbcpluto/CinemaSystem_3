@@ -343,6 +343,7 @@ function chargeConfirmClick() {
 		        	alert("充值失败！");
 		            alert(error);
 		        });
+		}
 	    else {
 	    	alert("银行卡号或密码错误");
 		}

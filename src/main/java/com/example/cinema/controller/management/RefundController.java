@@ -2,6 +2,7 @@ package com.example.cinema.controller.management;
 
 import com.example.cinema.bl.management.RefundService;
 import com.example.cinema.vo.RefundForm;
+import com.example.cinema.vo.RefundRatioForm;
 import com.example.cinema.vo.ResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -56,9 +57,9 @@ public class RefundController {
      * @param state  1：会员   0：非会员
      * @return
      */
-    @RequestMapping(value = "/get/ratio/{state}", method = RequestMethod.GET)
-    public ResponseVO getRefStraRatio(@PathVariable int state) {
-        return refundService.getRefStraRatio(state);
+    @RequestMapping(value = "/get/ratio", method = RequestMethod.POST)
+    public ResponseVO getRefStraRatio(@RequestBody RefundRatioForm rrf) {
+        return refundService.getRefStraRatio(rrf);
     }
 
 }

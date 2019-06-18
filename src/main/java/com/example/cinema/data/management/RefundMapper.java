@@ -1,6 +1,7 @@
 package com.example.cinema.data.management;
 
 import com.example.cinema.po.RefundStrategy;
+import com.example.cinema.vo.RefundRatioForm;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -20,6 +21,6 @@ public interface RefundMapper {
 
 	void deleteRefundStrategyByState(int state);
 
-	double selectRefundStrategyByState(int state);
+	double selectRefundStrategyByState(RefundRatioForm rrf);
 	
 }

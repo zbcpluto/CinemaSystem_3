@@ -78,7 +78,7 @@ $(document).ready(function(){
             movie.description = movie.description || '';
             movieDomStr +=
                 "<li class='movie-item card'>" +
-                "<img class='movie-img' src='" + (movie.posterUrl || "../images/defaultAvatar.jpg") + "'/>" +
+                "<img class='movie-img' src='" + (movie.posterUrl || "/images/defaultAvatar.jpg") + "'/>" +
                 "<div class='movie-info'>" +
                 "<div class='movie-title'>" +
                 "<span class='primary-text'>" + movie.name + "</span>" +
