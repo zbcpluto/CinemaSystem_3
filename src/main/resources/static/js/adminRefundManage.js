@@ -104,10 +104,11 @@ function renderVipRefStra() {
  * @param list
  */
 function renderNonVipRefStra() {
-	$(".nonVip-notice").text("会员的退票策略");
+	$(".nonVip-notice").text("非会员的退票策略");
 	$("#nonVip-add-button").css("display", "none");
 	$(".nonVipRef-body").empty();
-	
+
+
     var nonVipRefDomStr = "";
     var free = nonVipRefStra.freeTime.split(":");
     var free_hour = parseInt(free[0]);
