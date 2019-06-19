@@ -135,6 +135,8 @@ $(document).ready(function() {
     
     var selectedUserNames = new Set();
     var selectedUserIds = new Set();
+
+    var filter_user_id_list = []
     // 实现筛选金额的点击确认按钮
     $('#filter-money-btn').click(function(){
         $('#filter-user').empty();
@@ -144,6 +146,7 @@ $(document).ready(function() {
             '/coupon/get/user/'+consumption,
             function (res) {
                 list = res.content;
+                filter_user_id_list = res.content;
                 var selectDomStr = "<option value=\"-1\"> 所有人</option>";
                 list.forEach(function(user){
                     selectDomStr+="<option value="+"\""+user.id+"\">"+user.username+"</option>";
@@ -200,8 +203,15 @@ $(document).ready(function() {
         var id = [];
         var name = [];
         var users = [];
-        for (let i of selectedUserIds){
-            id.push(i);
+        console.log(selectedUserIds.size);
+        if (selectedUserIds.size == 0){
+            for (let i = 0 ;i < filter_user_id_list.length; i++){
+                id.push(filter_user_id_list[i].id);
+            }
+        }else{
+            for (let i of selectedUserIds){
+                id.push(i);
+            }
         }
         for (let i of selectedUserNames){
             name.push(i);
@@ -215,14 +225,13 @@ $(document).ready(function() {
             users,
             function (res) {
                 $('#giveCouponModal').modal('hide');
+                $('#filter-user').empty();
+                $('#give-coupon-filter-money').val("");
+                $('#selected-users').empty();
             },
             function (error) {
                 alert(error)
             }
         );
     })
-    function getGivenUsers(){
-
-    }
-
 });

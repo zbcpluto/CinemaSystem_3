@@ -78,6 +78,7 @@ public class TicketServiceImpl implements TicketService {
     public ResponseVO completeTicket(TicketBuyForm ticketBuyForm) {
     	try {
     		int couponId = ticketBuyForm.getCouponId();
+    		double total = ticketBuyForm.getTotal();
     		List<Integer> ticketIdList = ticketBuyForm.getTicketId();
     		List<Ticket> tickets = new ArrayList<Ticket>();
     		List<Integer> couponIdToget = ticketBuyForm.getCouponIdToget();
@@ -86,7 +87,7 @@ public class TicketServiceImpl implements TicketService {
                 tickets.add(ticketMapper.selectTicketById(id));
             }
             int userId = tickets.get(0).getUserId();
-            
+            ticketMapper.updateConsumption(total,userId);
     		//更新ticket状态
             for (Ticket t: tickets) {
                 t.setState(1);
@@ -203,7 +204,8 @@ public class TicketServiceImpl implements TicketService {
             int userId = tickets.get(0).getUserId();
     		//会员卡扣费
             ticketMapper.VIPPay(userId, total);
-    		//更新ticket状态
+    		ticketMapper.updateConsumption(total, userId);
+            //更新ticket状态
             for (Ticket t: tickets) {
                 t.setState(1);
                 ticketMapper.updateTicketState(t.getId(), 1);
@@ -252,6 +254,9 @@ public class TicketServiceImpl implements TicketService {
 			for(int i: rcf.getTicketIds()) {
 	            ticketMapper.updateTicketState(i, 2);
 	        }
+	        double total = rcf.getAmount();
+			int userId = rcf.getUserId();
+            ticketMapper.updateConsumption(-total, userId);
 			vipService.chargeCardByUser(rcf.getUserId(), rcf.getAmount());
 			for(int i: rcf.getCouponIds()) {
 				couponService.deleteCouponUser(i, rcf.getUserId());

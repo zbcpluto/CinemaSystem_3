@@ -57,6 +57,11 @@
         delete from ticket where id=#{ticketId}
     </delete>
 
+    <update id="updateConsumption">
+        update user set ticket_consumption=#{amount}+ticket_consumption
+        where id = #{userId}
+    </update>
+
     <resultMap id="Ticket" type="com.example.cinema.po.Ticket">
         <result column="schedule_id" property="scheduleId"></result>
         <result column="id" property="id"></result>
