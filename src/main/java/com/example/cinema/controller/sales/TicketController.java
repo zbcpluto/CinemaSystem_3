@@ -47,7 +47,7 @@ public class TicketController {
         return ticketService.cancelTicket(ticketId);
     }
 
-    @RequestMapping(value = "/rufund", method = RequestMethod.POST)
+    @RequestMapping(value = "/refund", method = RequestMethod.POST)
     public ResponseVO completeRefund(@RequestBody RefundComForm rcf) {
         return ticketService.completeRefund(rcf);
     }

@@ -47,7 +47,7 @@ public interface TicketMapper {
 
 	List<VIPCard> isVip(int userId);
 
-	int updateConsumption(double amount, int userId);
+	int updateConsumption(@Param("amount") double amount, @Param("userId") int userId);
 
 }
 

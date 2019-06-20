@@ -87,7 +87,7 @@ public class TicketServiceImpl implements TicketService {
                 tickets.add(ticketMapper.selectTicketById(id));
             }
             int userId = tickets.get(0).getUserId();
-            ticketMapper.updateConsumption(total,userId);
+            ticketMapper.updateConsumption(total, userId);
     		//更新ticket状态
             for (Ticket t: tickets) {
                 t.setState(1);
@@ -254,10 +254,10 @@ public class TicketServiceImpl implements TicketService {
 			for(int i: rcf.getTicketIds()) {
 	            ticketMapper.updateTicketState(i, 2);
 	        }
-	        double total = rcf.getAmount();
-			int userId = rcf.getUserId();
-            ticketMapper.updateConsumption(-total, userId);
-			vipService.chargeCardByUser(rcf.getUserId(), rcf.getAmount());
+            ticketMapper.updateConsumption(-rcf.getAmount(), rcf.getUserId());
+            if(rcf.getIsVip() == 1) {
+            	vipService.chargeCardByUser(rcf.getUserId(), rcf.getAmount());
+            }
 			for(int i: rcf.getCouponIds()) {
 				couponService.deleteCouponUser(i, rcf.getUserId());
 			}

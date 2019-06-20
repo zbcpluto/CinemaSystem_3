@@ -316,7 +316,7 @@ function chargeClick() {
 
 function chargeConfirmClick() {
 	if(validateChargeForm()) {
-		if($('#userBuy-cardNum').val() === "123123123" && $('#userBuy-cardPwd').val() === "123123") {
+		if($('#userBuy-chargeNum').val() === "123123123" && $('#userBuy-chargePwd').val() === "123123") {
 			getVipInfo();
 			var charge_amount = $('#userBuy-chargeMoney').val();
 		    postRequest(

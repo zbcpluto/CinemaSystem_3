@@ -217,7 +217,7 @@ function checkVip(idx) {
 	getRequest(
         '/vip/' + userId + '/get',
         function (res) {
-            isVIP = res.success;
+            isVip = res.success;
             getRefundRatio(idx);
         },
         function (error) {
@@ -230,10 +230,9 @@ function getRefundRatio(idx) {
 	var ticket = ticketList[idx];
 	postRequest(
         '/refund/get/ratio',
-        {isVip: (isVIP ? 1:0), startTime: ticket.startTime},
+        {isVip: (isVip ? 1:0), startTime: ticket.startTime},
         function (res) {
         	if(res.success) {
-        		alert(res.content);
         		refundRatio = res.content;
             	$("#refund-ratio").html(refundRatio*100 + "%");
             	amount = amountList[idx];
@@ -299,7 +298,7 @@ function refundConfirmClick() {
 	$("#refundModal").modal('hide');
 	postRequest(
 		"/ticket/refund",
-		{amount: refundAmount, ticketIds: ticket.idList, couponIds: withdrawnCouponIds, isVip: (isVIP ? 1:0), userId: userId},
+		{amount: refundAmount, ticketIds: ticket.idList, couponIds: withdrawnCouponIds, isVip: (isVip ? 1:0), userId: userId},
 		function(res) {
 			if(res.success) {
 				alert("退票成功！");
