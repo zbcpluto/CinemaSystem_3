@@ -23,7 +23,7 @@ public class RefundController {
     public ResponseVO getVipRefStra() {
         return refundService.getVipRefStra();
     }
-    
+
     /**
      * 获得非会员的退票策略
      */
@@ -54,7 +54,6 @@ public class RefundController {
     
     /**
      * 获取当前时间的退票折算系数
-     * @param state  1：会员   0：非会员
      * @return
      */
     @RequestMapping(value = "/get/ratio", method = RequestMethod.POST)

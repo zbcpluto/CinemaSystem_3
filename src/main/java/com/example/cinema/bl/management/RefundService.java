@@ -29,11 +29,16 @@ public interface RefundService {
 
     /**
      * 删除一个退票策略
-     * @param name
+     * @param state
      * @return
      */
     ResponseVO deleteRefundStrategyByState(int state);
 
+    /**
+     * 获取退票策略的折算系数
+     * @param rrf
+     * @return
+     */
 	ResponseVO getRefStraRatio(RefundRatioForm rrf);
 
 }

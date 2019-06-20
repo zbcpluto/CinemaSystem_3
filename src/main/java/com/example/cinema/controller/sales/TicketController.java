@@ -28,10 +28,12 @@ public class TicketController {
     public ResponseVO lockSeat(@RequestBody TicketForm ticketForm) {
         return ticketService.addTicket(ticketForm);
     }
+
     @PostMapping("/buy")
     public ResponseVO buyTicket(@RequestBody TicketBuyForm ticketBuyForm){
         return ticketService.completeTicket(ticketBuyForm);
     }
+
     @GetMapping("/get/{userId}")
     public ResponseVO getTicketByUserId(@PathVariable int userId){
         return ticketService.getTicketByUser(userId);

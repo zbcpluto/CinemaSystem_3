@@ -47,10 +47,12 @@ public class MovieController {
     public ResponseVO likeMovie(@PathVariable int movieId,@RequestParam int userId){
         return movieLikeService.likeMovie(userId,movieId);
     }
+
     @RequestMapping(value = "/movie/{movieId}/unlike", method = RequestMethod.POST)
     public ResponseVO unlikeMovie(@PathVariable int movieId,@RequestParam int userId){
         return movieLikeService.unLikeMovie(userId,movieId);
     }
+
     @RequestMapping(value = "/movie/{movieId}/like/count", method = RequestMethod.GET)
     public ResponseVO getMovieLikeCounts(@PathVariable int movieId){
         return movieLikeService.getCountOfLikes(movieId);
@@ -75,8 +77,5 @@ public class MovieController {
     public ResponseVO updateMovie(@RequestBody MovieForm updateMovieForm){
         return movieService.updateMovie(updateMovieForm);
     }
-
-
-
 
 }

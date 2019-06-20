@@ -58,7 +58,12 @@ public interface TicketService {
      * @return
      */
     ResponseVO cancelTicket(List<Integer> id);
-    
+
+    /**
+     * 完成退票
+     * @param rcf
+     * @return
+     */
 	ResponseVO completeRefund(RefundComForm rcf);
     
 }
