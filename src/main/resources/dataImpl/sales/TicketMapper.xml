@@ -75,20 +75,12 @@
     </resultMap>
 
     <update id="cleanExpiredTicket">
-        update ticket SET  state =2 WHERE minute(timediff(now(),time))>15 and state=0;
+        update ticket SET state=2 WHERE minute(timediff(now(),time))>15 and state=0;
     </update>
     
     <update id="VIPPay">
         update vip_card set balance=(balance-#{toPay}) where #{userId}=user_id
     </update>
-
-    <update id="VIPRefund">
-        update vip_card set balance=(balance+#{refund}) where #{userId}=user_id
-    </update>
-
-    <select id="getRefundStrategies" resultMap="RefundStrategy">
-        select * from refund where #{isVip}=is_vip
-    </select>
 
     <resultMap id="RefundStrategy" type="com.example.cinema.po.RefundStrategy">
         <result column="id" property="id"></result>

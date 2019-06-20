@@ -6,7 +6,6 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import com.example.cinema.po.RefundStrategy;
 import com.example.cinema.po.Ticket;
 import com.example.cinema.po.VIPCard;
 
@@ -41,9 +40,9 @@ public interface TicketMapper {
     
 	void VIPPay(@Param("userId") int userId, @Param("toPay") double toPay);
 
-	void VIPRefund(int userId, double refund);
+//	void VIPRefund(int userId, double refund);
 
-	List<RefundStrategy> getRefundStrategies(int isVip);
+//	List<RefundStrategy> getRefundStrategies(int isVip);
 
 	List<VIPCard> isVip(int userId);
 

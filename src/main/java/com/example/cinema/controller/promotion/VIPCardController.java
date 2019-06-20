@@ -18,6 +18,7 @@ public class VIPCardController {
     public ResponseVO addVIP(@RequestParam int userId, @RequestParam int serviceId){
         return vipService.addVIPCard(userId, serviceId);
     }
+    
     @GetMapping("{userId}/get")
     public ResponseVO getVIP(@PathVariable int userId){
         return vipService.getCardByUserId(userId);
