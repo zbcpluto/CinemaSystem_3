@@ -51,12 +51,16 @@ public class VIPServiceImpl implements VIPService, VIPServiceForBl {
         }
     }
 
+    /**
+     * 会员卡充值（添加充值记录，更新余额）
+     */
     @Override
     public ResponseVO charge(VIPChargeForm chargeForm) {
     	try {
     		VIPCard card = vipCardMapper.selectCardById(chargeForm.getVipId());
             VIPInfo info = vipCardMapper.selectServiceById(card.getServiceId());
             
+            //创建充值记录表单
             VIPChargeRecordForm vrf = new VIPChargeRecordForm();
             vrf.setUserId(card.getUserId());
             vrf.setCardId(card.getId());
@@ -65,8 +69,8 @@ public class VIPServiceImpl implements VIPService, VIPServiceForBl {
             	vrf.setDiscountAmount(info.getDiscount_res());
             }
             
-            vipCardMapper.insertOneRecord(vrf);
-            vipCardMapper.updateCardBalance(chargeForm.getVipId(), card.getBalance()+chargeForm.getAmount()+vrf.getDiscountAmount());
+            vipCardMapper.insertOneRecord(vrf);  //添加充值记录
+            vipCardMapper.updateCardBalance(chargeForm.getVipId(), card.getBalance()+chargeForm.getAmount()+vrf.getDiscountAmount());  //更新余额
             return ResponseVO.buildSuccess();
     	} catch (Exception e) {
             e.printStackTrace();
@@ -78,7 +82,7 @@ public class VIPServiceImpl implements VIPService, VIPServiceForBl {
     public ResponseVO getCardByUserId(int userId) {
         try {
             VIPCard vipCard = vipCardMapper.selectCardByUserId(userId);
-            if(vipCard==null){
+            if(vipCard == null){
                 return ResponseVO.buildFailure("用户卡不存在");
             }
             return ResponseVO.buildSuccess(vipCard);
@@ -144,6 +148,9 @@ public class VIPServiceImpl implements VIPService, VIPServiceForBl {
         }
 	}
 
+	/**
+	 * 根据用户id对会员卡进行充值（用于退款操作，不可触发充值优惠）
+	 */
 	@Override
 	public void chargeCardByUser(int userId, double amount) {
 		VIPCard vipCard = vipCardMapper.selectCardByUserId(userId);
