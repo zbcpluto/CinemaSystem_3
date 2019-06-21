@@ -30,4 +30,8 @@ public class ScheduleWithSeatVO {
     public void setSeats(int[][] seats) {
         this.seats = seats;
     }
+    
+    public boolean existSeat(int columnIndex, int rowIndex) {
+    	return seats[rowIndex][columnIndex] == 1;
+    }
 }
